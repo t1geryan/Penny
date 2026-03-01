@@ -25,3 +25,5 @@ dependencyResolutionManagement {
 rootProject.name = "Penny"
 include(":app")
 include(":core:ui:theme")
+include(":domain")
+include(":core:ui:icons")
