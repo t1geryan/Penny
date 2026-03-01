@@ -15,4 +15,5 @@ kotlin {
 dependencies {
 
     implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.coroutines)
 }
