@@ -6,9 +6,17 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.t1geryan.icons.Add
+import io.github.t1geryan.icons.Category
+import io.github.t1geryan.icons.Home
+import io.github.t1geryan.icons.Notifications
+import io.github.t1geryan.icons.Statistics
 
 data class PennyIcons(
     val add: ImageVector = Add,
+    val home: ImageVector = Home,
+    val category: ImageVector = Category,
+    val notifications: ImageVector = Notifications,
+    val statistics: ImageVector = Statistics,
 )
 
 internal val LocalIcons = staticCompositionLocalOf { PennyIcons() }

@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Penny</string>
+
+    <string name="screen_tab_item_transactions_label">Home</string>
+    <string name="screen_tab_item_categories_label">Categories</string>
+    <string name="screen_tab_item_statistics_label">Stats</string>
+    <string name="screen_tab_item_notifications_label">Alerts</string>
 </resources>
