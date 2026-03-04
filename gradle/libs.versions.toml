@@ -14,8 +14,7 @@ jetbrainsKotlinJvm = "2.3.10"
 kotlinxCoroutines = "1.10.2"
 kotlinxSerialization = "2.3.10"
 kotlinxSerializationCore = "1.10.0"
-nav3Core = "1.0.1"
-lifecycleViewmodelNav3 = "2.11.0-alpha01"
+navigationComponent = "2.9.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,11 +35,9 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
-kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "kotlinxSerializationCore" }
+kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationCore" }
 
-androidx-navigation3-runtime = { module = "androidx.navigation3:navigation3-runtime", version.ref = "nav3Core" }
-androidx-navigation3-ui = { module = "androidx.navigation3:navigation3-ui", version.ref = "nav3Core" }
-androidx-lifecycle-viewmodel-navigation3 = { module = "androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "lifecycleViewmodelNav3" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationComponent" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

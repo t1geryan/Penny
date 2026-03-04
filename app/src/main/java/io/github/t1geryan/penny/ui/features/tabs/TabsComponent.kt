@@ -8,33 +8,42 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
-import androidx.navigation3.runtime.NavBackStack
-import androidx.navigation3.runtime.NavKey
-import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
-import androidx.navigation3.ui.NavDisplay
-import io.github.t1geryan.navigation.TabNavEntry
-import io.github.t1geryan.penny.ui.navigation.ext.bringToFront
-import io.github.t1geryan.penny.ui.navigation.graph.provideTabsGraph
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import io.github.t1geryan.navigation.TabsNavEntry
+import io.github.t1geryan.penny.ui.navigation.graph.TabsNavGraph
+import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun TabsComponent(
-    rootBackStack: NavBackStack<NavKey>,
+    rootNavController: NavController,
     modifier: Modifier = Modifier,
 ) {
-    val tabsBackStack = rememberNavBackStack(TabNavEntry.Transactions)
+    val tabsNavController = rememberNavController()
+    var currentState by remember { mutableStateOf(TabsNavEntry.INITIAL) }
 
     Scaffold(
         modifier = modifier,
         bottomBar = {
             NavigationBar {
-                TabNavEntry.ORDERED_TABS.forEach {
+                TabsNavEntry.ORDERED_TABS.forEach {
                     NavigationBarItem(
-                        selected = tabsBackStack.last() == it,
+                        selected = it == currentState,
                         onClick = {
-                            tabsBackStack.bringToFront(it)
+                            tabsNavController.navigate(it) {
+                                popUpTo(TabsNavEntry.INITIAL) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                            currentState = it
                         },
                         icon = {
                             it.NavigationBarItemIcon()
@@ -47,36 +56,29 @@ fun TabsComponent(
             }
         },
     ) { paddingValues ->
-        NavDisplay(
-            backStack = tabsBackStack,
-            entryDecorators = listOf(
-                rememberSaveableStateHolderNavEntryDecorator(),
-                rememberViewModelStoreNavEntryDecorator(),
-            ),
+        TabsNavGraph(
+            tabsNavController = tabsNavController,
+            rootNavController = rootNavController,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
-            onBack = {
-                if (tabsBackStack.size == 1) {
-                    rootBackStack.removeLastOrNull()
-                } else {
-                    tabsBackStack.removeAll { it != TabNavEntry.Transactions }
-                }
-            },
-            entryProvider = { key ->
-                provideTabsGraph(rootBackStack, tabsBackStack, key as TabNavEntry)
-            },
         )
+    }
+
+    LaunchedEffect(tabsNavController) {
+        tabsNavController.currentBackStackEntryFlow.collectLatest {
+            // FIXME: currentState = it.destination.
+        }
     }
 }
 
 // TODO: style
 @Composable
-private fun TabNavEntry.NavigationBarItemLabel(modifier: Modifier = Modifier) {
+private fun TabsNavEntry.NavigationBarItemLabel(modifier: Modifier = Modifier) {
     Text(label)
 }
 
 @Composable
-private fun TabNavEntry.NavigationBarItemIcon(modifier: Modifier = Modifier) {
+private fun TabsNavEntry.NavigationBarItemIcon(modifier: Modifier = Modifier) {
     Icon(icon, null)
 }

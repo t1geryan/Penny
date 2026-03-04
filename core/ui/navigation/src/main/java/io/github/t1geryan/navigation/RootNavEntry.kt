@@ -1,10 +1,9 @@
 package io.github.t1geryan.navigation
 
-import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface RootNavEntry : NavKey {
+sealed interface RootNavEntry {
 
     @Serializable
     data object Tabs : RootNavEntry
@@ -14,4 +13,8 @@ sealed interface RootNavEntry : NavKey {
 
     @Serializable
     data class CreateOrUpdateCategory(val id: Int?) : RootNavEntry
+
+    companion object {
+        val INITIAL = Tabs
+    }
 }

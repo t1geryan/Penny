@@ -1,22 +1,21 @@
 package io.github.t1geryan.navigation
 
-import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface TabNavEntry : NavKey {
+sealed interface TabsNavEntry {
 
     @Serializable
-    data object Transactions : TabNavEntry
+    data object Transactions : TabsNavEntry
 
     @Serializable
-    data object Statistics : TabNavEntry
+    data object Statistics : TabsNavEntry
 
     @Serializable
-    data object Categories : TabNavEntry
+    data object Categories : TabsNavEntry
 
     @Serializable
-    data object Notifications : TabNavEntry
+    data object Notifications : TabsNavEntry
 
     companion object {
         val ORDERED_TABS = listOf(
@@ -25,5 +24,7 @@ sealed interface TabNavEntry : NavKey {
             Categories,
             Notifications,
         )
+
+        val INITIAL: TabsNavEntry = Transactions
     }
 }

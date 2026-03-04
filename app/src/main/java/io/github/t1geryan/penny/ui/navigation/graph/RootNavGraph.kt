@@ -1,0 +1,58 @@
+package io.github.t1geryan.penny.ui.navigation.graph
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import io.github.t1geryan.navigation.RootNavEntry
+import io.github.t1geryan.penny.ui.features.tabs.TabsComponent
+
+@Composable
+fun RootNavGraph(
+    modifier: Modifier = Modifier,
+    rootNavController: NavHostController = rememberNavController(),
+) {
+    NavHost(
+        navController = rootNavController,
+        startDestination = RootNavEntry.INITIAL,
+        modifier = modifier,
+    ) {
+        composeCreateOrUpdateCategory(rootNavController)
+        composeCreateOrUpdateTransaction(rootNavController)
+        composeTabs(rootNavController)
+    }
+}
+
+fun NavGraphBuilder.composeCreateOrUpdateCategory(navController: NavController) {
+    composable<RootNavEntry.CreateOrUpdateCategory> {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Cyan),
+        )
+    }
+}
+
+fun NavGraphBuilder.composeCreateOrUpdateTransaction(navController: NavController) {
+    composable<RootNavEntry.CreateOrUpdateTransaction> {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Magenta),
+        )
+    }
+}
+
+fun NavGraphBuilder.composeTabs(navController: NavController) {
+    composable<RootNavEntry.Tabs> {
+        TabsComponent(navController, modifier = Modifier.fillMaxSize())
+    }
+}
