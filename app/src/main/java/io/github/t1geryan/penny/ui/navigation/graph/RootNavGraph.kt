@@ -31,7 +31,7 @@ fun RootNavGraph(
     }
 }
 
-fun NavGraphBuilder.composeCreateOrUpdateCategory(navController: NavController) {
+private fun NavGraphBuilder.composeCreateOrUpdateCategory(navController: NavController) {
     composable(
         route = RootNavEntry.CREATE_OR_UPDATE_CATEGORY.route,
     ) {
@@ -43,7 +43,7 @@ fun NavGraphBuilder.composeCreateOrUpdateCategory(navController: NavController) 
     }
 }
 
-fun NavGraphBuilder.composeCreateOrUpdateTransaction(navController: NavController) {
+private fun NavGraphBuilder.composeCreateOrUpdateTransaction(navController: NavController) {
     composable(
         route = RootNavEntry.CREATE_OR_UPDATE_TRANSACTION.route,
     ) {
@@ -55,7 +55,7 @@ fun NavGraphBuilder.composeCreateOrUpdateTransaction(navController: NavControlle
     }
 }
 
-fun NavGraphBuilder.composeTabs(navController: NavController) {
+private fun NavGraphBuilder.composeTabs(navController: NavController) {
     composable(
         route = RootNavEntry.TABS.route,
     ) {

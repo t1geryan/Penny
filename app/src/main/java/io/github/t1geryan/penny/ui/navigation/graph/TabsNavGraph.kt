@@ -39,7 +39,7 @@ fun TabsNavGraph(
     }
 }
 
-fun NavGraphBuilder.composeCategories() {
+private fun NavGraphBuilder.composeCategories() {
     composable(
         route = TabsNavEntry.CATEGORIES.route,
     ) {
@@ -47,7 +47,7 @@ fun NavGraphBuilder.composeCategories() {
     }
 }
 
-fun NavGraphBuilder.composeTransaction() {
+private fun NavGraphBuilder.composeTransaction() {
     composable(
         route = TabsNavEntry.TRANSACTIONS.route,
     ) {
@@ -55,7 +55,7 @@ fun NavGraphBuilder.composeTransaction() {
     }
 }
 
-fun NavGraphBuilder.composeNotifications() {
+private fun NavGraphBuilder.composeNotifications() {
     composable(
         route = TabsNavEntry.NOTIFICATIONS.route,
     ) {
@@ -63,7 +63,7 @@ fun NavGraphBuilder.composeNotifications() {
     }
 }
 
-fun NavGraphBuilder.composeStatistics() {
+private fun NavGraphBuilder.composeStatistics() {
     composable(
         route = TabsNavEntry.STATISTICS.route,
     ) {
