@@ -1,18 +1,7 @@
 package io.github.t1geryan.penny.ui.navigation.graph
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -33,7 +22,7 @@ fun TabsNavGraph(
         modifier = modifier,
     ) {
         composeCategories()
-        composeTransaction()
+        composeTransaction(rootNavController)
         composeNotifications()
         composeStatistics()
     }
@@ -43,15 +32,13 @@ private fun NavGraphBuilder.composeCategories() {
     composable(
         route = TabsNavEntry.CATEGORIES.route,
     ) {
-        Stub()
     }
 }
 
-private fun NavGraphBuilder.composeTransaction() {
+private fun NavGraphBuilder.composeTransaction(rootNavController: NavController) {
     composable(
         route = TabsNavEntry.TRANSACTIONS.route,
     ) {
-        Stub()
     }
 }
 
@@ -59,7 +46,6 @@ private fun NavGraphBuilder.composeNotifications() {
     composable(
         route = TabsNavEntry.NOTIFICATIONS.route,
     ) {
-        Stub()
     }
 }
 
@@ -67,26 +53,5 @@ private fun NavGraphBuilder.composeStatistics() {
     composable(
         route = TabsNavEntry.STATISTICS.route,
     ) {
-        Stub()
-    }
-}
-
-@Composable
-private fun Stub() {
-    var a by rememberSaveable { mutableIntStateOf(0) }
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Green),
-    ) {
-        Text("$a", modifier = Modifier.align(Alignment.TopCenter))
-        Button(
-            onClick = {
-                a += 1
-            },
-            modifier = Modifier.align(Alignment.BottomCenter),
-        ) {
-            Text("Click")
-        }
     }
 }
