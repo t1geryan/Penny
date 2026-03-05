@@ -1,20 +1,12 @@
 package io.github.t1geryan.navigation
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-sealed interface RootNavEntry {
-
-    @Serializable
-    data object Tabs : RootNavEntry
-
-    @Serializable
-    data class CreateOrUpdateTransaction(val id: Int?) : RootNavEntry
-
-    @Serializable
-    data class CreateOrUpdateCategory(val id: Int?) : RootNavEntry
+enum class RootNavEntry(val route: String) {
+    TABS("root_tabs"),
+    CREATE_OR_UPDATE_TRANSACTION("root_create_or_update_transaction"),
+    CREATE_OR_UPDATE_CATEGORY("root_create_or_update_category"),
+    ;
 
     companion object {
-        val INITIAL = Tabs
+        val INITIAL = TABS
     }
 }

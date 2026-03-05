@@ -22,7 +22,7 @@ fun RootNavGraph(
 ) {
     NavHost(
         navController = rootNavController,
-        startDestination = RootNavEntry.INITIAL,
+        startDestination = RootNavEntry.INITIAL.route,
         modifier = modifier,
     ) {
         composeCreateOrUpdateCategory(rootNavController)
@@ -32,7 +32,9 @@ fun RootNavGraph(
 }
 
 fun NavGraphBuilder.composeCreateOrUpdateCategory(navController: NavController) {
-    composable<RootNavEntry.CreateOrUpdateCategory> {
+    composable(
+        route = RootNavEntry.CREATE_OR_UPDATE_CATEGORY.route,
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -42,7 +44,9 @@ fun NavGraphBuilder.composeCreateOrUpdateCategory(navController: NavController) 
 }
 
 fun NavGraphBuilder.composeCreateOrUpdateTransaction(navController: NavController) {
-    composable<RootNavEntry.CreateOrUpdateTransaction> {
+    composable(
+        route = RootNavEntry.CREATE_OR_UPDATE_TRANSACTION.route,
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -52,7 +56,9 @@ fun NavGraphBuilder.composeCreateOrUpdateTransaction(navController: NavControlle
 }
 
 fun NavGraphBuilder.composeTabs(navController: NavController) {
-    composable<RootNavEntry.Tabs> {
+    composable(
+        route = RootNavEntry.TABS.route,
+    ) {
         TabsComponent(navController, modifier = Modifier.fillMaxSize())
     }
 }

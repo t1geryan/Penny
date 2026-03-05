@@ -29,7 +29,7 @@ fun TabsNavGraph(
 ) {
     NavHost(
         navController = tabsNavController,
-        startDestination = TabsNavEntry.INITIAL,
+        startDestination = TabsNavEntry.INITIAL.route,
         modifier = modifier,
     ) {
         composeCategories()
@@ -40,25 +40,33 @@ fun TabsNavGraph(
 }
 
 fun NavGraphBuilder.composeCategories() {
-    composable<TabsNavEntry.Categories> {
+    composable(
+        route = TabsNavEntry.CATEGORIES.route,
+    ) {
         Stub()
     }
 }
 
 fun NavGraphBuilder.composeTransaction() {
-    composable<TabsNavEntry.Transactions> {
+    composable(
+        route = TabsNavEntry.TRANSACTIONS.route,
+    ) {
         Stub()
     }
 }
 
 fun NavGraphBuilder.composeNotifications() {
-    composable<TabsNavEntry.Notifications> {
+    composable(
+        route = TabsNavEntry.NOTIFICATIONS.route,
+    ) {
         Stub()
     }
 }
 
 fun NavGraphBuilder.composeStatistics() {
-    composable<TabsNavEntry.Statistics> {
+    composable(
+        route = TabsNavEntry.STATISTICS.route,
+    ) {
         Stub()
     }
 }

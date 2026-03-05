@@ -1,30 +1,20 @@
 package io.github.t1geryan.navigation
 
-import kotlinx.serialization.Serializable
-
-@Serializable
-sealed interface TabsNavEntry {
-
-    @Serializable
-    data object Transactions : TabsNavEntry
-
-    @Serializable
-    data object Statistics : TabsNavEntry
-
-    @Serializable
-    data object Categories : TabsNavEntry
-
-    @Serializable
-    data object Notifications : TabsNavEntry
+enum class TabsNavEntry(val route: String) {
+    TRANSACTIONS("tabs_transactions"),
+    STATISTICS("tabs_statistics"),
+    CATEGORIES("tabs_categories"),
+    NOTIFICATIONS("tabs_notifications"),
+    ;
 
     companion object {
         val ORDERED_TABS = listOf(
-            Transactions,
-            Statistics,
-            Categories,
-            Notifications,
+            TRANSACTIONS,
+            STATISTICS,
+            CATEGORIES,
+            NOTIFICATIONS,
         )
 
-        val INITIAL: TabsNavEntry = Transactions
+        val INITIAL: TabsNavEntry = TRANSACTIONS
     }
 }

@@ -13,10 +13,10 @@ val TabsNavEntry.label
     @ReadOnlyComposable
     get() = stringResource(
         when (this) {
-            TabsNavEntry.Categories -> R.string.screen_tab_item_categories_label
-            TabsNavEntry.Notifications -> R.string.screen_tab_item_notifications_label
-            TabsNavEntry.Statistics -> R.string.screen_tab_item_statistics_label
-            TabsNavEntry.Transactions -> R.string.screen_tab_item_transactions_label
+            TabsNavEntry.CATEGORIES -> R.string.screen_tab_item_categories_label
+            TabsNavEntry.NOTIFICATIONS -> R.string.screen_tab_item_notifications_label
+            TabsNavEntry.STATISTICS -> R.string.screen_tab_item_statistics_label
+            TabsNavEntry.TRANSACTIONS -> R.string.screen_tab_item_transactions_label
         }
     )
 
@@ -24,8 +24,8 @@ val TabsNavEntry.icon
     @Composable
     @ReadOnlyComposable
     get() = when (this) {
-        TabsNavEntry.Categories -> MaterialTheme.icons.category
-        TabsNavEntry.Notifications -> MaterialTheme.icons.notifications
-        TabsNavEntry.Statistics -> MaterialTheme.icons.statistics
-        TabsNavEntry.Transactions -> MaterialTheme.icons.home
+        TabsNavEntry.CATEGORIES -> MaterialTheme.icons.category
+        TabsNavEntry.NOTIFICATIONS -> MaterialTheme.icons.notifications
+        TabsNavEntry.STATISTICS -> MaterialTheme.icons.statistics
+        TabsNavEntry.TRANSACTIONS -> MaterialTheme.icons.home
     }

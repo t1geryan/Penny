@@ -15,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.rememberNavController
 import io.github.t1geryan.navigation.TabsNavEntry
 import io.github.t1geryan.penny.ui.navigation.graph.TabsNavGraph
@@ -26,7 +27,7 @@ fun TabsComponent(
     modifier: Modifier = Modifier,
 ) {
     val tabsNavController = rememberNavController()
-    var currentState by remember { mutableStateOf(TabsNavEntry.INITIAL) }
+    var currentRoute by remember { mutableStateOf(TabsNavEntry.INITIAL.route) }
 
     Scaffold(
         modifier = modifier,
@@ -34,16 +35,15 @@ fun TabsComponent(
             NavigationBar {
                 TabsNavEntry.ORDERED_TABS.forEach {
                     NavigationBarItem(
-                        selected = it == currentState,
+                        selected = it.route == currentRoute,
                         onClick = {
-                            tabsNavController.navigate(it) {
-                                popUpTo(TabsNavEntry.INITIAL) {
+                            tabsNavController.navigate(it.route) {
+                                popUpTo(tabsNavController.graph.findStartDestination().id) {
                                     saveState = true
                                 }
                                 launchSingleTop = true
                                 restoreState = true
                             }
-                            currentState = it
                         },
                         icon = {
                             it.NavigationBarItemIcon()
@@ -67,7 +67,7 @@ fun TabsComponent(
 
     LaunchedEffect(tabsNavController) {
         tabsNavController.currentBackStackEntryFlow.collectLatest {
-            // FIXME: currentState = it.destination.
+            currentRoute = it.destination.route ?: TabsNavEntry.INITIAL.route
         }
     }
 }
