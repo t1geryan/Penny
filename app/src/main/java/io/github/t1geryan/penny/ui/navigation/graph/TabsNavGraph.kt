@@ -1,5 +1,9 @@
 package io.github.t1geryan.penny.ui.navigation.graph
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -32,6 +36,7 @@ private fun NavGraphBuilder.composeCategories() {
     composable(
         route = TabsNavEntry.CATEGORIES.route,
     ) {
+        Stub()
     }
 }
 
@@ -54,4 +59,13 @@ private fun NavGraphBuilder.composeStatistics() {
         route = TabsNavEntry.STATISTICS.route,
     ) {
     }
+}
+
+@Composable
+fun Stub() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.surface),
+    )
 }
