@@ -15,8 +15,8 @@ fun PennyTheme(
     content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        darkTheme -> darkScheme
+        else -> lightScheme
     }
 
     CompositionLocalProvider(
