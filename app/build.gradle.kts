@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.jetbrains.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.google.hilt)
 }
 
 android {
@@ -41,24 +43,38 @@ android {
 }
 
 dependencies {
+    // Modules
     implementation(project(":core:ui:theme"))
     implementation(project(":core:ui:navigation"))
     implementation(project(":domain"))
 
+    // Android Core
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
 
+    // Compose
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.material3)
 
+    // Navigation
     implementation(libs.androidx.navigation.compose)
+
+    // Kotlinx
+    implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.coroutines)
     implementation(libs.kotlinx.serialization.core)
 
+    // DI
+    implementation(libs.google.hilt.core)
+    ksp(libs.google.hilt.compiler)
+
+    // Preview Tooling
     implementation(libs.androidx.compose.ui.tooling.preview)
 
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

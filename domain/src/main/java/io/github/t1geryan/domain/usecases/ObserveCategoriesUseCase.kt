@@ -1,7 +1,7 @@
 package io.github.t1geryan.domain.usecases
 
 import io.github.t1geryan.domain.models.Category
-import io.github.t1geryan.domain.repositories.CategoriesRepository
+import io.github.t1geryan.domain.repositories.TransactionsRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
@@ -10,7 +10,7 @@ interface ObserveCategoriesUseCase {
 }
 
 class ObserveCategoriesUseCaseImpl @Inject constructor(
-    private val categoriesRepository: CategoriesRepository,
+    private val transactionsRepository: TransactionsRepository,
 ) : ObserveCategoriesUseCase {
-    override fun invoke(): Flow<List<Category>> = categoriesRepository.observeCategories()
+    override fun invoke(): Flow<List<Category>> = transactionsRepository.observeCategories()
 }

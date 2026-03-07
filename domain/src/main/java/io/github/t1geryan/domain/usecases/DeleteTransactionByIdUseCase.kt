@@ -13,6 +13,6 @@ class DeleteTransactionByIdUseCaseImpl @Inject constructor(
     private val transactionsRepository: TransactionsRepository,
 ) : DeleteTransactionByIdUseCase {
     override suspend fun invoke(id: TransactionId) = runCatching {
-        transactionsRepository.deleteTransaction(id)
+        transactionsRepository.deleteTransactionById(id)
     }
 }
