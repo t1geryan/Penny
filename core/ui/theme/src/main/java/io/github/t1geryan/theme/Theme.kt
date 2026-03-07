@@ -12,6 +12,7 @@ fun PennyTheme(
     spacing: Spacing = MaterialTheme.spacing,
     darkTheme: Boolean = isSystemInDarkTheme(),
     typography: Typography = PennyTypography,
+    cornerRadius: CornerRadius = CornerRadius(),
     content: @Composable () -> Unit,
 ) {
     val colorScheme = when {
@@ -22,6 +23,7 @@ fun PennyTheme(
     CompositionLocalProvider(
         LocalSpacing provides spacing,
         LocalIcons provides icons,
+        LocalCornerRadius provides cornerRadius,
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
