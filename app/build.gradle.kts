@@ -47,6 +47,7 @@ dependencies {
     implementation(project(":core:ui:theme"))
     implementation(project(":core:ui:navigation"))
     implementation(project(":domain"))
+    implementation(project(":core:mvi"))
 
     // Android Core
     implementation(libs.androidx.core.ktx)
