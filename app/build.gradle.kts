@@ -69,6 +69,7 @@ dependencies {
 
     // DI
     implementation(libs.google.hilt.core)
+    implementation(libs.google.hilt.compose.navigation)
     ksp(libs.google.hilt.compiler)
 
     // Preview Tooling

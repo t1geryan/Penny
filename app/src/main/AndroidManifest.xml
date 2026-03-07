@@ -4,7 +4,8 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Penny">
+        android:theme="@style/Theme.Penny"
+        android:name=".PennyApplication">
         <activity
             android:name=".MainActivity"
             android:exported="true"
