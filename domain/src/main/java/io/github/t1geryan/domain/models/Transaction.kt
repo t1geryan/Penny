@@ -6,6 +6,7 @@ typealias TransactionId = Int
 
 data class Transaction(
     val id: TransactionId = 0,
+    val name: String,
     val amount: Amount,
     val category: Category,
     val date: LocalDateTime,

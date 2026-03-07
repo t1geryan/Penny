@@ -9,5 +9,7 @@ typealias CategoryId = Int
 data class Category(
     val id: CategoryId = 0,
     val name: String,
+    val emoji: String,
     val color: Int,
+    val limit: Amount?,
 )
