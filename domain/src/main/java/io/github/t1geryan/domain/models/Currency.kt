@@ -5,6 +5,7 @@ enum class Currency(
     val symbol: String,
     val subUnitMultiplier: Float = 0.01f,
 ) {
+    US_DOLLAR("USD", "\u0024"),
     RUSSIAN_RUBLE("RUB", "\u20bd"),
     ;
 }
