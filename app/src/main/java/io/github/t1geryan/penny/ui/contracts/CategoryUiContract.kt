@@ -7,4 +7,4 @@ val Category.contentColor
     get() = Color(color)
 
 val Category.backgroundColor: Color
-    get() = Color(color).copy(alpha = 0.3f)
+    get() = Color(color).copy(alpha = 0.2f)

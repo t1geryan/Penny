@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -44,13 +45,13 @@ fun CategoryTag(
             .clip(RoundedCornerShape(percent = 50))
             .background(categoryBackgroundColor)
             .padding(
-                horizontal = MaterialTheme.spacing.small,
-                vertical = MaterialTheme.spacing.tiny,
+                horizontal = MaterialTheme.spacing.normal,
+                vertical = MaterialTheme.spacing.extraSmall,
             ),
     ) {
-        Row {
-            Text(categoryEmoji)
-            Text(categoryName, color = categoryColor)
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(categoryEmoji, fontSize = MaterialTheme.typography.labelSmall.fontSize)
+            Text(categoryName, color = categoryColor, style = MaterialTheme.typography.labelSmall)
         }
     }
 }
