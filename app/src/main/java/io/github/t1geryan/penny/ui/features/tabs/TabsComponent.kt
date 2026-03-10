@@ -1,7 +1,11 @@
 package io.github.t1geryan.penny.ui.features.tabs
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -33,6 +37,9 @@ fun TabsComponent(
     var currentRoute by remember { mutableStateOf(TabsNavEntry.INITIAL.route) }
 
     Scaffold(
+        contentWindowInsets = WindowInsets.systemBars.only(
+            WindowInsetsSides.Horizontal,
+        ),
         modifier = modifier,
         bottomBar = {
             NavigationBar(
