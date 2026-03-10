@@ -6,9 +6,11 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.t1geryan.icons.Add
+import io.github.t1geryan.icons.Calendar
 import io.github.t1geryan.icons.Category
 import io.github.t1geryan.icons.Delete
 import io.github.t1geryan.icons.Edit
+import io.github.t1geryan.icons.Filter
 import io.github.t1geryan.icons.Home
 import io.github.t1geryan.icons.Notifications
 import io.github.t1geryan.icons.Statistics
@@ -21,6 +23,8 @@ data class PennyIcons(
     val statistics: ImageVector = Statistics,
     val edit: ImageVector = Edit,
     val delete: ImageVector = Delete,
+    val calendar: ImageVector = Calendar,
+    val filter: ImageVector = Filter,
 )
 
 internal val LocalIcons = staticCompositionLocalOf { PennyIcons() }
