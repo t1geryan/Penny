@@ -1,6 +1,7 @@
 package io.github.t1geryan.penny.ui.contracts
 
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.format.DateTimeFormatBuilder
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.Padding
 import kotlinx.datetime.format.char
@@ -11,13 +12,19 @@ object OutputFormats {
 
     fun fullDate(monthNames: MonthNames) = LocalDate.Format {
         monthName(monthNames)
+        space()
         day(padding = Padding.NONE)
-        char(',')
+        chars(", ")
         year()
     }
 
     fun shortDate(monthNames: MonthNames) = LocalDate.Format {
         monthName(monthNames)
+        space()
         day(padding = Padding.NONE)
     }
+}
+
+private fun DateTimeFormatBuilder.space() {
+    char(' ')
 }
