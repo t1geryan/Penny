@@ -6,5 +6,5 @@ package io.github.t1geryan.mvi
  */
 interface InitialStateProvider<S> {
 
-    fun loading(): S
+    fun initial(): S
 }
