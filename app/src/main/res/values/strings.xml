@@ -15,6 +15,7 @@
         <item>Nov</item>
         <item>Dec</item>
     </string-array>
+    <string name="common_date_range">%1$s - %2$s</string>
 
     <string name="screen_tab_item_transactions_label">Home</string>
     <string name="screen_tab_item_categories_label">Categories</string>
