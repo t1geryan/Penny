@@ -139,7 +139,28 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
                     emoji = "🎮",
                     color = 0xFFBA68C8,
                     limit = null,
-                )
+                ),
+                Category(
+                    id = 4,
+                    name = "Healthcare",
+                    emoji = "🏥",
+                    color = 0xFFBAC4d4,
+                    limit = null,
+                ),
+                Category(
+                    id = 5,
+                    name = "Bills",
+                    emoji = "💡",
+                    color = 0xFFC4BA6A,
+                    limit = null,
+                ),
+                Category(
+                    id = 6,
+                    name = "Shopping",
+                    emoji = "🛍️",
+                    color = 0xFFCFA9CB,
+                    limit = null,
+                ),
             )
         }
 
