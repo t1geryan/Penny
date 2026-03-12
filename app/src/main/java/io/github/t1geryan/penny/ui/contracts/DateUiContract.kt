@@ -11,6 +11,7 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 
 fun LocalDateRange.format(context: Context): String {
+    if (start >= endInclusive) return endInclusive.format(context)
     val fromFormated = start.format(context = context)
     val toFormatted = endInclusive.format(context = context)
 
