@@ -1,5 +1,6 @@
 package io.github.t1geryan.penny.ui.views.picker
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -59,6 +60,7 @@ fun <T> ItemPicker(
             selectedItems.isNotEmpty()
         }
     }
+    val clearAllAlpha by animateFloatAsState(if (hasSelectedItems) 1.0f else 0.0f)
 
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,
@@ -81,7 +83,7 @@ fun <T> ItemPicker(
                     Text(title, style = MaterialTheme.typography.headlineSmall)
                     TextButton(
                         onClick = { selectedItems.clear() },
-                        modifier = Modifier.alpha(if (hasSelectedItems) 1f else 0f),
+                        modifier = Modifier.alpha(clearAllAlpha),
                     ) {
                         Icon(MaterialTheme.icons.close, contentDescription = null)
                         Text(stringResource(R.string.common_dialog_picker_clear_all))
