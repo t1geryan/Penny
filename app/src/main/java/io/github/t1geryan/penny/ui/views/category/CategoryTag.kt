@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.penny.ui.contracts.backgroundColor
 import io.github.t1geryan.penny.ui.contracts.contentColor
+import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.theme.spacing
 
 @Composable
@@ -51,6 +52,7 @@ fun CategoryTag(
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(categoryEmoji, fontSize = MaterialTheme.typography.labelSmall.fontSize)
+            Spacer(MaterialTheme.spacing.extraSmall)
             Text(categoryName, color = categoryColor, style = MaterialTheme.typography.labelSmall)
         }
     }
