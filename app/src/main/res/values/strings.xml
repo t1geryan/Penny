@@ -17,8 +17,17 @@
     </string-array>
     <string name="common_date_range">%1$s - %2$s</string>
 
+    <string name="common_dialog_button_ok">OK</string>
+    <string name="common_dialog_button_cancel">Cancel</string>
+
+    <string name="common_cd_back_button">Navigate Back</string>
+
     <string name="screen_tab_item_transactions_label">Home</string>
     <string name="screen_tab_item_categories_label">Categories</string>
     <string name="screen_tab_item_statistics_label">Stats</string>
     <string name="screen_tab_item_notifications_label">Alerts</string>
+
+    <string name="screen_transactions_title">Transactions</string>
+    <string name="screen_transaction_filter_by_category_title">Filter by Category</string>
+    <string name="screen_transaction_filter_by_date_title">Filter by Date</string>
 </resources>
