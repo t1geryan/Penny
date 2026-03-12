@@ -22,6 +22,7 @@
     <string name="common_dialog_button_confirm">Confirm</string>
     <string name="common_dialog_button_apply">Apply</string>
     <string name="common_dialog_button_cancel">Cancel</string>
+    <string name="common_dialog_button_delete">Delete</string>
     <string name="common_dialog_picker_clear_all">Clear all</string>
 
     <string name="common_cd_back_button">Navigate Back</string>
@@ -35,4 +36,6 @@
     <string name="screen_transaction_filter_by_category_title">Filter by Category</string>
     <string name="screen_transaction_filter_by_date_title">Filter by Date</string>
     <string name="screen_transaction_filter_by_date_clear_cd">Clear Date Filtration</string>
+    <string name="screen_transactions_delete_dialog_title">Delete Transaction?</string>
+    <string name="screen_transactions_delete_dialog_text">This action cannot be undone. This will permanently delete the transaction from your records.</string>
 </resources>

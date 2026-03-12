@@ -3,6 +3,8 @@ package io.github.t1geryan.penny.ui.features.transactions
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.t1geryan.domain.models.Category
+import io.github.t1geryan.domain.models.TransactionId
+import io.github.t1geryan.domain.usecases.DeleteTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ObserveCategoriesUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionsUseCase
 import io.github.t1geryan.penny.ui.base.BaseViewModel
@@ -15,6 +17,7 @@ import javax.inject.Inject
 class TransactionsViewModel @Inject constructor(
     private val observeTransactionsUseCase: ObserveTransactionsUseCase,
     private val observeCategoriesUseCase: ObserveCategoriesUseCase,
+    private val deleteTransactionByIdUseCase: DeleteTransactionByIdUseCase,
 ) : BaseViewModel<TransactionsIntent, TransactionsState>(TransactionsState.initial()) {
 
     init {
@@ -31,6 +34,16 @@ class TransactionsViewModel @Inject constructor(
         TransactionsIntent.DismissDialog -> invalidateDialog()
         TransactionsIntent.PickFiltrationCategories -> showCategoriesPicker()
         is TransactionsIntent.SetFiltrationCategories -> setFiltrationCategories(intent.categories)
+        is TransactionsIntent.ConfirmTransactionDelete -> deleteTransaction(intent.transactionId)
+        is TransactionsIntent.DeleteTransaction -> setDialog(
+            TransactionsDialogState.ConfirmTransactionDelete(intent.transactionId),
+        )
+    }
+
+    private fun deleteTransaction(transactionId: TransactionId) {
+        viewModelScope.launch {
+            deleteTransactionByIdUseCase(transactionId)
+        }
     }
 
     private fun setFiltrationCategories(categories: List<Category>) {

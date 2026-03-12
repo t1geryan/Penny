@@ -2,6 +2,7 @@ package io.github.t1geryan.penny.ui.features.transactions
 
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
+import io.github.t1geryan.domain.models.TransactionId
 import io.github.t1geryan.mvi.InitialStateProvider
 import kotlinx.datetime.LocalDateRange
 
@@ -40,6 +41,10 @@ sealed interface TransactionsDialogState {
     data class CategoryFilterPicker(
         val categories: List<Category>,
         val initialSelectedCategories: List<Category>,
+    ) : TransactionsDialogState
+
+    data class ConfirmTransactionDelete(
+        val transactionId: TransactionId,
     ) : TransactionsDialogState
 
     data object None : TransactionsDialogState

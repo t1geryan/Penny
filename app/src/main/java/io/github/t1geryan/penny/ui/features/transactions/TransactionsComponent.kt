@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -43,6 +44,7 @@ import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.contracts.format
 import io.github.t1geryan.penny.ui.views.category.CategoryIcon
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
+import io.github.t1geryan.penny.ui.views.dialog.ConfirmationDialog
 import io.github.t1geryan.penny.ui.views.picker.ItemPicker
 import io.github.t1geryan.penny.ui.views.picker.PennyDateRangePicker
 import io.github.t1geryan.penny.ui.views.spacing.Expanded
@@ -208,7 +210,9 @@ private fun TransactionsList(
             TransactionItem(
                 transaction,
                 onEditClicked = { },
-                onDeleteClicked = { },
+                onDeleteClicked = {
+                    onSendIntent(TransactionsIntent.DeleteTransaction(transaction.id))
+                },
                 modifier = Modifier
                     .fillMaxWidth(),
             )
@@ -268,5 +272,16 @@ private fun TransactionsDialog(
         }
 
         TransactionsDialogState.None -> {}
+        is TransactionsDialogState.ConfirmTransactionDelete -> ConfirmationDialog(
+            onDismissRequest = { onSendIntent(TransactionsIntent.DismissDialog) },
+            onConfirm = { onSendIntent(TransactionsIntent.ConfirmTransactionDelete(dialogState.transactionId)) },
+            title = stringResource(R.string.screen_transactions_delete_dialog_title),
+            description = stringResource(R.string.screen_transactions_delete_dialog_text),
+            confirmButtonTitle = stringResource(R.string.common_dialog_button_delete),
+            confirmButtonColors = ButtonDefaults.buttonColors(
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+            ),
+        )
     }
 }
