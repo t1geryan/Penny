@@ -1,11 +1,11 @@
 package io.github.t1geryan.penny.ui.navigation.graph
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -13,6 +13,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.t1geryan.navigation.TabsNavEntry
+import io.github.t1geryan.penny.ui.features.transactions.TransactionsComponent
+import io.github.t1geryan.penny.ui.features.transactions.TransactionsViewModel
 
 @Composable
 fun TabsNavGraph(
@@ -25,32 +27,24 @@ fun TabsNavGraph(
         startDestination = TabsNavEntry.INITIAL.route,
         modifier = modifier,
     ) {
-        composeCategories()
-        composeTransaction(rootNavController)
-        composeNotifications()
+        composeTransactions(rootNavController)
         composeStatistics()
+        composeCategories()
+        composeNotifications()
     }
 }
 
-private fun NavGraphBuilder.composeCategories() {
-    composable(
-        route = TabsNavEntry.CATEGORIES.route,
-    ) {
-        Stub()
-    }
-}
-
-private fun NavGraphBuilder.composeTransaction(rootNavController: NavController) {
+private fun NavGraphBuilder.composeTransactions(rootNavController: NavController) {
     composable(
         route = TabsNavEntry.TRANSACTIONS.route,
     ) {
-    }
-}
-
-private fun NavGraphBuilder.composeNotifications() {
-    composable(
-        route = TabsNavEntry.NOTIFICATIONS.route,
-    ) {
+        val viewModel = hiltViewModel<TransactionsViewModel>()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        TransactionsComponent(
+            state = state,
+            onSendIntent = viewModel::receiveIntent,
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 
@@ -61,11 +55,17 @@ private fun NavGraphBuilder.composeStatistics() {
     }
 }
 
-@Composable
-fun Stub() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
-    )
+private fun NavGraphBuilder.composeCategories() {
+    composable(
+        route = TabsNavEntry.CATEGORIES.route,
+    ) {
+
+    }
+}
+
+private fun NavGraphBuilder.composeNotifications() {
+    composable(
+        route = TabsNavEntry.NOTIFICATIONS.route,
+    ) {
+    }
 }
