@@ -2,8 +2,6 @@ package io.github.t1geryan.penny.ui.features.transactions
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
@@ -30,27 +28,23 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.contracts.format
-import io.github.t1geryan.penny.ui.views.category.CategoryIcon
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
 import io.github.t1geryan.penny.ui.views.dialog.ConfirmationDialog
-import io.github.t1geryan.penny.ui.views.picker.ItemPicker
+import io.github.t1geryan.penny.ui.views.picker.CategoriesPicker
 import io.github.t1geryan.penny.ui.views.picker.PennyDateRangePicker
 import io.github.t1geryan.penny.ui.views.spacing.Expanded
 import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.penny.ui.views.transactions.TransactionItem
-import io.github.t1geryan.theme.cornerRadius
 import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
 import kotlinx.datetime.LocalDateRange
@@ -233,37 +227,14 @@ private fun TransactionsDialog(
         )
 
         is TransactionsDialogState.CategoryFilterPicker -> BoxWithConstraints {
-            ItemPicker(
-                title = stringResource(R.string.screen_transaction_filter_by_category_title),
-                items = dialogState.categories,
-                initiallySelectedItems = dialogState.initialSelectedCategories,
-                enableWhenNoItemsSelected = true,
-                itemContent = { item, isSelected, onSelect ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(MaterialTheme.cornerRadius.large))
-                            .border(
-                                1.dp,
-                                color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
-                                shape = RoundedCornerShape(MaterialTheme.cornerRadius.large),
-                            )
-                            .clickable(
-                                onClick = {
-                                    onSelect()
-                                },
-                            )
-                            .padding(MaterialTheme.spacing.normal),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        CategoryIcon(item)
-                        Spacer(MaterialTheme.spacing.normal)
-                        Text(item.name, style = MaterialTheme.typography.titleMedium)
-                    }
+            CategoriesPicker(
+                categories = dialogState.categories,
+                initialSelectedCategories = dialogState.initialSelectedCategories,
+                onDismissRequest = {
+                    onSendIntent(TransactionsIntent.DismissDialog)
                 },
-                onDismissRequest = { onSendIntent(TransactionsIntent.DismissDialog) },
-                onItemsSelected = { items ->
-                    onSendIntent(TransactionsIntent.SetFiltrationCategories(items))
+                onCategoriesSelected = { categories ->
+                    onSendIntent(TransactionsIntent.SetFiltrationCategories(categories))
                 },
                 modifier = Modifier
                     .heightIn(max = this.maxHeight * 0.75f)
