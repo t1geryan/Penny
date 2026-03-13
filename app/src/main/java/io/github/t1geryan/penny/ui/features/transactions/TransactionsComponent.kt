@@ -103,7 +103,7 @@ fun TransactionsComponent(
         fabState.setFab(
             icon = fabIcon,
             contentDescription = context.getString(R.string.common_cd_add_transaction),
-            onClick = { /* TODO */ },
+            onClick = { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ },
         )
     }
     LifecycleResumeEffect(Unit) {
@@ -143,11 +143,11 @@ fun EmptyContent(
     val callback: () -> Unit = remember {
         when (emptyState) {
             TransactionsEmptyState.NO_TRANSACTIONS -> {
-                { /* TODO */ }
+                { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ }
             }
 
             TransactionsEmptyState.NO_TRANSACTIONS_THIS_PERIOD -> {
-                { /* TODO */ }
+                { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ }
             }
 
             TransactionsEmptyState.NO_TRANSACTIONS_THIS_FILTER -> {
@@ -318,7 +318,7 @@ private fun TransactionsList(
         ) { transaction ->
             TransactionItem(
                 transaction,
-                onEditClicked = { /* TODO */ },
+                onEditClicked = { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ },
                 onDeleteClicked = {
                     onSendIntent(TransactionsIntent.DeleteTransaction(transaction.id))
                 },
