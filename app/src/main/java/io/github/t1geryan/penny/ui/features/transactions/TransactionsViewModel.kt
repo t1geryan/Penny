@@ -38,6 +38,16 @@ class TransactionsViewModel @Inject constructor(
         is TransactionsIntent.DeleteTransaction -> setDialog(
             TransactionsDialogState.ConfirmTransactionDelete(intent.transactionId),
         )
+        TransactionsIntent.ClearAllFilters -> clearAllFilters()
+    }
+
+    private fun clearAllFilters() {
+        _state.update {
+            it.copy(
+                categoryFilter = emptyList(),
+                dataRangeFilter = null,
+            )
+        }
     }
 
     private fun deleteTransaction(transactionId: TransactionId) {

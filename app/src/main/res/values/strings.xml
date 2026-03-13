@@ -38,4 +38,13 @@
     <string name="screen_transaction_filter_by_date_clear_cd">Clear Date Filtration</string>
     <string name="screen_transactions_delete_dialog_title">Delete Transaction?</string>
     <string name="screen_transactions_delete_dialog_text">This action cannot be undone. This will permanently delete the transaction from your records.</string>
+    <string name="screen_transactions_empty_no_transactions_title">No expenses yet</string>
+    <string name="screen_transactions_empty_no_transactions_description">Start tracking your expenses by adding your first transaction.</string>
+    <string name="screen_transactions_empty_no_transactions_button">Add Expense</string>
+    <string name="screen_transactions_empty_filtered_title">No matching transactions</string>
+    <string name="screen_transactions_empty_filtered_description">No transactions found for the selected filters. Try adjusting your filters.</string>
+    <string name="screen_transactions_empty_filtered_button">Clear Filters</string>
+    <string name="screen_transactions_empty_in_period_title">No expenses this period</string>
+    <string name="screen_transactions_empty_in_period_description">You haven\'t added any transactions for this period yet. Start tracking your spending!</string>
+    <string name="screen_transactions_empty_in_period_button">Add Expense</string>
 </resources>

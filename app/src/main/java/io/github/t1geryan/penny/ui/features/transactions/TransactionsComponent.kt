@@ -1,6 +1,7 @@
 package io.github.t1geryan.penny.ui.features.transactions
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -12,19 +13,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -34,6 +40,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
 import io.github.t1geryan.penny.R
@@ -72,8 +80,8 @@ fun TransactionsComponent(
                     .padding(horizontal = MaterialTheme.spacing.normal),
             )
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            TransactionsList(
-                transactions = state.filteredTransactions,
+            Content(
+                state = state,
                 onSendIntent = onSendIntent,
                 modifier = Modifier.fillMaxSize(),
             )
@@ -81,6 +89,91 @@ fun TransactionsComponent(
     }
 
     TransactionsDialog(dialogState = state.dialogState, onSendIntent = onSendIntent)
+}
+
+@Composable
+private fun Content(
+    state: TransactionsState,
+    onSendIntent: (TransactionsIntent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when (val emptyState = state.emptyState) {
+        null -> TransactionsList(
+            transactions = state.filteredTransactions,
+            onSendIntent = onSendIntent,
+            modifier = modifier,
+        )
+
+        else -> EmptyContent(
+            emptyState = emptyState,
+            onSendIntent = onSendIntent,
+            modifier = modifier,
+        )
+    }
+}
+
+@Composable
+fun EmptyContent(
+    emptyState: TransactionsEmptyState,
+    onSendIntent: (TransactionsIntent) -> Unit,
+    modifier: Modifier,
+) {
+    val callback: () -> Unit = remember {
+        when (emptyState) {
+            TransactionsEmptyState.NO_TRANSACTIONS -> {
+                { /* TODO */ }
+            }
+
+            TransactionsEmptyState.NO_TRANSACTIONS_THIS_PERIOD -> {
+                { /* TODO */ }
+            }
+
+            TransactionsEmptyState.NO_TRANSACTIONS_THIS_FILTER -> {
+                { onSendIntent(TransactionsIntent.ClearAllFilters) }
+            }
+        }
+    }
+
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier,
+    ) {
+        Icon(
+            emptyState.icon,
+            contentDescription = null,
+            modifier = Modifier
+                .size(64.dp)
+                .background(MaterialTheme.colorScheme.primaryContainer, CircleShape)
+                .padding(MaterialTheme.spacing.normal),
+            tint = MaterialTheme.colorScheme.onPrimaryContainer,
+        )
+        Spacer(MaterialTheme.spacing.normal)
+        Text(emptyState.title, style = MaterialTheme.typography.titleLarge)
+        Spacer(MaterialTheme.spacing.medium)
+        Text(
+            emptyState.description,
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(0.75f),
+        )
+        Spacer(MaterialTheme.spacing.large)
+        when (emptyState.buttonStyle) {
+            TransactionsEmptyState.ButtonStyle.Filled -> Button(onClick = callback) {
+                Text(emptyState.buttonTitle)
+            }
+
+            TransactionsEmptyState.ButtonStyle.Outline -> OutlinedButton(
+                onClick = callback,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = MaterialTheme.colorScheme.primary,
+                ),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+            ) {
+                Text(emptyState.buttonTitle)
+            }
+        }
+    }
 }
 
 @Composable
@@ -203,7 +296,7 @@ private fun TransactionsList(
         ) { transaction ->
             TransactionItem(
                 transaction,
-                onEditClicked = { },
+                onEditClicked = { /* TODO */ },
                 onDeleteClicked = {
                     onSendIntent(TransactionsIntent.DeleteTransaction(transaction.id))
                 },

@@ -20,4 +20,6 @@ sealed interface TransactionsIntent : Intent {
     data class DeleteTransaction(val transactionId: TransactionId) : TransactionsIntent
 
     data class ConfirmTransactionDelete(val transactionId: TransactionId) : TransactionsIntent
+
+    data object ClearAllFilters : TransactionsIntent
 }
