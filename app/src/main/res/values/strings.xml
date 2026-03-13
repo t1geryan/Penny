@@ -26,6 +26,7 @@
     <string name="common_dialog_picker_clear_all">Clear all</string>
 
     <string name="common_cd_back_button">Navigate Back</string>
+    <string name="common_cd_add_transaction">Add Expense</string>
 
     <string name="screen_tab_item_transactions_label">Home</string>
     <string name="screen_tab_item_categories_label">Categories</string>

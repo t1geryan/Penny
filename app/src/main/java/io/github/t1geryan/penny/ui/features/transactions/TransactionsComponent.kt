@@ -1,5 +1,6 @@
 package io.github.t1geryan.penny.ui.features.transactions
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -29,6 +30,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -42,10 +44,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.contracts.format
+import io.github.t1geryan.penny.ui.utils.LocalFab
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
 import io.github.t1geryan.penny.ui.views.dialog.ConfirmationDialog
 import io.github.t1geryan.penny.ui.views.picker.CategoriesPicker
@@ -57,6 +61,7 @@ import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
 import kotlinx.datetime.LocalDateRange
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 fun TransactionsComponent(
     state: TransactionsState,
@@ -89,6 +94,23 @@ fun TransactionsComponent(
     }
 
     TransactionsDialog(dialogState = state.dialogState, onSendIntent = onSendIntent)
+
+    val fabState = LocalFab.current
+    val context = LocalContext.current
+    val fabIcon = MaterialTheme.icons.add
+
+    LaunchedEffect(Unit) {
+        fabState.setFab(
+            icon = fabIcon,
+            contentDescription = context.getString(R.string.common_cd_add_transaction),
+            onClick = { /* TODO */ },
+        )
+    }
+    LifecycleResumeEffect(Unit) {
+        onPauseOrDispose {
+            fabState.clearFab()
+        }
+    }
 }
 
 @Composable
