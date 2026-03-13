@@ -47,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
+import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.contracts.format
 import io.github.t1geryan.penny.ui.utils.LocalFab
@@ -57,7 +58,6 @@ import io.github.t1geryan.penny.ui.views.picker.PennyDateRangePicker
 import io.github.t1geryan.penny.ui.views.spacing.Expanded
 import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.penny.ui.views.transactions.TransactionItem
-import io.github.t1geryan.theme.Percent
 import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
 import kotlinx.datetime.LocalDateRange

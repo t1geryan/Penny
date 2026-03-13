@@ -13,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
+import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
-import io.github.t1geryan.theme.Percent
 
 @Composable
 fun ConfirmationDialog(

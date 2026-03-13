@@ -48,6 +48,7 @@ dependencies {
     implementation(project(":core:ui:navigation"))
     implementation(project(":domain"))
     implementation(project(":core:mvi"))
+    implementation(project(":core:models"))
 
     // Android Core
     implementation(libs.androidx.core.ktx)

@@ -1,4 +1,4 @@
-package io.github.t1geryan.theme
+package io.github.t1geryan.models
 
 data class Percent(private val rawValue: Float) {
 
