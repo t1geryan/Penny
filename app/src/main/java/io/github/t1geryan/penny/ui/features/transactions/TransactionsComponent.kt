@@ -57,6 +57,7 @@ import io.github.t1geryan.penny.ui.views.picker.PennyDateRangePicker
 import io.github.t1geryan.penny.ui.views.spacing.Expanded
 import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.penny.ui.views.transactions.TransactionItem
+import io.github.t1geryan.theme.Percent
 import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
 import kotlinx.datetime.LocalDateRange
@@ -177,7 +178,7 @@ fun EmptyContent(
             emptyState.description,
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center,
-            modifier = Modifier.fillMaxWidth(0.75f),
+            modifier = Modifier.fillMaxWidth(Percent.THREE_QUARTERS.fraction),
         )
         Spacer(MaterialTheme.spacing.large)
         when (emptyState.buttonStyle) {
@@ -226,7 +227,10 @@ private fun Header(
                     modifier = Modifier
                         .alpha(alpha)
                         .padding(end = MaterialTheme.spacing.small)
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(50))
+                        .background(
+                            MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(Percent.HALF.percents),
+                        )
                         .padding(
                             horizontal = MaterialTheme.spacing.normal,
                             vertical = MaterialTheme.spacing.tiny,

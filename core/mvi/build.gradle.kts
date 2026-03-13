@@ -14,3 +14,7 @@ kotlin {
 dependencies {
     implementation(libs.kotlinx.coroutines)
 }
+
+tasks.compileKotlin {
+    dependsOn(tasks.named("detekt"))
+}

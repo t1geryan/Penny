@@ -39,3 +39,7 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
 }
+
+tasks.preBuild {
+    dependsOn(tasks.named("detekt"))
+}

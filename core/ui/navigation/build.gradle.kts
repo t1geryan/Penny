@@ -15,3 +15,7 @@ kotlin {
 dependencies {
     implementation(libs.kotlinx.serialization.core)
 }
+
+tasks.compileKotlin {
+    dependsOn(tasks.named("detekt"))
+}

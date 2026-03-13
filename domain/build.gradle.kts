@@ -18,3 +18,7 @@ dependencies {
     implementation(libs.kotlinx.coroutines)
     implementation(libs.javax.inject)
 }
+
+tasks.compileKotlin {
+    dependsOn(tasks.named("detekt"))
+}

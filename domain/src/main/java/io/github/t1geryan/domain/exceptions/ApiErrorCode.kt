@@ -1,5 +1,6 @@
 package io.github.t1geryan.domain.exceptions
 
+@Suppress("MagicNumber")
 enum class ApiErrorCode(val httpCode: Int, val message: String) {
     BAD_REQUEST(400, "Bad Request"),
     UNAUTHORIZED(401, "Unauthorized"),

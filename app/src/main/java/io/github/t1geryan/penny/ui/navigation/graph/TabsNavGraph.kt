@@ -27,14 +27,14 @@ fun TabsNavGraph(
         startDestination = TabsNavEntry.INITIAL.route,
         modifier = modifier,
     ) {
-        composeTransactions(rootNavController)
+        composeTransactions()
         composeStatistics()
         composeCategories()
         composeNotifications()
     }
 }
 
-private fun NavGraphBuilder.composeTransactions(rootNavController: NavController) {
+private fun NavGraphBuilder.composeTransactions() {
     composable(
         route = TabsNavEntry.TRANSACTIONS.route,
     ) {

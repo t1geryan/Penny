@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import io.github.t1geryan.penny.R
+import io.github.t1geryan.theme.Percent
 
 @Composable
 fun ConfirmationDialog(
@@ -49,7 +50,7 @@ fun ConfirmationDialog(
                 },
                 colors = confirmButtonColors,
                 enabled = confirmButtonEnabled,
-                modifier = Modifier.fillMaxWidth(0.5f),
+                modifier = Modifier.fillMaxWidth(Percent.HALF.fraction),
             ) {
                 Text(confirmButtonTitle)
             }
