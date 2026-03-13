@@ -25,6 +25,10 @@ subprojects {
     tasks.withType<Detekt>().configureEach {
         reports {
             html.required.set(true)
+            txt.required.set(false)
+            sarif.required.set(false)
+            md.required.set(false)
+            xml.required.set(false)
         }
         jvmTarget = "1.8"
     }
