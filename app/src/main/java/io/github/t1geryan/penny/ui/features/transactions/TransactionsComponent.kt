@@ -318,7 +318,7 @@ private fun TransactionsList(
         ) { transaction ->
             TransactionItem(
                 transaction,
-                onEditClicked = { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ },
+                onClicked = { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ },
                 onDeleteClicked = {
                     onSendIntent(TransactionsIntent.DeleteTransaction(transaction.id))
                 },

@@ -2,6 +2,7 @@ package io.github.t1geryan.penny.ui.views.transactions
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -36,7 +37,7 @@ import kotlinx.datetime.LocalDateTime
 fun TransactionItem(
     transaction: Transaction,
     modifier: Modifier = Modifier,
-    onEditClicked: () -> Unit = {},
+    onClicked: () -> Unit = {},
     onDeleteClicked: () -> Unit = {},
 ) {
     TransactionItem(
@@ -45,7 +46,7 @@ fun TransactionItem(
         formattedDate = transaction.formatDate(LocalContext.current),
         category = transaction.category,
         modifier = modifier,
-        onEditClicked = onEditClicked,
+        onClicked = onClicked,
         onDeleteClicked = onDeleteClicked,
     )
 }
@@ -57,7 +58,7 @@ fun TransactionItem(
     formattedDate: String,
     category: Category,
     modifier: Modifier = Modifier,
-    onEditClicked: () -> Unit,
+    onClicked: () -> Unit,
     onDeleteClicked: () -> Unit,
 ) {
     Column(
@@ -69,6 +70,9 @@ fun TransactionItem(
                 RoundedCornerShape(MaterialTheme.cornerRadius.large),
             )
             .background(MaterialTheme.colorScheme.surfaceContainer)
+            .clickable {
+                onClicked()
+            }
             .padding(
                 horizontal = MaterialTheme.spacing.medium,
                 vertical = MaterialTheme.spacing.normal,
@@ -91,13 +95,6 @@ fun TransactionItem(
         ) {
             CategoryTag(category)
             Expanded()
-            IconButton(onClick = onEditClicked) {
-                Icon(
-                    MaterialTheme.icons.edit,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
-            }
             IconButton(onClick = onDeleteClicked) {
                 Icon(
                     MaterialTheme.icons.delete,

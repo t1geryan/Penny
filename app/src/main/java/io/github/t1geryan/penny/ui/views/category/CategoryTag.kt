@@ -45,10 +45,7 @@ fun CategoryTag(
         modifier = modifier
             .clip(RoundedCornerShape(percent = 50))
             .background(categoryBackgroundColor)
-            .padding(
-                horizontal = MaterialTheme.spacing.normal,
-                vertical = MaterialTheme.spacing.extraSmall,
-            ),
+            .padding(horizontal = MaterialTheme.spacing.normal),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(categoryEmoji, fontSize = MaterialTheme.typography.labelSmall.fontSize)
