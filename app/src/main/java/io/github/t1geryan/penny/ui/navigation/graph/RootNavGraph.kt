@@ -15,7 +15,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.t1geryan.navigation.NavArg
+import androidx.navigation.toRoute
 import io.github.t1geryan.navigation.RootNavEntry
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionComponent
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionViewModel
@@ -28,7 +28,7 @@ fun RootNavGraph(
 ) {
     NavHost(
         navController = rootNavController,
-        startDestination = RootNavEntry.INITIAL.route,
+        startDestination = RootNavEntry.INITIAL,
         modifier = modifier,
     ) {
         composeCreateOrUpdateCategory()
@@ -38,9 +38,7 @@ fun RootNavGraph(
 }
 
 private fun NavGraphBuilder.composeCreateOrUpdateCategory() {
-    composable(
-        route = RootNavEntry.CREATE_OR_UPDATE_CATEGORY.route,
-    ) {
+    composable<RootNavEntry.CreateOrUpdateCategory> {
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -50,14 +48,11 @@ private fun NavGraphBuilder.composeCreateOrUpdateCategory() {
 }
 
 private fun NavGraphBuilder.composeCreateOrUpdateTransaction() {
-    composable(
-        route = "${RootNavEntry.CREATE_OR_UPDATE_TRANSACTION.route}/{${NavArg.TRANSACTION_ID_ARG.pathName}}",
-    ) {
-        val transactionId =
-            it.arguments?.getString(NavArg.TRANSACTION_ID_ARG.pathName)?.toIntOrNull()
+    composable<RootNavEntry.CreateOrUpdateTransaction> {
+        val route = it.toRoute<RootNavEntry.CreateOrUpdateTransaction>()
         val viewModel =
             hiltViewModel<CreateOrUpdateTransactionViewModel, CreateOrUpdateTransactionViewModel.Factory> { factory ->
-                factory.create(transactionId)
+                factory.create(route.id)
             }
         val state by viewModel.state.collectAsStateWithLifecycle()
         CreateOrUpdateTransactionComponent(
@@ -70,9 +65,7 @@ private fun NavGraphBuilder.composeCreateOrUpdateTransaction() {
 }
 
 private fun NavGraphBuilder.composeTabs(navController: NavController) {
-    composable(
-        route = RootNavEntry.TABS.route,
-    ) {
+    composable<RootNavEntry.Tabs> {
         TabsComponent(navController, modifier = Modifier.fillMaxSize())
     }
 }
