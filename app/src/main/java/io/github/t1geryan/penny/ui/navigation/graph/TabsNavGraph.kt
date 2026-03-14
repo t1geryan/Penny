@@ -1,5 +1,7 @@
 package io.github.t1geryan.penny.ui.navigation.graph
 
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +27,12 @@ fun TabsNavGraph(
     NavHost(
         navController = tabsNavController,
         startDestination = TabsNavEntry.INITIAL.route,
+        enterTransition = {
+            fadeIn()
+        },
+        exitTransition = {
+            fadeOut()
+        },
         modifier = modifier,
     ) {
         composeTransactions()

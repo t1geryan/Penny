@@ -30,7 +30,6 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -99,15 +98,13 @@ fun TransactionsComponent(
     val fabState = LocalFab.current
     val context = LocalContext.current
     val fabIcon = MaterialTheme.icons.add
-
-    LaunchedEffect(Unit) {
+    LifecycleResumeEffect(Unit) {
         fabState.setFab(
             icon = fabIcon,
             contentDescription = context.getString(R.string.common_cd_add_transaction),
             onClick = { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ },
         )
-    }
-    LifecycleResumeEffect(Unit) {
+
         onPauseOrDispose {
             fabState.clearFab()
         }
