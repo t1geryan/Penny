@@ -2,6 +2,7 @@ package io.github.t1geryan.penny.ui.navigation.graph
 
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,7 +30,7 @@ fun TabsNavGraph(
 ) {
     NavHost(
         navController = tabsNavController,
-        startDestination = TabsNavEntry.INITIAL.route,
+        startDestination = TabsNavEntry.INITIAL,
         enterTransition = {
             fadeIn()
         },
@@ -46,9 +47,7 @@ fun TabsNavGraph(
 }
 
 private fun NavGraphBuilder.composeTransactions(rootNavController: NavController) {
-    composable(
-        route = TabsNavEntry.TRANSACTIONS.route,
-    ) {
+    composable<TabsNavEntry.Transactions> {
         val navDelegate = object : TransactionsNavDelegate {
             override fun navigateToCreateOrEdit(transactionId: TransactionId?) {
                 rootNavController.navigateFromTransactionsToCreateOrUpdateTransaction(transactionId)
@@ -67,23 +66,19 @@ private fun NavGraphBuilder.composeTransactions(rootNavController: NavController
 }
 
 private fun NavGraphBuilder.composeStatistics() {
-    composable(
-        route = TabsNavEntry.STATISTICS.route,
-    ) {
+    composable<TabsNavEntry.Statistics> {
+        Box(modifier = Modifier.fillMaxSize())
     }
 }
 
 private fun NavGraphBuilder.composeCategories() {
-    composable(
-        route = TabsNavEntry.CATEGORIES.route,
-    ) {
-
+    composable<TabsNavEntry.Categories> {
+        Box(modifier = Modifier.fillMaxSize())
     }
 }
 
 private fun NavGraphBuilder.composeNotifications() {
-    composable(
-        route = TabsNavEntry.NOTIFICATIONS.route,
-    ) {
+    composable<TabsNavEntry.Notifications> {
+        Box(modifier = Modifier.fillMaxSize())
     }
 }

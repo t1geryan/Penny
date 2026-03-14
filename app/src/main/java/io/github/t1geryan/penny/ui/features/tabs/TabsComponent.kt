@@ -16,21 +16,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
-import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import io.github.t1geryan.navigation.TabsNavEntry
+import io.github.t1geryan.penny.ui.navigation.actions.switchTab
 import io.github.t1geryan.penny.ui.navigation.graph.TabsNavGraph
 import io.github.t1geryan.penny.ui.utils.LocalFab
 import io.github.t1geryan.penny.ui.utils.rememberFabState
-import kotlinx.coroutines.flow.collectLatest
 
 @Composable
 fun TabsComponent(
@@ -38,7 +35,7 @@ fun TabsComponent(
     modifier: Modifier = Modifier,
 ) {
     val tabsNavController = rememberNavController()
-    var currentRoute by remember { mutableStateOf(TabsNavEntry.INITIAL.route) }
+    val currentRoute by tabsNavController.currentBackStackEntryAsState()
 
     val fabState = rememberFabState()
 
@@ -54,15 +51,9 @@ fun TabsComponent(
                 ) {
                     TabsNavEntry.ORDERED_TABS.forEach {
                         NavigationBarItem(
-                            selected = it.route == currentRoute,
+                            selected = currentRoute?.destination?.hasRoute(it::class) ?: false,
                             onClick = {
-                                tabsNavController.navigate(it.route) {
-                                    popUpTo(tabsNavController.graph.findStartDestination().id) {
-                                        saveState = true
-                                    }
-                                    launchSingleTop = true
-                                    restoreState = true
-                                }
+                                tabsNavController.switchTab(it)
                             },
                             icon = {
                                 it.NavigationBarItemIcon()
@@ -99,12 +90,6 @@ fun TabsComponent(
                     .fillMaxSize()
                     .padding(paddingValues),
             )
-        }
-    }
-
-    LaunchedEffect(tabsNavController) {
-        tabsNavController.currentBackStackEntryFlow.collectLatest {
-            currentRoute = it.destination.route ?: TabsNavEntry.INITIAL.route
         }
     }
 }
