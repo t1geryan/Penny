@@ -15,10 +15,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.t1geryan.domain.models.TransactionId
 import io.github.t1geryan.navigation.TabsNavEntry
 import io.github.t1geryan.penny.ui.features.transactions.TransactionsComponent
-import io.github.t1geryan.penny.ui.features.transactions.TransactionsNavDelegate
 import io.github.t1geryan.penny.ui.features.transactions.TransactionsViewModel
 import io.github.t1geryan.penny.ui.navigation.actions.navigateFromTransactionsToCreateOrUpdateTransaction
 
@@ -48,18 +46,14 @@ fun TabsNavGraph(
 
 private fun NavGraphBuilder.composeTransactions(rootNavController: NavController) {
     composable<TabsNavEntry.Transactions> {
-        val navDelegate = object : TransactionsNavDelegate {
-            override fun navigateToCreateOrEdit(transactionId: TransactionId?) {
-                rootNavController.navigateFromTransactionsToCreateOrUpdateTransaction(transactionId)
-            }
-        }
-        val viewModel = hiltViewModel<TransactionsViewModel, TransactionsViewModel.Factory> { factory ->
-            factory.provide(navDelegate)
-        }
+        val viewModel = hiltViewModel<TransactionsViewModel>()
         val state by viewModel.state.collectAsStateWithLifecycle()
         TransactionsComponent(
             state = state,
             onSendIntent = viewModel::receiveIntent,
+            onNavigateToCreateOrUpdateTransaction = { transactionId ->
+                rootNavController.navigateFromTransactionsToCreateOrUpdateTransaction(transactionId)
+            },
             modifier = Modifier.fillMaxSize(),
         )
     }

@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
+import io.github.t1geryan.domain.models.TransactionId
 import io.github.t1geryan.models.Alpha
 import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
@@ -67,6 +68,7 @@ import kotlinx.datetime.LocalDateRange
 fun TransactionsComponent(
     state: TransactionsState,
     onSendIntent: (TransactionsIntent) -> Unit,
+    onNavigateToCreateOrUpdateTransaction: (TransactionId?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ComponentWithTopBar(
@@ -89,6 +91,9 @@ fun TransactionsComponent(
             Content(
                 state = state,
                 onSendIntent = onSendIntent,
+                onCreateTransaction = {
+                    onNavigateToCreateOrUpdateTransaction(it)
+                },
                 modifier = Modifier.fillMaxSize(),
             )
         }
@@ -103,7 +108,7 @@ fun TransactionsComponent(
         fabState.setFab(
             icon = fabIcon,
             contentDescription = context.getString(R.string.common_cd_add_transaction),
-            onClick = { onSendIntent(TransactionsIntent.AddTransaction) },
+            onClick = { onNavigateToCreateOrUpdateTransaction(null) },
         )
 
         onPauseOrDispose {
@@ -116,18 +121,23 @@ fun TransactionsComponent(
 private fun Content(
     state: TransactionsState,
     onSendIntent: (TransactionsIntent) -> Unit,
+    onCreateTransaction: (TransactionId?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (val emptyState = state.emptyState) {
         null -> TransactionsList(
             transactions = state.filteredTransactions,
             onSendIntent = onSendIntent,
+            onCreateTransaction = { transactionId ->
+                onCreateTransaction(transactionId)
+            },
             modifier = modifier,
         )
 
         else -> EmptyContent(
             emptyState = emptyState,
-            onSendIntent = onSendIntent,
+            onClearFilters = { onSendIntent(TransactionsIntent.ClearAllFilters) },
+            onCreateTransaction = { onCreateTransaction(null) },
             modifier = modifier,
         )
     }
@@ -136,22 +146,15 @@ private fun Content(
 @Composable
 fun EmptyContent(
     emptyState: TransactionsEmptyState,
-    onSendIntent: (TransactionsIntent) -> Unit,
+    onClearFilters: () -> Unit,
+    onCreateTransaction: () -> Unit,
     modifier: Modifier,
 ) {
     val callback: () -> Unit = remember {
         when (emptyState) {
-            TransactionsEmptyState.NO_TRANSACTIONS -> {
-                { onSendIntent(TransactionsIntent.AddTransaction) }
-            }
-
-            TransactionsEmptyState.NO_TRANSACTIONS_THIS_PERIOD -> {
-                { onSendIntent(TransactionsIntent.AddTransaction) }
-            }
-
-            TransactionsEmptyState.NO_TRANSACTIONS_THIS_FILTER -> {
-                { onSendIntent(TransactionsIntent.ClearAllFilters) }
-            }
+            TransactionsEmptyState.NO_TRANSACTIONS -> onCreateTransaction
+            TransactionsEmptyState.NO_TRANSACTIONS_THIS_PERIOD -> onCreateTransaction
+            TransactionsEmptyState.NO_TRANSACTIONS_THIS_FILTER -> onClearFilters
         }
     }
 
@@ -301,6 +304,7 @@ private fun FiltrationRow(
 private fun TransactionsList(
     transactions: List<Transaction>,
     onSendIntent: (TransactionsIntent) -> Unit,
+    onCreateTransaction: (TransactionId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -323,7 +327,7 @@ private fun TransactionsList(
             TransactionItem(
                 transaction,
                 onClicked = {
-                    onSendIntent(TransactionsIntent.EditTransaction(transaction.id))
+                    onCreateTransaction(transaction.id)
                 },
                 onDeleteClicked = {
                     onSendIntent(TransactionsIntent.DeleteTransaction(transaction.id))

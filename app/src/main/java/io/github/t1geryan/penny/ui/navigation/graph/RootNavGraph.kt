@@ -18,7 +18,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import io.github.t1geryan.navigation.RootNavEntry
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionComponent
-import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionNavDelegate
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionViewModel
 import io.github.t1geryan.penny.ui.features.tabs.TabsComponent
 
@@ -51,19 +50,15 @@ private fun NavGraphBuilder.composeCreateOrUpdateCategory() {
 private fun NavGraphBuilder.composeCreateOrUpdateTransaction(navController: NavController) {
     composable<RootNavEntry.CreateOrUpdateTransaction> {
         val route = it.toRoute<RootNavEntry.CreateOrUpdateTransaction>()
-        val navDelegate = object : CreateOrUpdateTransactionNavDelegate {
-            override fun navigateUp() {
-                navController.navigateUp()
-            }
-        }
         val viewModel =
             hiltViewModel<CreateOrUpdateTransactionViewModel, CreateOrUpdateTransactionViewModel.Factory> { factory ->
-                factory.create(route.id, navDelegate)
+                factory.create(route.id)
             }
         val state by viewModel.state.collectAsStateWithLifecycle()
         CreateOrUpdateTransactionComponent(
             state = state,
             onSendIntent = viewModel::receiveIntent,
+            onNavigateUp = navController::navigateUp,
             modifier = Modifier
                 .fillMaxSize(),
         )

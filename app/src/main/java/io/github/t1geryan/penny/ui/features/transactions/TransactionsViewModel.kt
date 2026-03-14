@@ -1,9 +1,6 @@
 package io.github.t1geryan.penny.ui.features.transactions
 
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.TransactionId
@@ -14,10 +11,10 @@ import io.github.t1geryan.penny.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateRange
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = TransactionsViewModel.Factory::class)
-class TransactionsViewModel @AssistedInject constructor(
-    @Assisted private val navDelegate: TransactionsNavDelegate,
+@HiltViewModel
+class TransactionsViewModel @Inject constructor(
     private val observeTransactionsUseCase: ObserveTransactionsUseCase,
     private val observeCategoriesUseCase: ObserveCategoriesUseCase,
     private val deleteTransactionByIdUseCase: DeleteTransactionByIdUseCase,
@@ -42,8 +39,6 @@ class TransactionsViewModel @AssistedInject constructor(
             TransactionsDialogState.ConfirmTransactionDelete(intent.transactionId),
         )
         TransactionsIntent.ClearAllFilters -> clearAllFilters()
-        TransactionsIntent.AddTransaction -> navDelegate.navigateToCreateOrEdit(null)
-        is TransactionsIntent.EditTransaction -> navDelegate.navigateToCreateOrEdit(intent.id)
     }
 
     private fun clearAllFilters() {
@@ -89,10 +84,5 @@ class TransactionsViewModel @AssistedInject constructor(
 
     private fun setDialog(dialogState: TransactionsDialogState) {
         _state.update { it.copy(dialogState = dialogState) }
-    }
-
-    @AssistedFactory
-    interface Factory {
-        fun provide(navDelegate: TransactionsNavDelegate): TransactionsViewModel
     }
 }

@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 @HiltViewModel(assistedFactory = CreateOrUpdateTransactionViewModel.Factory::class)
 class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
     @Assisted private val transactionId: TransactionId?,
-    @Assisted private val navDelegate: CreateOrUpdateTransactionNavDelegate,
     observeTransactionByIdUseCase: ObserveTransactionByIdUseCase,
 ) : BaseViewModel<CreateOrUpdateTransactionIntent, CreateOrUpdateTransactionState>(
     CreateOrUpdateTransactionState.initial(),
@@ -36,7 +35,6 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
 
     override fun receiveIntent(intent: CreateOrUpdateTransactionIntent) = when (intent) {
         is CreateOrUpdateTransactionIntent.SetName -> TODO()
-        CreateOrUpdateTransactionIntent.NavigateUp -> navDelegate.navigateUp()
     }
 
     private fun setLoading(isLoading: Boolean) {
@@ -59,7 +57,6 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
     interface Factory {
         fun create(
             transactionId: TransactionId?,
-            navDelegate: CreateOrUpdateTransactionNavDelegate,
         ): CreateOrUpdateTransactionViewModel
     }
 }
