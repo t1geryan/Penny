@@ -304,8 +304,10 @@ private fun TransactionsList(
 ) {
     LazyColumn(
         contentPadding = PaddingValues(
-            horizontal = MaterialTheme.spacing.medium,
-            vertical = MaterialTheme.spacing.medium,
+            start = MaterialTheme.spacing.medium,
+            end = MaterialTheme.spacing.medium,
+            top = MaterialTheme.spacing.medium,
+            bottom = MaterialTheme.spacing.giant,
         ),
         verticalArrangement = Arrangement.spacedBy(
             MaterialTheme.spacing.medium,

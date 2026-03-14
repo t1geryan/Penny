@@ -18,6 +18,7 @@ data class Spacing(
     val extraLarge: Dp = 32.dp,
     val huge: Dp = 40.dp,
     val massive: Dp = 56.dp,
+    val giant: Dp = 64.dp,
 )
 
 internal val LocalSpacing = staticCompositionLocalOf { Spacing() }
