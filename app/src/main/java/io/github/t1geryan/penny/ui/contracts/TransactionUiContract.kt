@@ -7,6 +7,8 @@ import io.github.t1geryan.domain.models.Transaction
 fun Transaction.formatDate(context: Context): String = date.format(context)
 
 fun Amount.format(): String {
-    val formattedValue = OutputFormats.cost().format(valueInCurrency)
+    val formattedValue = formatNoCurrency()
     return "${currency.symbol}$formattedValue"
 }
+
+fun Amount.formatNoCurrency(): String = OutputFormats.cost().format(valueInCurrency)
