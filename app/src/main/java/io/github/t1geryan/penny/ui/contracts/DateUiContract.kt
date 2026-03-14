@@ -6,7 +6,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateRange
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
-import kotlinx.datetime.format
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 
@@ -23,8 +22,8 @@ fun LocalDateTime.format(context: Context): String = date.format(context)
 fun LocalDate.format(context: Context): String {
     val currentYear = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).year
     return if (year == currentYear) {
-        format(OutputFormats.shortDate(context.monthNames))
+        OutputFormats.shortDate(context.monthNames).format(this)
     } else {
-        format(OutputFormats.fullDate(context.monthNames))
+        OutputFormats.fullDate(context.monthNames).format(this)
     }
 }
