@@ -1,5 +1,8 @@
 package io.github.t1geryan.models
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class Percent(private val rawValue: Float) {
 
     val percents: Float

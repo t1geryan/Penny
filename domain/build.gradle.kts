@@ -17,6 +17,8 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.coroutines)
     implementation(libs.javax.inject)
+
+    implementation(libs.androidx.compose.runtime.annotation)
 }
 
 tasks.compileKotlin {

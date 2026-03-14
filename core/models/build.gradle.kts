@@ -12,6 +12,10 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.jvm)
 }
 
+dependencies {
+    implementation(libs.androidx.compose.runtime.annotation)
+}
+
 tasks.compileKotlin {
     dependsOn(tasks.named("detekt"))
 }
