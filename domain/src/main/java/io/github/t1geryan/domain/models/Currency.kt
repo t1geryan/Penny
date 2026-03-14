@@ -18,5 +18,5 @@ enum class Currency(
             US_DOLLAR -> listOf(10, 20, 50, 100)
 
             RUSSIAN_RUBLE -> listOf(100, 500, 1000, 5000)
-        }.map { Amount(it, currency = this) }
+        }.map { Amount((it / subUnitMultiplier).toInt(), currency = this) }
 }
