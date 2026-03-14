@@ -14,9 +14,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import io.github.t1geryan.domain.models.TransactionId
 import io.github.t1geryan.navigation.TabsNavEntry
 import io.github.t1geryan.penny.ui.features.transactions.TransactionsComponent
+import io.github.t1geryan.penny.ui.features.transactions.TransactionsNavDelegate
 import io.github.t1geryan.penny.ui.features.transactions.TransactionsViewModel
+import io.github.t1geryan.penny.ui.navigation.actions.navigateFromTransactionsToCreateOrUpdateTransaction
 
 @Composable
 fun TabsNavGraph(
@@ -35,18 +38,25 @@ fun TabsNavGraph(
         },
         modifier = modifier,
     ) {
-        composeTransactions()
+        composeTransactions(rootNavController)
         composeStatistics()
         composeCategories()
         composeNotifications()
     }
 }
 
-private fun NavGraphBuilder.composeTransactions() {
+private fun NavGraphBuilder.composeTransactions(rootNavController: NavController) {
     composable(
         route = TabsNavEntry.TRANSACTIONS.route,
     ) {
-        val viewModel = hiltViewModel<TransactionsViewModel>()
+        val navDelegate = object : TransactionsNavDelegate {
+            override fun navigateToCreateOrEdit(transactionId: TransactionId?) {
+                rootNavController.navigateFromTransactionsToCreateOrUpdateTransaction(transactionId)
+            }
+        }
+        val viewModel = hiltViewModel<TransactionsViewModel, TransactionsViewModel.Factory> { factory ->
+            factory.provide(navDelegate)
+        }
         val state by viewModel.state.collectAsStateWithLifecycle()
         TransactionsComponent(
             state = state,

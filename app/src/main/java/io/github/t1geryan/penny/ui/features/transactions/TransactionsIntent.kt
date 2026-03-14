@@ -7,6 +7,10 @@ import kotlinx.datetime.LocalDateRange
 
 sealed interface TransactionsIntent : Intent {
 
+    data object AddTransaction : TransactionsIntent
+
+    data class EditTransaction(val id: TransactionId) : TransactionsIntent
+
     data object PickFiltrationRange : TransactionsIntent
 
     data class SetFiltrationRange(val range: LocalDateRange?) : TransactionsIntent

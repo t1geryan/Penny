@@ -102,7 +102,7 @@ fun TransactionsComponent(
         fabState.setFab(
             icon = fabIcon,
             contentDescription = context.getString(R.string.common_cd_add_transaction),
-            onClick = { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ },
+            onClick = { onSendIntent(TransactionsIntent.AddTransaction) },
         )
 
         onPauseOrDispose {
@@ -141,11 +141,11 @@ fun EmptyContent(
     val callback: () -> Unit = remember {
         when (emptyState) {
             TransactionsEmptyState.NO_TRANSACTIONS -> {
-                { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ }
+                { onSendIntent(TransactionsIntent.AddTransaction) }
             }
 
             TransactionsEmptyState.NO_TRANSACTIONS_THIS_PERIOD -> {
-                { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ }
+                { onSendIntent(TransactionsIntent.AddTransaction) }
             }
 
             TransactionsEmptyState.NO_TRANSACTIONS_THIS_FILTER -> {
@@ -321,7 +321,9 @@ private fun TransactionsList(
         ) { transaction ->
             TransactionItem(
                 transaction,
-                onClicked = { /* TODO: PNYM-9 Navigate to CreateOrEditScreen */ },
+                onClicked = {
+                    onSendIntent(TransactionsIntent.EditTransaction(transaction.id))
+                },
                 onDeleteClicked = {
                     onSendIntent(TransactionsIntent.DeleteTransaction(transaction.id))
                 },
