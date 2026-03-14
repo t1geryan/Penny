@@ -18,6 +18,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import io.github.t1geryan.navigation.RootNavEntry
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionComponent
+import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionNavDelegate
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionViewModel
 import io.github.t1geryan.penny.ui.features.tabs.TabsComponent
 
@@ -32,7 +33,7 @@ fun RootNavGraph(
         modifier = modifier,
     ) {
         composeCreateOrUpdateCategory()
-        composeCreateOrUpdateTransaction()
+        composeCreateOrUpdateTransaction(rootNavController)
         composeTabs(rootNavController)
     }
 }
@@ -47,12 +48,17 @@ private fun NavGraphBuilder.composeCreateOrUpdateCategory() {
     }
 }
 
-private fun NavGraphBuilder.composeCreateOrUpdateTransaction() {
+private fun NavGraphBuilder.composeCreateOrUpdateTransaction(navController: NavController) {
     composable<RootNavEntry.CreateOrUpdateTransaction> {
         val route = it.toRoute<RootNavEntry.CreateOrUpdateTransaction>()
+        val navDelegate = object : CreateOrUpdateTransactionNavDelegate {
+            override fun navigateUp() {
+                navController.navigateUp()
+            }
+        }
         val viewModel =
             hiltViewModel<CreateOrUpdateTransactionViewModel, CreateOrUpdateTransactionViewModel.Factory> { factory ->
-                factory.create(route.id)
+                factory.create(route.id, navDelegate)
             }
         val state by viewModel.state.collectAsStateWithLifecycle()
         CreateOrUpdateTransactionComponent(

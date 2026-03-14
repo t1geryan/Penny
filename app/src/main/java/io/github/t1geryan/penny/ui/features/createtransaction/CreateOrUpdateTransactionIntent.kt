@@ -4,5 +4,7 @@ import io.github.t1geryan.mvi.Intent
 
 sealed interface CreateOrUpdateTransactionIntent : Intent {
 
+    data object NavigateUp : CreateOrUpdateTransactionIntent
+
     data class SetName(val name: String) : CreateOrUpdateTransactionIntent
 }
