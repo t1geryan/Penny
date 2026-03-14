@@ -17,6 +17,9 @@ data class Percent(private val rawValue: Float) {
     override fun toString(): String = formatted
 
     companion object {
+        val MIN = Percent(0f)
+        val MAX = Percent(100f)
+
         private const val FRACTION_MULTIPLIER = 100
 
         val NONE = Percent(0f)

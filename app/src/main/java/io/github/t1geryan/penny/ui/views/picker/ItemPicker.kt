@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
+import io.github.t1geryan.models.Alpha
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.theme.cornerRadius
@@ -60,7 +61,7 @@ fun <T> ItemPicker(
             selectedItems.isNotEmpty()
         }
     }
-    val clearAllAlpha by animateFloatAsState(if (hasSelectedItems) 1.0f else 0.0f)
+    val clearAllAlpha by animateFloatAsState(if (hasSelectedItems) Alpha.OPAQUE.value else Alpha.TRANSPARENT.value)
 
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,

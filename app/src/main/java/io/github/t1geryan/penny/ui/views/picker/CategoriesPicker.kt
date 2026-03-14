@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import io.github.t1geryan.domain.models.Category
+import io.github.t1geryan.models.Alpha
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.views.category.CategoryIcon
 import io.github.t1geryan.penny.ui.views.spacing.Expanded
@@ -68,7 +69,7 @@ fun CategoriesPicker(
                 Spacer(MaterialTheme.spacing.normal)
                 Text(item.name, style = MaterialTheme.typography.titleMedium)
                 Expanded()
-                val alpha by animateFloatAsState(if (isSelected) 1.0f else 0.0f)
+                val alpha by animateFloatAsState(if (isSelected) Alpha.OPAQUE.value else Alpha.TRANSPARENT.value)
                 Icon(
                     MaterialTheme.icons.check,
                     contentDescription = null,

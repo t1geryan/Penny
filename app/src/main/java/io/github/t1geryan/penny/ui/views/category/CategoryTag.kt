@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.t1geryan.domain.models.Category
+import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.ui.contracts.backgroundColor
 import io.github.t1geryan.penny.ui.contracts.contentColor
 import io.github.t1geryan.penny.ui.views.spacing.Spacer
@@ -43,7 +44,7 @@ fun CategoryTag(
 ) {
     Box(
         modifier = modifier
-            .clip(RoundedCornerShape(percent = 50))
+            .clip(RoundedCornerShape(percent = Percent.HALF.percents.toInt()))
             .background(categoryBackgroundColor)
             .padding(horizontal = MaterialTheme.spacing.normal),
     ) {

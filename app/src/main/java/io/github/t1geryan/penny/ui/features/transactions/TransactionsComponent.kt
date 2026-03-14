@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
+import io.github.t1geryan.models.Alpha
 import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.contracts.format
@@ -216,7 +217,7 @@ private fun Header(
             onClick = { onSendIntent(TransactionsIntent.PickFiltrationCategories) },
             modifier = Modifier.fillMaxWidth(),
             endContent = {
-                val alpha by animateFloatAsState(if (isFilteredByCategories) 1.0f else 0.0f)
+                val alpha by animateFloatAsState(if (isFilteredByCategories) Alpha.OPAQUE.value else Alpha.TRANSPARENT.value)
                 Text(
                     categoryFilter.size.toString(),
                     style = MaterialTheme.typography.bodySmall,
@@ -247,7 +248,7 @@ private fun Header(
             onClick = { onSendIntent(TransactionsIntent.PickFiltrationRange) },
             modifier = Modifier.fillMaxWidth(),
             endContent = {
-                val alpha by animateFloatAsState(if (isFilteredByData) 1.0f else 0.0f)
+                val alpha by animateFloatAsState(if (isFilteredByData) Alpha.OPAQUE.value else Alpha.TRANSPARENT.value)
                 IconButton(
                     onClick = { onSendIntent(TransactionsIntent.SetFiltrationRange(null)) },
                     modifier = Modifier.alpha(alpha),
@@ -343,7 +344,7 @@ private fun TransactionsDialog(
         TransactionsDialogState.DateRangeFilterPicker -> PennyDateRangePicker(
             onDismissRequest = { onSendIntent(TransactionsIntent.DismissDialog) },
             onRangeSelected = { onSendIntent(TransactionsIntent.SetFiltrationRange(it)) },
-            modifier = Modifier.fillMaxHeight(fraction = 0.5f),
+            modifier = Modifier.fillMaxHeight(fraction = Percent.HALF.fraction),
         )
 
         is TransactionsDialogState.CategoryFilterPicker -> BoxWithConstraints {
@@ -357,7 +358,7 @@ private fun TransactionsDialog(
                     onSendIntent(TransactionsIntent.SetFiltrationCategories(categories))
                 },
                 modifier = Modifier
-                    .heightIn(max = this.maxHeight * 0.75f)
+                    .heightIn(max = this.maxHeight * Percent.THREE_QUARTERS.fraction)
                     .width(this.maxWidth - MaterialTheme.spacing.medium * 2),
             )
         }
