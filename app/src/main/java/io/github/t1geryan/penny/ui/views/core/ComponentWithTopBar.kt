@@ -14,6 +14,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.theme.icons
@@ -56,6 +57,7 @@ fun DefaultBackButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     interactionSource: MutableInteractionSource? = null,
+    tint: Color = MaterialTheme.colorScheme.onPrimaryContainer,
 ) {
     IconButton(
         onClick = onClick,
@@ -66,6 +68,7 @@ fun DefaultBackButton(
         Icon(
             MaterialTheme.icons.arrowBack,
             contentDescription = stringResource(R.string.common_cd_back_button),
+            tint = tint,
         )
     }
 }
