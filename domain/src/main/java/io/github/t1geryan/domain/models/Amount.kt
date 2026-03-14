@@ -11,6 +11,11 @@ data class Amount(
     val currency: Currency,
 ) {
 
+    constructor(
+        value: Float,
+        currency: Currency,
+    ) : this((value / currency.subUnitMultiplier).toInt(), currency)
+
     val valueInCurrency: Float
         get() = value * currency.subUnitMultiplier
 }

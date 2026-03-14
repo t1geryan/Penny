@@ -20,41 +20,37 @@ import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCaseImpl
 import io.github.t1geryan.domain.usecases.ObserveTransactionsUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionsUseCaseImpl
-import javax.inject.Singleton
+import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
+import io.github.t1geryan.domain.usecases.ValidateAmountUseCaseImpl
 
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class UseCasesModule {
 
     @Binds
-    @Singleton
     abstract fun bindCreateOrUpdateCategoryUseCase(impl: CreateOrUpdateCategoryUseCaseImpl): CreateOrUpdateCategoryUseCase
 
     @Binds
-    @Singleton
     abstract fun bindCreateOrUpdateTransactionUseCase(impl: CreateOrUpdateTransactionUseCaseImpl): CreateOrUpdateTransactionUseCase
 
     @Binds
-    @Singleton
     abstract fun bindDeleteCategoryByIdUseCase(impl: DeleteCategoryByIdUseCaseImpl): DeleteCategoryByIdUseCase
 
     @Binds
-    @Singleton
     abstract fun bindDeleteTransactionByIdUseCase(impl: DeleteTransactionByIdUseCaseImpl): DeleteTransactionByIdUseCase
 
     @Binds
-    @Singleton
     abstract fun bindObserveCategoriesUseCase(impl: ObserveCategoriesUseCaseImpl): ObserveCategoriesUseCase
 
     @Binds
-    @Singleton
     abstract fun bindObserveCategoryByIdUseCase(impl: ObserveCategoryByIdUseCaseImpl): ObserveCategoryByIdUseCase
 
     @Binds
-    @Singleton
     abstract fun binObserveTransactionsUseCase(impl: ObserveTransactionsUseCaseImpl): ObserveTransactionsUseCase
 
     @Binds
-    @Singleton
     abstract fun bindObserveTransactionByIdUseCase(impl: ObserveTransactionByIdUseCaseImpl): ObserveTransactionByIdUseCase
+
+    @Binds
+    abstract fun bindValidateAmountUseCase(impl: ValidateAmountUseCaseImpl): ValidateAmountUseCase
 }
