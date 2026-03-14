@@ -48,4 +48,12 @@
     <string name="screen_transactions_empty_in_period_title">No expenses this period</string>
     <string name="screen_transactions_empty_in_period_description">You haven\'t added any transactions for this period yet. Start tracking your spending!</string>
     <string name="screen_transactions_empty_in_period_button">Add Expense</string>
+
+    <string name="screen_create_or_update_transaction_create_title">Create Expense</string>
+    <string name="screen_create_or_update_transaction_update_title">Edit Expense</string>
+    <string name="screen_create_or_update_transaction_fill_amount_title">Amount</string>
+    <string name="screen_create_or_update_transaction_fill_name_title">Title</string>
+    <string name="screen_create_or_update_transaction_fill_name_hint">e.g. Grocery Shopping</string>
+    <string name="screen_create_or_update_transaction_fill_category_title">Category</string>
+    <string name="screen_create_or_update_transaction_fill_date_title">Date</string>
 </resources>

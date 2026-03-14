@@ -12,8 +12,10 @@ import io.github.t1geryan.icons.Category
 import io.github.t1geryan.icons.Check
 import io.github.t1geryan.icons.Close
 import io.github.t1geryan.icons.Delete
+import io.github.t1geryan.icons.Description
 import io.github.t1geryan.icons.Filter
 import io.github.t1geryan.icons.Home
+import io.github.t1geryan.icons.Label
 import io.github.t1geryan.icons.Notifications
 import io.github.t1geryan.icons.Statistics
 
@@ -23,6 +25,8 @@ data class PennyIcons(
     val check: ImageVector = Check,
     val home: ImageVector = Home,
     val category: ImageVector = Category,
+    val label: ImageVector = Label,
+    val description: ImageVector = Description,
     val notifications: ImageVector = Notifications,
     val statistics: ImageVector = Statistics,
     val delete: ImageVector = Delete,
