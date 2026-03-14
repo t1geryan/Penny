@@ -1,5 +1,6 @@
 package io.github.t1geryan.penny.ui.features.createtransaction
 
+import androidx.compose.runtime.Immutable
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.mvi.InitialStateProvider
@@ -8,6 +9,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
 
+@Immutable
 data class CreateOrUpdateTransactionState(
     val enteredName: String?,
     val enteredAmount: String,

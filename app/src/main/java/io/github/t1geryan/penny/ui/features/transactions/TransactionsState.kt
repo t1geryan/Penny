@@ -2,6 +2,7 @@ package io.github.t1geryan.penny.ui.features.transactions
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -13,6 +14,7 @@ import io.github.t1geryan.penny.R
 import io.github.t1geryan.theme.icons
 import kotlinx.datetime.LocalDateRange
 
+@Immutable
 data class TransactionsState(
     val transactions: List<Transaction>,
     val dataRangeFilter: LocalDateRange?,

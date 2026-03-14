@@ -2,6 +2,7 @@ package io.github.t1geryan.penny.ui.utils
 
 import androidx.compose.material3.FabPosition
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +24,7 @@ fun rememberFabState(
 
 val LocalFab = compositionLocalOf { FabState() }
 
+@Stable
 class FabState {
     var icon: ImageVector? by mutableStateOf(FabTokens.DEFAULT_ICON)
         private set
