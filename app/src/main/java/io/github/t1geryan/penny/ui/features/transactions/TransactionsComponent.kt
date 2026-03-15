@@ -353,6 +353,7 @@ private fun TransactionsDialog(
 
         is TransactionsDialogState.CategoryFilterPicker -> BoxWithConstraints {
             CategoriesPicker(
+                title = stringResource(R.string.screen_transaction_filter_by_category_title),
                 categories = dialogState.categories,
                 initialSelectedCategories = dialogState.initialSelectedCategories,
                 onDismissRequest = {

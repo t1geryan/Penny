@@ -35,7 +35,20 @@ import io.github.t1geryan.theme.cornerRadius
 import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
 
-typealias ItemContentBlock<T> = @Composable (item: T, isSelected: Boolean, onSelect: () -> Unit) -> Unit
+enum class PickerItemState {
+    SELECTED,
+    DISABLED,
+    DEFAULT,
+    ;
+
+    val isSelected: Boolean
+        get() = this == SELECTED
+
+    val isDisabled: Boolean
+        get() = this == DISABLED
+}
+
+typealias ItemContentBlock<T> = @Composable (item: T, state: PickerItemState, onSelect: () -> Unit) -> Unit
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +64,8 @@ fun <T> ItemPicker(
     confirmButtonTitle: String = stringResource(R.string.common_dialog_button_apply),
     dismissButtonTitle: String = stringResource(R.string.common_dialog_button_cancel),
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
-    enableWhenNoItemsSelected: Boolean = false,
+    maxSelectableItems: UInt = UInt.MAX_VALUE,
+    minSelectableItems: UInt = 0U,
 ) {
     val selectedItems = remember {
         SnapshotStateList<T>().also { it.addAll(initiallySelectedItems) }
@@ -61,7 +75,9 @@ fun <T> ItemPicker(
             selectedItems.isNotEmpty()
         }
     }
-    val clearAllAlpha by animateFloatAsState(if (hasSelectedItems) Alpha.OPAQUE.value else Alpha.TRANSPARENT.value)
+    val clearAllAlpha by animateFloatAsState(
+        if (maxSelectableItems > 1U && hasSelectedItems) Alpha.OPAQUE.value else Alpha.TRANSPARENT.value,
+    )
 
     BasicAlertDialog(
         onDismissRequest = onDismissRequest,
@@ -98,7 +114,11 @@ fun <T> ItemPicker(
                     items(items, key = key) { item ->
                         itemContent(
                             item,
-                            selectedItems.contains(item),
+                            when {
+                                selectedItems.contains(item) -> PickerItemState.SELECTED
+                                selectedItems.size.toUInt() >= maxSelectableItems -> PickerItemState.DISABLED
+                                else -> PickerItemState.DEFAULT
+                            },
                         ) {
                             val index = selectedItems.indexOf(item)
                             if (index == -1) {
@@ -120,14 +140,14 @@ fun <T> ItemPicker(
                     }
                     Spacer(MaterialTheme.spacing.small)
                     Button(
-                        enabled = enableWhenNoItemsSelected || hasSelectedItems,
+                        enabled = selectedItems.size.toUInt() >= minSelectableItems || hasSelectedItems,
                         onClick = {
                             onItemsSelected(selectedItems)
                             onDismissRequest()
                         },
                         modifier = Modifier.weight(1.0f),
                     ) {
-                        val counter = if (hasSelectedItems) {
+                        val counter = if (maxSelectableItems > 1U && hasSelectedItems) {
                             " " + stringResource(R.string.common_counter, selectedItems.size)
                         } else ""
                         Text("$confirmButtonTitle$counter")

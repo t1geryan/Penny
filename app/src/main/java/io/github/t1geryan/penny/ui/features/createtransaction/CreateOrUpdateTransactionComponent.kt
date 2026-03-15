@@ -2,6 +2,7 @@ package io.github.t1geryan.penny.ui.features.createtransaction
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,11 +42,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import io.github.t1geryan.domain.models.Amount
 import io.github.t1geryan.domain.models.Currency
+import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.contracts.format
 import io.github.t1geryan.penny.ui.views.category.CategoryIcon
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
 import io.github.t1geryan.penny.ui.views.core.DefaultBackButton
+import io.github.t1geryan.penny.ui.views.picker.CategoriesPicker
 import io.github.t1geryan.penny.ui.views.spacing.Expanded
 import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.theme.cornerRadius
@@ -89,6 +93,8 @@ fun CreateOrUpdateTransactionComponent(
             }
         }
     }
+
+    CreateOrUpdateTransactionDialog(dialogState = state.dialogState, onSendIntent = onSendIntent)
 }
 
 @Composable
@@ -231,7 +237,7 @@ private fun MainCard(
             modifier = Modifier.padding(MaterialTheme.spacing.medium),
         )
         PickerField(
-            onClick = { /* TODO */ },
+            onClick = { onSendIntent(CreateOrUpdateTransactionIntent.PickCategory) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = MaterialTheme.spacing.medium)
@@ -253,7 +259,7 @@ private fun MainCard(
             modifier = Modifier.padding(MaterialTheme.spacing.medium),
         )
         PickerField(
-            onClick = { /* TODO */ },
+            onClick = { onSendIntent(CreateOrUpdateTransactionIntent.PickDate) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = MaterialTheme.spacing.medium)
@@ -331,5 +337,36 @@ private fun QuickAmounts(
                 Text(amount.format(), maxLines = 1)
             }
         }
+    }
+}
+
+@Composable
+fun CreateOrUpdateTransactionDialog(
+    dialogState: CreateOrUpdateTransactionDialogState,
+    onSendIntent: (CreateOrUpdateTransactionIntent) -> Unit,
+) {
+    when (dialogState) {
+        is CreateOrUpdateTransactionDialogState.CategoryPickerDialog -> BoxWithConstraints {
+            CategoriesPicker(
+                title = stringResource(R.string.screen_create_or_update_transaction_fill_category_hint),
+                categories = dialogState.categories,
+                initialSelectedCategories = dialogState.initialSelected?.let { listOf(it) }
+                    ?: emptyList(),
+                onDismissRequest = {
+                    onSendIntent(CreateOrUpdateTransactionIntent.DismissDialog)
+                },
+                onCategoriesSelected = { categories ->
+                    require(categories.size == 1)
+                    onSendIntent(CreateOrUpdateTransactionIntent.SetCategory(categories.first()))
+                },
+                modifier = Modifier
+                    .heightIn(max = this.maxHeight * Percent.THREE_QUARTERS.fraction)
+                    .width(this.maxWidth - MaterialTheme.spacing.medium * 2),
+                maxSelectableItems = 1U,
+                minSelectableItems = 1U,
+            )
+        }
+        is CreateOrUpdateTransactionDialogState.DatePickerDialog -> TODO()
+        CreateOrUpdateTransactionDialogState.None -> {}
     }
 }

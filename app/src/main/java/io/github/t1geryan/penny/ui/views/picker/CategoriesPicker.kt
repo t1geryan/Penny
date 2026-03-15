@@ -35,29 +35,34 @@ import io.github.t1geryan.theme.spacing
 
 @Composable
 fun CategoriesPicker(
+    title: String,
     categories: List<Category>,
     initialSelectedCategories: List<Category>,
     onDismissRequest: () -> Unit,
     onCategoriesSelected: (List<Category>) -> Unit,
     modifier: Modifier = Modifier,
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),
+    maxSelectableItems: UInt = UInt.MAX_VALUE,
+    minSelectableItems: UInt = 0U,
 ) {
     ItemPicker(
-        title = stringResource(R.string.screen_transaction_filter_by_category_title),
+        title = title,
         items = categories,
         initiallySelectedItems = initialSelectedCategories,
-        enableWhenNoItemsSelected = true,
-        itemContent = { item, isSelected, onSelect ->
+        maxSelectableItems = maxSelectableItems,
+        minSelectableItems = minSelectableItems,
+        itemContent = { item, state, onSelect ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(MaterialTheme.cornerRadius.large))
                     .border(
                         1.dp,
-                        color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
+                        color = if (state.isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant,
                         shape = RoundedCornerShape(MaterialTheme.cornerRadius.large),
                     )
                     .clickable(
+                        enabled = state.isDisabled.not(),
                         onClick = {
                             onSelect()
                         },
@@ -65,16 +70,25 @@ fun CategoriesPicker(
                     .padding(MaterialTheme.spacing.normal),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                CategoryIcon(item)
+                val disabledAlpha by animateFloatAsState(
+                    if (state.isDisabled) Alpha.DIMMED.value else Alpha.OPAQUE.value,
+                )
+                CategoryIcon(item, modifier = Modifier.alpha(disabledAlpha))
                 Spacer(MaterialTheme.spacing.normal)
-                Text(item.name, style = MaterialTheme.typography.titleMedium)
+                Text(
+                    item.name,
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.alpha(disabledAlpha),
+                )
                 Expanded()
-                val alpha by animateFloatAsState(if (isSelected) Alpha.OPAQUE.value else Alpha.TRANSPARENT.value)
+                val trailingIconAlpha by animateFloatAsState(
+                    if (state.isSelected) Alpha.OPAQUE.value else Alpha.TRANSPARENT.value,
+                )
                 Icon(
                     MaterialTheme.icons.check,
                     contentDescription = null,
                     modifier = Modifier
-                        .alpha(alpha)
+                        .alpha(trailingIconAlpha)
                         .size(24.dp)
                         .background(MaterialTheme.colorScheme.primary, CircleShape)
                         .padding(MaterialTheme.spacing.extraSmall),
@@ -137,6 +151,7 @@ fun CategoriesPicker_Preview() {
         ),
     )
     CategoriesPicker(
+        title = stringResource(R.string.screen_transaction_filter_by_category_title),
         categories = categories,
         initialSelectedCategories = categories.subList(0, 3),
         onDismissRequest = {},

@@ -17,6 +17,7 @@ data class CreateOrUpdateTransactionState(
     val selectedDate: LocalDateTime?,
     val isEditing: Boolean,
     val isLoading: Boolean,
+    val dialogState: CreateOrUpdateTransactionDialogState,
 ) {
 
     companion object : InitialStateProvider<CreateOrUpdateTransactionState> {
@@ -30,6 +31,19 @@ data class CreateOrUpdateTransactionState(
             selectedDate = null,
             isEditing = false,
             isLoading = false,
+            dialogState = CreateOrUpdateTransactionDialogState.None,
         )
     }
+}
+
+sealed interface CreateOrUpdateTransactionDialogState {
+    data object None : CreateOrUpdateTransactionDialogState
+
+    data class CategoryPickerDialog(
+        val categories: List<Category>,
+        val initialSelected: Category?,
+    ) : CreateOrUpdateTransactionDialogState
+
+    data class DatePickerDialog(val initialSelected: LocalDateTime?) :
+        CreateOrUpdateTransactionDialogState
 }

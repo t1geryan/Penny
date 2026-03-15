@@ -6,12 +6,16 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.t1geryan.domain.models.Amount
+import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
 import io.github.t1geryan.domain.models.TransactionId
+import io.github.t1geryan.domain.usecases.ObserveCategoriesUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
 import io.github.t1geryan.penny.ui.base.BaseViewModel
 import io.github.t1geryan.penny.ui.contracts.formatNoCurrency
+import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.CategoryPickerDialog
+import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.DatePickerDialog
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,6 +24,7 @@ import kotlinx.coroutines.launch
 class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
     @Assisted private val transactionId: TransactionId?,
     observeTransactionByIdUseCase: ObserveTransactionByIdUseCase,
+    private val observeCategoriesUseCase: ObserveCategoriesUseCase,
     private val validateAmountUseCase: ValidateAmountUseCase,
 ) : BaseViewModel<CreateOrUpdateTransactionIntent, CreateOrUpdateTransactionState>(
     CreateOrUpdateTransactionState.initial(),
@@ -40,6 +45,12 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
         is CreateOrUpdateTransactionIntent.SetName -> setName(intent.name)
         is CreateOrUpdateTransactionIntent.SetAmount -> validateAndSetAmount(intent.enteredAmount)
         is CreateOrUpdateTransactionIntent.SetQuickAmount -> setQuickAmount(intent.amount)
+        CreateOrUpdateTransactionIntent.PickCategory -> showCategoryPicker()
+        CreateOrUpdateTransactionIntent.PickDate -> setDialog(
+            DatePickerDialog(initialSelected = _state.value.selectedDate),
+        )
+        CreateOrUpdateTransactionIntent.DismissDialog -> invalidateDialog()
+        is CreateOrUpdateTransactionIntent.SetCategory -> setCategory(intent.category)
     }
 
     private fun setName(name: String) {
@@ -73,6 +84,10 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
         }
     }
 
+    private fun setCategory(category: Category) {
+        _state.update { it.copy(selectedCategory = category) }
+    }
+
     private fun setLoading(isLoading: Boolean) {
         _state.update { it.copy(isLoading = isLoading) }
     }
@@ -87,6 +102,25 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
                 selectedDate = transaction.date,
             )
         }
+    }
+
+    private fun showCategoryPicker() {
+        viewModelScope.launch {
+            setDialog(
+                CategoryPickerDialog(
+                    categories = observeCategoriesUseCase().first(),
+                    initialSelected = _state.value.selectedCategory,
+                ),
+            )
+        }
+    }
+
+    private fun invalidateDialog() {
+        setDialog(CreateOrUpdateTransactionDialogState.None)
+    }
+
+    private fun setDialog(dialog: CreateOrUpdateTransactionDialogState) {
+        _state.update { it.copy(dialogState = dialog) }
     }
 
     @AssistedFactory
