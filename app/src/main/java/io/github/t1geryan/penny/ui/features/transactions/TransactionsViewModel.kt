@@ -8,6 +8,7 @@ import io.github.t1geryan.domain.usecases.DeleteTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ObserveCategoriesUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionsUseCase
 import io.github.t1geryan.penny.ui.base.BaseViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateRange
@@ -62,14 +63,12 @@ class TransactionsViewModel @Inject constructor(
 
     private fun showCategoriesPicker() {
         viewModelScope.launch {
-            observeCategoriesUseCase().collect { categories ->
-                setDialog(
-                    TransactionsDialogState.CategoryFilterPicker(
-                        categories = categories,
-                        initialSelectedCategories = _state.value.categoryFilter,
-                    ),
-                )
-            }
+            setDialog(
+                TransactionsDialogState.CategoryFilterPicker(
+                    categories = observeCategoriesUseCase().first(),
+                    initialSelectedCategories = _state.value.categoryFilter,
+                ),
+            )
         }
     }
 
