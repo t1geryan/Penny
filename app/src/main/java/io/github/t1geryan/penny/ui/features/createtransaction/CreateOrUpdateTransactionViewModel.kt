@@ -5,9 +5,11 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.t1geryan.domain.models.Amount
 import io.github.t1geryan.domain.models.Transaction
 import io.github.t1geryan.domain.models.TransactionId
 import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCase
+import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
 import io.github.t1geryan.penny.ui.base.BaseViewModel
 import io.github.t1geryan.penny.ui.contracts.formatNoCurrency
 import kotlinx.coroutines.flow.first
@@ -18,6 +20,7 @@ import kotlinx.coroutines.launch
 class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
     @Assisted private val transactionId: TransactionId?,
     observeTransactionByIdUseCase: ObserveTransactionByIdUseCase,
+    private val validateAmountUseCase: ValidateAmountUseCase,
 ) : BaseViewModel<CreateOrUpdateTransactionIntent, CreateOrUpdateTransactionState>(
     CreateOrUpdateTransactionState.initial(),
 ) {
@@ -34,7 +37,40 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
     }
 
     override fun receiveIntent(intent: CreateOrUpdateTransactionIntent) = when (intent) {
-        is CreateOrUpdateTransactionIntent.SetName -> TODO()
+        is CreateOrUpdateTransactionIntent.SetName -> setName(intent.name)
+        is CreateOrUpdateTransactionIntent.SetAmount -> validateAndSetAmount(intent.enteredAmount)
+        is CreateOrUpdateTransactionIntent.SetQuickAmount -> setQuickAmount(intent.amount)
+    }
+
+    private fun setName(name: String) {
+        _state.update { it.copy(enteredName = name, isNameValid = name.isNotBlank()) }
+    }
+
+    private fun validateAndSetAmount(enteredAmount: String) {
+        _state.update { it.copy(enteredAmount = enteredAmount) }
+        if (enteredAmount.isBlank()) {
+            _state.update { it.copy(isAmountValid = false) }
+            return
+        }
+        val parsed = enteredAmount.toFloatOrNull()
+        if (parsed != null) {
+            val currency = _state.value.selectedCurrency
+            val amount = Amount(parsed, currency)
+            _state.update {
+                it.copy(
+                    isAmountValid = validateAmountUseCase(amount),
+                )
+            }
+        }
+    }
+
+    private fun setQuickAmount(amount: Amount) {
+        _state.update {
+            it.copy(
+                enteredAmount = amount.formatNoCurrency(),
+                isAmountValid = true,
+            )
+        }
     }
 
     private fun setLoading(isLoading: Boolean) {
