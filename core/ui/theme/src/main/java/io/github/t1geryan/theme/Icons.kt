@@ -13,6 +13,7 @@ import io.github.t1geryan.icons.Check
 import io.github.t1geryan.icons.Close
 import io.github.t1geryan.icons.Delete
 import io.github.t1geryan.icons.Description
+import io.github.t1geryan.icons.Dropdown
 import io.github.t1geryan.icons.Filter
 import io.github.t1geryan.icons.Home
 import io.github.t1geryan.icons.Label
@@ -33,6 +34,7 @@ data class PennyIcons(
     val calendar: ImageVector = Calendar,
     val filter: ImageVector = Filter,
     val arrowBack: ImageVector = ArrowBack,
+    val dropdown: ImageVector = Dropdown,
 )
 
 internal val LocalIcons = staticCompositionLocalOf { PennyIcons() }
