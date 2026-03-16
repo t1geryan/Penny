@@ -20,6 +20,7 @@ data class TransactionsState(
     val dataRangeFilter: LocalDateRange?,
     val categoryFilter: List<Category>,
     val dialogState: TransactionsDialogState,
+    val isLoading: Boolean,
 ) {
 
     val filteredTransactions: List<Transaction>
@@ -48,6 +49,7 @@ data class TransactionsState(
             dataRangeFilter = null,
             categoryFilter = emptyList(),
             dialogState = TransactionsDialogState.None,
+            isLoading = false,
         )
     }
 }

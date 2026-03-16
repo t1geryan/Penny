@@ -52,8 +52,10 @@ class TransactionsViewModel @Inject constructor(
     }
 
     private fun deleteTransaction(transactionId: TransactionId) {
+        setLoading(true)
         viewModelScope.launch {
             deleteTransactionByIdUseCase(transactionId)
+            setLoading(false)
         }
     }
 
@@ -83,5 +85,9 @@ class TransactionsViewModel @Inject constructor(
 
     private fun setDialog(dialogState: TransactionsDialogState) {
         _state.update { it.copy(dialogState = dialogState) }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        _state.update { it.copy(isLoading = isLoading) }
     }
 }

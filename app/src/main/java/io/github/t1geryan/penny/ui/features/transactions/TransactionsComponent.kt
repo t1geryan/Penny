@@ -5,6 +5,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -131,6 +133,7 @@ private fun Content(
             onCreateTransaction = { transactionId ->
                 onCreateTransaction(transactionId)
             },
+            isLoading = state.isLoading,
             modifier = modifier,
         )
 
@@ -303,38 +306,48 @@ private fun FiltrationRow(
 @Composable
 private fun TransactionsList(
     transactions: List<Transaction>,
+    isLoading: Boolean,
     onSendIntent: (TransactionsIntent) -> Unit,
     onCreateTransaction: (TransactionId) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(
-            start = MaterialTheme.spacing.medium,
-            end = MaterialTheme.spacing.medium,
-            top = MaterialTheme.spacing.medium,
-            bottom = MaterialTheme.spacing.giant,
-        ),
-        verticalArrangement = Arrangement.spacedBy(
-            MaterialTheme.spacing.medium,
-            Alignment.Top,
-        ),
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier,
     ) {
-        items(
-            transactions,
-            key = { transaction -> transaction.id },
-        ) { transaction ->
-            TransactionItem(
-                transaction,
-                onClicked = {
-                    onCreateTransaction(transaction.id)
-                },
-                onDeleteClicked = {
-                    onSendIntent(TransactionsIntent.DeleteTransaction(transaction.id))
-                },
-                modifier = Modifier
-                    .fillMaxWidth(),
-            )
+        LazyColumn(
+            contentPadding = PaddingValues(
+                start = MaterialTheme.spacing.medium,
+                end = MaterialTheme.spacing.medium,
+                top = MaterialTheme.spacing.medium,
+                bottom = MaterialTheme.spacing.giant,
+            ),
+            verticalArrangement = Arrangement.spacedBy(
+                MaterialTheme.spacing.medium,
+                Alignment.Top,
+            ),
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            items(
+                transactions,
+                key = { transaction -> transaction.id },
+            ) { transaction ->
+                TransactionItem(
+                    transaction,
+                    onClicked = {
+                        onCreateTransaction(transaction.id)
+                    },
+                    onDeleteClicked = {
+                        onSendIntent(TransactionsIntent.DeleteTransaction(transaction.id))
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                )
+            }
+        }
+
+        if (isLoading) {
+            CircularProgressIndicator()
         }
     }
 }
