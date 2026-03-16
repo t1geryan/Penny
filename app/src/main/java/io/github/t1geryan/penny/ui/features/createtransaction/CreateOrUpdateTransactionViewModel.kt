@@ -9,6 +9,7 @@ import io.github.t1geryan.domain.models.Amount
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
 import io.github.t1geryan.domain.models.TransactionId
+import io.github.t1geryan.domain.usecases.CreateOrUpdateTransactionUseCase
 import io.github.t1geryan.domain.usecases.ObserveCategoriesUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
@@ -28,6 +29,7 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
     observeTransactionByIdUseCase: ObserveTransactionByIdUseCase,
     private val observeCategoriesUseCase: ObserveCategoriesUseCase,
     private val validateAmountUseCase: ValidateAmountUseCase,
+    private val createOrUpdateTransactionUseCase: CreateOrUpdateTransactionUseCase,
 ) : BaseViewModel<CreateOrUpdateTransactionIntent, CreateOrUpdateTransactionState>(
     CreateOrUpdateTransactionState.initial(),
 ) {
@@ -60,6 +62,29 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
                 date = intent.date,
             ),
         )
+        CreateOrUpdateTransactionIntent.SaveTransaction -> saveTransaction()
+    }
+
+    private fun saveTransaction() = _state.value.let { state ->
+        if (state.selectedCategory == null || state.selectedDate == null) {
+            return@let
+        }
+        setLoading(true)
+        viewModelScope.launch {
+            createOrUpdateTransactionUseCase(
+                Transaction(
+                    id = transactionId ?: 0,
+                    name = state.enteredName,
+                    amount = Amount(
+                        value = state.enteredAmount.toFloat(),
+                        currency = state.selectedCurrency,
+                    ),
+                    category = state.selectedCategory,
+                    date = state.selectedDate,
+                ),
+            )
+            setLoading(false)
+        }
     }
 
     private fun setName(name: String) {

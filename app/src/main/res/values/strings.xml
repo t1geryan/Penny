@@ -60,4 +60,6 @@
     <string name="screen_create_or_update_transaction_fill_category_hint">Select a Category</string>
     <string name="screen_create_or_update_transaction_fill_date_title">Date</string>
     <string name="screen_create_or_update_transaction_fill_date_hint">Select a Day</string>
+    <string name="screen_create_or_update_transaction_save_button_title_create">Save Expense</string>
+    <string name="screen_create_or_update_transaction_save_button_title_edit">Update Expense</string>
 </resources>

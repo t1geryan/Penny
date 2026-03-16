@@ -25,4 +25,6 @@ sealed interface CreateOrUpdateTransactionIntent : Intent {
     data class SetDate(val date: LocalDateTime) : CreateOrUpdateTransactionIntent
 
     data object DismissDialog : CreateOrUpdateTransactionIntent
+
+    data object SaveTransaction : CreateOrUpdateTransactionIntent
 }

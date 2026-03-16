@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -108,6 +109,7 @@ private fun Content(
     modifier: Modifier = Modifier,
 ) {
     Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
     ) {
         AmountCard(
@@ -120,6 +122,14 @@ private fun Content(
             state = state,
             onSendIntent = onSendIntent,
             modifier = Modifier.fillMaxWidth(),
+        )
+        Spacer(MaterialTheme.spacing.medium)
+        SaveButton(
+            state = state,
+            onSendIntent = onSendIntent,
+            modifier = Modifier
+                .widthIn(max = 320.dp)
+                .fillMaxWidth(),
         )
     }
 }
@@ -276,6 +286,37 @@ private fun MainCard(
             )
         }
         Spacer(MaterialTheme.spacing.medium)
+    }
+}
+
+@Composable
+private fun SaveButton(
+    state: CreateOrUpdateTransactionState,
+    onSendIntent: (CreateOrUpdateTransactionIntent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    FilledTonalButton(
+        onClick = { onSendIntent(CreateOrUpdateTransactionIntent.SaveTransaction) },
+        colors = ButtonDefaults.filledTonalButtonColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+        ),
+        contentPadding = PaddingValues(
+            MaterialTheme.spacing.normal,
+        ),
+        shape = RoundedCornerShape(MaterialTheme.cornerRadius.large),
+        enabled = state.isAllowedToSave,
+        modifier = modifier,
+    ) {
+        Text(
+            stringResource(
+                if (state.isEditing) {
+                    R.string.screen_create_or_update_transaction_save_button_title_edit
+                } else {
+                    R.string.screen_create_or_update_transaction_save_button_title_create
+                },
+            ),
+        )
     }
 }
 
