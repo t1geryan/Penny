@@ -59,6 +59,7 @@ private fun NavGraphBuilder.composeCreateOrUpdateTransaction(navController: NavC
             state = state,
             onSendIntent = viewModel::receiveIntent,
             onNavigateUp = navController::navigateUp,
+            eventsFlow = viewModel.events,
             modifier = Modifier
                 .fillMaxSize(),
         )

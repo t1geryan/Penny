@@ -34,6 +34,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,12 +60,15 @@ import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.theme.cornerRadius
 import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun CreateOrUpdateTransactionComponent(
     state: CreateOrUpdateTransactionState,
     onSendIntent: (CreateOrUpdateTransactionIntent) -> Unit,
+    eventsFlow: Flow<CreateOrUpdateTransactionEvent>,
     onNavigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -101,6 +105,14 @@ fun CreateOrUpdateTransactionComponent(
     }
 
     CreateOrUpdateTransactionDialog(dialogState = state.dialogState, onSendIntent = onSendIntent)
+
+    LaunchedEffect(Unit) {
+        eventsFlow.collectLatest { event ->
+            when (event) {
+                CreateOrUpdateTransactionEvent.NavigateUp -> onNavigateUp()
+            }
+        }
+    }
 }
 
 @Composable

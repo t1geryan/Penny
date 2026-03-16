@@ -13,7 +13,7 @@ import io.github.t1geryan.domain.usecases.CreateOrUpdateTransactionUseCase
 import io.github.t1geryan.domain.usecases.ObserveCategoriesUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
-import io.github.t1geryan.penny.ui.base.BaseViewModel
+import io.github.t1geryan.penny.ui.base.BaseEventViewModel
 import io.github.t1geryan.penny.ui.contracts.formatRaw
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.CategoryPickerDialog
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.DatePickerDialog
@@ -30,7 +30,7 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
     private val observeCategoriesUseCase: ObserveCategoriesUseCase,
     private val validateAmountUseCase: ValidateAmountUseCase,
     private val createOrUpdateTransactionUseCase: CreateOrUpdateTransactionUseCase,
-) : BaseViewModel<CreateOrUpdateTransactionIntent, CreateOrUpdateTransactionState>(
+) : BaseEventViewModel<CreateOrUpdateTransactionIntent, CreateOrUpdateTransactionState, CreateOrUpdateTransactionEvent>(
     CreateOrUpdateTransactionState.initial(),
 ) {
 
@@ -84,6 +84,7 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
                 ),
             )
             setLoading(false)
+            sendEvent(CreateOrUpdateTransactionEvent.NavigateUp)
         }
     }
 
