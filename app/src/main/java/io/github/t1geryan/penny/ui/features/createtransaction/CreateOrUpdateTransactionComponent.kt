@@ -162,6 +162,9 @@ private fun AmountCard(
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Decimal,
             ),
+            placeholder = {
+                Text(stringResource(R.string.screen_create_or_update_transaction_fill_amount_hint))
+            },
             prefix = {
                 IconButton(onClick = { /* TODO */ }) {
                     Text(

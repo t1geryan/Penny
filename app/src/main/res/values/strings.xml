@@ -53,6 +53,7 @@
     <string name="screen_create_or_update_transaction_create_title">New Expense</string>
     <string name="screen_create_or_update_transaction_update_title">Edit Expense</string>
     <string name="screen_create_or_update_transaction_fill_amount_title">Amount</string>
+    <string name="screen_create_or_update_transaction_fill_amount_hint">Input an Amount</string>
     <string name="screen_create_or_update_transaction_fill_amount_quick_title">Quick Amount</string>
     <string name="screen_create_or_update_transaction_fill_name_title">Title</string>
     <string name="screen_create_or_update_transaction_fill_name_hint">e.g., Grocery Shopping</string>
