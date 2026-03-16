@@ -14,7 +14,7 @@ import io.github.t1geryan.domain.usecases.ObserveCategoriesUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
 import io.github.t1geryan.penny.ui.base.BaseViewModel
-import io.github.t1geryan.penny.ui.contracts.formatNoCurrency
+import io.github.t1geryan.penny.ui.contracts.formatRaw
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.CategoryPickerDialog
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.DatePickerDialog
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.TimePickerDialog
@@ -106,13 +106,17 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
                     isAmountValid = validateAmountUseCase(amount),
                 )
             }
+        } else {
+            _state.update {
+                it.copy(isAmountValid = false)
+            }
         }
     }
 
     private fun setQuickAmount(amount: Amount) {
         _state.update {
             it.copy(
-                enteredAmount = amount.formatNoCurrency(),
+                enteredAmount = amount.formatRaw(),
                 isAmountValid = true,
             )
         }
@@ -134,7 +138,7 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
         _state.update {
             it.copy(
                 enteredName = transaction.name,
-                enteredAmount = transaction.amount.formatNoCurrency(),
+                enteredAmount = transaction.amount.formatRaw(),
                 selectedCurrency = transaction.amount.currency,
                 selectedCategory = transaction.category,
                 selectedDate = transaction.date,

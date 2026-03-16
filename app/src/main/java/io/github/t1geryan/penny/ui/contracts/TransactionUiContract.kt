@@ -12,3 +12,5 @@ fun Amount.format(): String {
 }
 
 fun Amount.formatNoCurrency(): String = OutputFormats.cost().format(valueInCurrency)
+
+fun Amount.formatRaw(): String = OutputFormats.float().format(valueInCurrency)

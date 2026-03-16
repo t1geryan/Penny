@@ -5,10 +5,18 @@ import kotlinx.datetime.format.DateTimeFormatBuilder
 import kotlinx.datetime.format.MonthNames
 import kotlinx.datetime.format.Padding
 import kotlinx.datetime.format.char
+import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.Locale
 
 object OutputFormats {
+
+    fun float() = object : Formatter<Float> {
+
+        private val decimalFormat = DecimalFormat("0.##")
+
+        override fun format(value: Float): String = decimalFormat.format(value)
+    }
 
     fun cost() = object : Formatter<Float> {
 

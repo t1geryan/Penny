@@ -46,6 +46,7 @@ import io.github.t1geryan.domain.models.Amount
 import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
+import io.github.t1geryan.penny.ui.contracts.InputFormats
 import io.github.t1geryan.penny.ui.contracts.format
 import io.github.t1geryan.penny.ui.views.category.CategoryIcon
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
@@ -154,7 +155,8 @@ private fun AmountCard(
         OutlinedTextField(
             value = state.enteredAmount,
             onValueChange = {
-                onSendIntent(CreateOrUpdateTransactionIntent.SetAmount(it))
+                val filtered = it.filter { ch -> ch in InputFormats.FLOAT_NUMBER }
+                onSendIntent(CreateOrUpdateTransactionIntent.SetAmount(filtered))
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
