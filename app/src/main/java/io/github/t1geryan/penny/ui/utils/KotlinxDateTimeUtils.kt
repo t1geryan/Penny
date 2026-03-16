@@ -4,5 +4,5 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.atStartOfDayIn
 
-fun LocalDate.toMillis(): Long =
-    atStartOfDayIn(TimeZone.UTC).toEpochMilliseconds()
+fun LocalDate.toMillis(timeZone: TimeZone = TimeZone.UTC): Long =
+    atStartOfDayIn(timeZone).toEpochMilliseconds()
