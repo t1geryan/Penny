@@ -166,7 +166,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
 
         private fun initialTransactions(categories: List<Category>): List<Transaction> {
 
-            val currency = Currency.RUSSIAN_RUBLE
+            val currency = Currency.US_DOLLAR
 
             val food = categories.first { it.id == 1 }
             val transport = categories.first { it.id == 2 }
@@ -176,28 +176,28 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
                 Transaction(
                     id = 1,
                     name = "Burger",
-                    amount = Amount(45000, currency),
+                    amount = Amount(15f, currency),
                     category = food,
                     date = LocalDateTime(2026, 3, 1, 13, 20),
                 ),
                 Transaction(
                     id = 2,
                     name = "Coffee",
-                    amount = Amount(20000, currency),
+                    amount = Amount(5f, currency),
                     category = food,
                     date = LocalDateTime(2026, 3, 2, 9, 10),
                 ),
                 Transaction(
                     id = 3,
                     name = "Bus ticket",
-                    amount = Amount(6000, currency),
+                    amount = Amount(7.99f, currency),
                     category = transport,
                     date = LocalDateTime(2026, 3, 3, 8, 30),
                 ),
                 Transaction(
                     id = 4,
                     name = "Steam game",
-                    amount = Amount(150000, currency),
+                    amount = Amount(15.25f, currency),
                     category = entertainment,
                     date = LocalDateTime(2026, 3, 4, 22, 0),
                 )
