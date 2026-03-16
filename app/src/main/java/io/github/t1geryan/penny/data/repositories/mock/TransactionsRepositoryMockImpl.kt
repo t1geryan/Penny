@@ -112,7 +112,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
 
     companion object {
 
-        private val DEFAULT_DELAY: Duration = 300.milliseconds
+        private val DEFAULT_DELAY: Duration = 750.milliseconds
 
         private fun initialCategories(): List<Category> {
 
