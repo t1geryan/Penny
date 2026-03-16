@@ -1,36 +1,35 @@
 package io.github.t1geryan.penny.ui.views.picker
 
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
-import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.getSelectedEndDate
-import androidx.compose.material3.getSelectedStartDate
-import androidx.compose.material3.rememberDateRangePickerState
+import androidx.compose.material3.getSelectedDate
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import io.github.t1geryan.penny.R
-import kotlinx.datetime.LocalDateRange
+import io.github.t1geryan.penny.ui.utils.toMillis
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.toKotlinLocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PennyDateRangePicker(
+fun PennyDatePicker(
     onDismissRequest: () -> Unit,
-    onRangeSelected: (LocalDateRange) -> Unit,
+    onDateSelected: (LocalDate) -> Unit,
     modifier: Modifier = Modifier,
     onConfirmClicked: () -> Unit = onDismissRequest,
+    initialSelected: LocalDate? = null,
     dismissButtonTitle: String = stringResource(R.string.common_dialog_button_cancel),
     confirmButtonTitle: String = stringResource(R.string.common_dialog_button_ok),
 ) {
-    val state = rememberDateRangePickerState(
-        initialSelectedStartDate = null,
-        initialSelectedEndDate = null,
-        initialDisplayedMonth = null,
+    val state = rememberDatePickerState(
+        initialSelectedDateMillis = initialSelected?.toMillis(),
     )
 
     DatePickerDialog(
@@ -47,21 +46,12 @@ fun PennyDateRangePicker(
         },
         confirmButton = {
             TextButton(
-                enabled = state.getSelectedStartDate() != null && state.getSelectedEndDate() != null,
+                enabled = state.getSelectedDate() != null,
                 onClick = {
-                    val start = state.getSelectedStartDate()
-                    val end = state.getSelectedEndDate()
-                    if (start == null || end == null) {
-                        // Should not be reachable
-                        return@TextButton
+                    state.getSelectedDate()?.let {
+                        onDateSelected(it.toKotlinLocalDate())
                     }
 
-                    onRangeSelected(
-                        LocalDateRange(
-                            start.toKotlinLocalDate(),
-                            end.toKotlinLocalDate(),
-                        ),
-                    )
                     onConfirmClicked()
                 },
             ) {
@@ -70,7 +60,7 @@ fun PennyDateRangePicker(
         },
         modifier = modifier,
     ) {
-        DateRangePicker(
+        DatePicker(
             state = state,
             showModeToggle = false,
         )

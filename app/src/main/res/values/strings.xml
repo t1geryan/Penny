@@ -24,6 +24,7 @@
     <string name="common_dialog_button_cancel">Cancel</string>
     <string name="common_dialog_button_delete">Delete</string>
     <string name="common_dialog_picker_clear_all">Clear all</string>
+    <string name="common_dialog_time_picker_title">Select a Time</string>
 
     <string name="common_cd_back_button">Navigate Back</string>
     <string name="common_cd_add_transaction">Add Expense</string>

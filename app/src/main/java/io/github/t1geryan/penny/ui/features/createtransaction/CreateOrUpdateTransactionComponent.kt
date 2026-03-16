@@ -22,6 +22,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -49,11 +50,14 @@ import io.github.t1geryan.penny.ui.views.category.CategoryIcon
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
 import io.github.t1geryan.penny.ui.views.core.DefaultBackButton
 import io.github.t1geryan.penny.ui.views.picker.CategoriesPicker
+import io.github.t1geryan.penny.ui.views.picker.PennyDatePicker
+import io.github.t1geryan.penny.ui.views.picker.PennyTimePicker
 import io.github.t1geryan.penny.ui.views.spacing.Expanded
 import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.theme.cornerRadius
 import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
+import kotlinx.datetime.LocalDateTime
 
 @Composable
 fun CreateOrUpdateTransactionComponent(
@@ -225,6 +229,7 @@ private fun MainCard(
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 errorContainerColor = MaterialTheme.colorScheme.errorContainer,
             ),
+            singleLine = true,
             isError = state.isNameValid.not(),
             modifier = Modifier
                 .fillMaxWidth()
@@ -340,6 +345,7 @@ private fun QuickAmounts(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CreateOrUpdateTransactionDialog(
     dialogState: CreateOrUpdateTransactionDialogState,
@@ -366,7 +372,22 @@ fun CreateOrUpdateTransactionDialog(
                 minSelectableItems = 1U,
             )
         }
-        is CreateOrUpdateTransactionDialogState.DatePickerDialog -> TODO()
+        is CreateOrUpdateTransactionDialogState.DatePickerDialog -> PennyDatePicker(
+            onDismissRequest = { onSendIntent(CreateOrUpdateTransactionIntent.DismissDialog) },
+            onDateSelected = { date -> onSendIntent(CreateOrUpdateTransactionIntent.PickTime(date)) },
+            onConfirmClicked = {},
+            initialSelected = dialogState.initialSelected,
+        )
+
+        is CreateOrUpdateTransactionDialogState.TimePickerDialog -> PennyTimePicker(
+            onDismissRequest = { onSendIntent(CreateOrUpdateTransactionIntent.DismissDialog) },
+            onTimeSelected = { time ->
+                onSendIntent(
+                    CreateOrUpdateTransactionIntent.SetDate(LocalDateTime(dialogState.date, time)),
+                )
+            },
+        )
+
         CreateOrUpdateTransactionDialogState.None -> {}
     }
 }

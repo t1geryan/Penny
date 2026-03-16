@@ -16,9 +16,11 @@ import io.github.t1geryan.penny.ui.base.BaseViewModel
 import io.github.t1geryan.penny.ui.contracts.formatNoCurrency
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.CategoryPickerDialog
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.DatePickerDialog
+import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.TimePickerDialog
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDateTime
 
 @HiltViewModel(assistedFactory = CreateOrUpdateTransactionViewModel.Factory::class)
 class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
@@ -47,10 +49,17 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
         is CreateOrUpdateTransactionIntent.SetQuickAmount -> setQuickAmount(intent.amount)
         CreateOrUpdateTransactionIntent.PickCategory -> showCategoryPicker()
         CreateOrUpdateTransactionIntent.PickDate -> setDialog(
-            DatePickerDialog(initialSelected = _state.value.selectedDate),
+            DatePickerDialog(initialSelected = _state.value.selectedDate?.date),
         )
         CreateOrUpdateTransactionIntent.DismissDialog -> invalidateDialog()
         is CreateOrUpdateTransactionIntent.SetCategory -> setCategory(intent.category)
+        is CreateOrUpdateTransactionIntent.SetDate -> setDate(intent.date)
+        is CreateOrUpdateTransactionIntent.PickTime -> setDialog(
+            TimePickerDialog(
+                initialSelected = _state.value.selectedDate?.time,
+                date = intent.date,
+            ),
+        )
     }
 
     private fun setName(name: String) {
@@ -86,6 +95,10 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
 
     private fun setCategory(category: Category) {
         _state.update { it.copy(selectedCategory = category) }
+    }
+
+    private fun setDate(date: LocalDateTime) {
+        _state.update { it.copy(selectedDate = date) }
     }
 
     private fun setLoading(isLoading: Boolean) {

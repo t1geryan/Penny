@@ -4,7 +4,9 @@ import androidx.compose.runtime.Immutable
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.mvi.InitialStateProvider
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalTime
 
 @Immutable
 data class CreateOrUpdateTransactionState(
@@ -44,6 +46,12 @@ sealed interface CreateOrUpdateTransactionDialogState {
         val initialSelected: Category?,
     ) : CreateOrUpdateTransactionDialogState
 
-    data class DatePickerDialog(val initialSelected: LocalDateTime?) :
-        CreateOrUpdateTransactionDialogState
+    data class DatePickerDialog(
+        val initialSelected: LocalDate?,
+    ) : CreateOrUpdateTransactionDialogState
+
+    data class TimePickerDialog(
+        val initialSelected: LocalTime?,
+        val date: LocalDate,
+    ) : CreateOrUpdateTransactionDialogState
 }
