@@ -33,7 +33,7 @@ data class CreateOrUpdateTransactionState(
         override fun initial(): CreateOrUpdateTransactionState = CreateOrUpdateTransactionState(
             enteredName = "",
             isNameValid = true,
-            enteredAmount = "0.00",
+            enteredAmount = "",
             isAmountValid = true,
             selectedCurrency = Currency.US_DOLLAR,
             selectedCategory = null,
