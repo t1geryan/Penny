@@ -13,6 +13,7 @@ kotlin {
 }
 
 dependencies {
+    implementation(project(":core:coroutines"))
 
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.coroutines)
