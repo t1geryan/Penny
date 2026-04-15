@@ -51,6 +51,7 @@ fun CategoriesPicker(
         initiallySelectedItems = initialSelectedCategories,
         maxSelectableItems = maxSelectableItems,
         minSelectableItems = minSelectableItems,
+        key = { it.id },
         itemContent = { item, state, onSelect ->
             Row(
                 modifier = Modifier

@@ -61,4 +61,9 @@ sealed interface CreateOrUpdateTransactionDialogState {
         val initialSelected: LocalTime?,
         val date: LocalDate,
     ) : CreateOrUpdateTransactionDialogState
+
+    data class CurrencyPicker(
+        val selectedCurrency: Currency,
+        val currencies: List<Currency>,
+    ) : CreateOrUpdateTransactionDialogState
 }

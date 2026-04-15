@@ -1,5 +1,6 @@
 package io.github.t1geryan.penny.ui.features.createtransaction
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -20,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
@@ -49,9 +51,12 @@ import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.contracts.InputFilters
 import io.github.t1geryan.penny.ui.contracts.format
+import io.github.t1geryan.penny.ui.contracts.humanReadableName
 import io.github.t1geryan.penny.ui.views.category.CategoryIcon
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
 import io.github.t1geryan.penny.ui.views.core.DefaultBackButton
+import io.github.t1geryan.penny.ui.views.icon.TextIcon
+import io.github.t1geryan.penny.ui.views.picker.BottomSheetSingleItemPicker
 import io.github.t1geryan.penny.ui.views.picker.CategoriesPicker
 import io.github.t1geryan.penny.ui.views.picker.PennyDatePicker
 import io.github.t1geryan.penny.ui.views.picker.PennyTimePicker
@@ -178,17 +183,33 @@ private fun AmountCard(
                 Text(stringResource(R.string.screen_create_or_update_transaction_fill_amount_hint))
             },
             prefix = {
-                IconButton(onClick = { /* TODO */ }) {
-                    Text(
-                        state.selectedCurrency.symbol,
-                        style = MaterialTheme.typography.titleLarge.copy(
-                            color = if (state.isAmountValid) {
+                IconButton(
+                    onClick = { onSendIntent(CreateOrUpdateTransactionIntent.PickCurrency) },
+                    shape = RoundedCornerShape(MaterialTheme.cornerRadius.large),
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            state.selectedCurrency.symbol,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                color = if (state.isAmountValid) {
+                                    MaterialTheme.colorScheme.onSurfaceVariant
+                                } else {
+                                    MaterialTheme.colorScheme.onErrorContainer
+                                },
+                            ),
+                        )
+                        Icon(
+                            imageVector = MaterialTheme.icons.dropdown,
+                            contentDescription = null,
+                            tint = if (state.isAmountValid) {
                                 MaterialTheme.colorScheme.onSurfaceVariant
                             } else {
                                 MaterialTheme.colorScheme.onErrorContainer
                             },
-                        ),
-                    )
+                        )
+                    }
                 }
             },
             colors = OutlinedTextFieldDefaults.colors(
@@ -445,6 +466,54 @@ fun CreateOrUpdateTransactionDialog(
                 )
             },
         )
+
+        is CreateOrUpdateTransactionDialogState.CurrencyPicker -> BottomSheetSingleItemPicker(
+            onDismissRequest = { onSendIntent(CreateOrUpdateTransactionIntent.DismissDialog) },
+            items = dialogState.currencies,
+            selectedItem = dialogState.selectedCurrency,
+            key = { it.code },
+            title = stringResource(R.string.screen_create_or_update_transaction_fill_currency_title),
+        ) { item, isSelected ->
+            Card(
+                onClick = {
+                    onSendIntent(CreateOrUpdateTransactionIntent.SetCurrency(item))
+                    onSendIntent(CreateOrUpdateTransactionIntent.DismissDialog)
+                },
+                colors = CardDefaults.cardColors(
+                    containerColor = if (isSelected) {
+                        MaterialTheme.colorScheme.primaryContainer
+                    } else {
+                        MaterialTheme.colorScheme.surfaceContainer
+                    },
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                ),
+                border = BorderStroke(
+                    width = 2.dp,
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
+                ),
+                shape = RoundedCornerShape(MaterialTheme.cornerRadius.large),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(MaterialTheme.spacing.normal),
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(MaterialTheme.spacing.medium),
+                ) {
+                    TextIcon(
+                        text = item.symbol,
+                        backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
+                    )
+                    Spacer(MaterialTheme.spacing.normal)
+                    Column {
+                        Text(item.humanReadableName, style = MaterialTheme.typography.titleMedium)
+                        Spacer(MaterialTheme.spacing.tiny)
+                        Text(item.code, style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
+            }
+        }
 
         CreateOrUpdateTransactionDialogState.None -> {}
     }

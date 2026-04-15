@@ -60,7 +60,7 @@ fun <T> ItemPicker(
     onDismissRequest: () -> Unit,
     onItemsSelected: (List<T>) -> Unit,
     modifier: Modifier = Modifier,
-    key: ((T) -> Unit)? = null,
+    key: ((T) -> Any)? = null,
     confirmButtonTitle: String = stringResource(R.string.common_dialog_button_apply),
     dismissButtonTitle: String = stringResource(R.string.common_dialog_button_cancel),
     properties: DialogProperties = DialogProperties(usePlatformDefaultWidth = false),

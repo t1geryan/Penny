@@ -7,6 +7,7 @@ import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.t1geryan.domain.models.Amount
 import io.github.t1geryan.domain.models.Category
+import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.domain.models.Transaction
 import io.github.t1geryan.domain.models.TransactionId
 import io.github.t1geryan.domain.usecases.CreateOrUpdateTransactionUseCase
@@ -16,6 +17,7 @@ import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
 import io.github.t1geryan.penny.ui.base.BaseEventViewModel
 import io.github.t1geryan.penny.ui.contracts.formatRaw
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.CategoryPickerDialog
+import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.CurrencyPicker
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.DatePickerDialog
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.TimePickerDialog
 import kotlinx.coroutines.flow.first
@@ -63,6 +65,17 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
             ),
         )
         CreateOrUpdateTransactionIntent.SaveTransaction -> saveTransaction()
+        CreateOrUpdateTransactionIntent.PickCurrency -> setDialog(
+            CurrencyPicker(
+                selectedCurrency = _state.value.selectedCurrency,
+                currencies = Currency.USER_LIST,
+            ),
+        )
+        is CreateOrUpdateTransactionIntent.SetCurrency -> setCurrency(intent.currency)
+    }
+
+    private fun setCurrency(currency: Currency) {
+        _state.update { it.copy(selectedCurrency = currency) }
     }
 
     private fun saveTransaction() = _state.value.let { state ->

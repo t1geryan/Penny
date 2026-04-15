@@ -19,4 +19,11 @@ enum class Currency(
 
             RUSSIAN_RUBLE -> listOf(100, 500, 1000, 5000)
         }.map { Amount((it / subUnitMultiplier).toInt(), currency = this) }
+
+    companion object {
+        val USER_LIST = listOf(
+            US_DOLLAR,
+            RUSSIAN_RUBLE,
+        )
+    }
 }

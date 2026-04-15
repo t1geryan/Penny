@@ -28,6 +28,10 @@
 
     <string name="common_cd_back_button">Navigate Back</string>
     <string name="common_cd_add_transaction">Add Expense</string>
+    <string name="common_cd_close">Close</string>
+
+    <string name="currency_us_dollar">US Dollar</string>
+    <string name="currency_russian_ruble">Russian Ruble</string>
 
     <string name="screen_tab_item_transactions_label">Home</string>
     <string name="screen_tab_item_categories_label">Categories</string>
@@ -63,4 +67,5 @@
     <string name="screen_create_or_update_transaction_fill_date_hint">Select a Day</string>
     <string name="screen_create_or_update_transaction_save_button_title_create">Save Expense</string>
     <string name="screen_create_or_update_transaction_save_button_title_edit">Update Expense</string>
+    <string name="screen_create_or_update_transaction_fill_currency_title">Select Currency</string>
 </resources>
