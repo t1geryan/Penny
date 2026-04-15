@@ -12,14 +12,6 @@ enum class Currency(
     RUSSIAN_RUBLE("RUB", "\u20bd"),
     ;
 
-    @Suppress("MagicNumber")
-    val quickAmounts: List<Amount>
-        get() = when (this) {
-            US_DOLLAR -> listOf(10, 20, 50, 100)
-
-            RUSSIAN_RUBLE -> listOf(100, 500, 1000, 5000)
-        }.map { Amount((it / subUnitMultiplier).toInt(), currency = this) }
-
     companion object {
         val USER_LIST = listOf(
             US_DOLLAR,

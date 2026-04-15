@@ -15,6 +15,7 @@ import io.github.t1geryan.domain.usecases.ObserveCategoriesUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
 import io.github.t1geryan.penny.ui.base.BaseEventViewModel
+import io.github.t1geryan.penny.ui.contracts.QuickAmount
 import io.github.t1geryan.penny.ui.contracts.formatRaw
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.CategoryPickerDialog
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionDialogState.CurrencyPicker
@@ -50,7 +51,7 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
     override fun receiveIntent(intent: CreateOrUpdateTransactionIntent) = when (intent) {
         is CreateOrUpdateTransactionIntent.SetName -> setName(intent.name)
         is CreateOrUpdateTransactionIntent.SetAmount -> validateAndSetAmount(intent.enteredAmount)
-        is CreateOrUpdateTransactionIntent.SetQuickAmount -> setQuickAmount(intent.amount)
+        is CreateOrUpdateTransactionIntent.SetQuickAmount -> setQuickAmount(intent.quickAmount)
         CreateOrUpdateTransactionIntent.PickCategory -> showCategoryPicker()
         CreateOrUpdateTransactionIntent.PickDate -> setDialog(
             DatePickerDialog(initialSelected = _state.value.selectedDate?.date),
@@ -127,12 +128,14 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
         }
     }
 
-    private fun setQuickAmount(amount: Amount) {
-        _state.update {
-            it.copy(
-                enteredAmount = amount.formatRaw(),
-                isAmountValid = true,
-            )
+    private fun setQuickAmount(quickAmount: QuickAmount) {
+        (_state.value.enteredAmount.toFloatOrNull() ?: 0f).let { amountValue ->
+            _state.update {
+                it.copy(
+                    enteredAmount = quickAmount.updateEntered(amountValue).formatRaw(),
+                    isAmountValid = true,
+                )
+            }
         }
     }
 

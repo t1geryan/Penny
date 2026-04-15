@@ -45,13 +45,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import io.github.t1geryan.domain.models.Amount
 import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.contracts.InputFilters
+import io.github.t1geryan.penny.ui.contracts.QuickAmount
 import io.github.t1geryan.penny.ui.contracts.format
 import io.github.t1geryan.penny.ui.contracts.humanReadableName
+import io.github.t1geryan.penny.ui.contracts.quickAmounts
 import io.github.t1geryan.penny.ui.views.category.CategoryIcon
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
 import io.github.t1geryan.penny.ui.views.core.DefaultBackButton
@@ -232,7 +233,7 @@ private fun AmountCard(
             Spacer(MaterialTheme.spacing.medium)
             QuickAmounts(
                 selectedCurrency = state.selectedCurrency,
-                onAmountSelected = { onSendIntent(CreateOrUpdateTransactionIntent.SetQuickAmount(it)) },
+                onQuickAmountSelected = { onSendIntent(CreateOrUpdateTransactionIntent.SetQuickAmount(it)) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = MaterialTheme.spacing.medium),
@@ -400,7 +401,7 @@ private fun PickerField(
 @Composable
 private fun QuickAmounts(
     selectedCurrency: Currency,
-    onAmountSelected: (Amount) -> Unit,
+    onQuickAmountSelected: (QuickAmount) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     FlowRow(
@@ -408,9 +409,9 @@ private fun QuickAmounts(
         horizontalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.extraSmall),
     ) {
-        selectedCurrency.quickAmounts.forEach { amount ->
+        selectedCurrency.quickAmounts.forEach { quickAmount ->
             Button(
-                onClick = { onAmountSelected(amount) },
+                onClick = { onQuickAmountSelected(quickAmount) },
                 colors = ButtonDefaults.filledTonalButtonColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -418,7 +419,7 @@ private fun QuickAmounts(
                 shape = RoundedCornerShape(MaterialTheme.cornerRadius.large),
                 modifier = Modifier.widthIn(min = 64.dp),
             ) {
-                Text(amount.format(), maxLines = 1)
+                Text(quickAmount.format(LocalContext.current), maxLines = 1)
             }
         }
     }
