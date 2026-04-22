@@ -147,7 +147,7 @@ private fun Content(
 }
 
 @Composable
-fun EmptyContent(
+private fun EmptyContent(
     emptyState: TransactionsEmptyState,
     onClearFilters: () -> Unit,
     onCreateTransaction: () -> Unit,
