@@ -6,6 +6,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.t1geryan.domain.models.Category
+import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.penny.ui.contracts.backgroundColor
 import io.github.t1geryan.penny.ui.views.icon.TextIcon
 
@@ -33,6 +34,7 @@ fun CategoryIcon_Preview() {
             emoji = "\uD83C\uDF54",
             color = 0xFFDB1818,
             limit = null,
+            currency = Currency.US_DOLLAR,
         ),
     )
 }

@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import io.github.t1geryan.domain.models.Category
+import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.models.Alpha
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.views.category.CategoryIcon
@@ -114,6 +115,7 @@ fun CategoriesPicker_Preview() {
             emoji = "🍔",
             color = 0xFFE57373,
             limit = null,
+            currency = Currency.US_DOLLAR,
         ),
         Category(
             id = 2,
@@ -121,6 +123,7 @@ fun CategoriesPicker_Preview() {
             emoji = "🚌",
             color = 0xFF64B5F6,
             limit = null,
+            currency = Currency.US_DOLLAR,
         ),
         Category(
             id = 3,
@@ -128,6 +131,7 @@ fun CategoriesPicker_Preview() {
             emoji = "🎮",
             color = 0xFFBA68C8,
             limit = null,
+            currency = Currency.US_DOLLAR,
         ),
         Category(
             id = 4,
@@ -135,6 +139,7 @@ fun CategoriesPicker_Preview() {
             emoji = "🏥",
             color = 0xFFBAC4d4,
             limit = null,
+            currency = Currency.US_DOLLAR,
         ),
         Category(
             id = 5,
@@ -142,6 +147,7 @@ fun CategoriesPicker_Preview() {
             emoji = "💡",
             color = 0xFFC4BA6A,
             limit = null,
+            currency = Currency.US_DOLLAR,
         ),
         Category(
             id = 6,
@@ -149,6 +155,7 @@ fun CategoriesPicker_Preview() {
             emoji = "🛍️",
             color = 0xFFCFA9CB,
             limit = null,
+            currency = Currency.US_DOLLAR,
         ),
     )
     CategoriesPicker(

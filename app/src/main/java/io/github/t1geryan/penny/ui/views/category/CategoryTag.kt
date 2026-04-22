@@ -14,6 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.t1geryan.domain.models.Category
+import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.ui.contracts.backgroundColor
 import io.github.t1geryan.penny.ui.contracts.contentColor
@@ -66,6 +67,7 @@ fun CategoryTag_Preview() {
             emoji = "\uD83C\uDF54",
             color = 0xFFDB1818,
             limit = null,
+            currency = Currency.US_DOLLAR,
         ),
     )
 }

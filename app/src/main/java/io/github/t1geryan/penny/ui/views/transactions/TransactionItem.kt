@@ -120,6 +120,7 @@ fun TransactionItem_Preview() {
                 emoji = "\uD83C\uDF54",
                 color = 0xFFDB1818,
                 limit = null,
+                currency = Currency.US_DOLLAR,
             ),
             date = LocalDateTime(2026, 3, 1, 13, 20),
         ),
