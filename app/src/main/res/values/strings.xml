@@ -59,6 +59,10 @@
     <string name="screen_categories_empty_title">No Categories Yet</string>
     <string name="screen_categories_empty_description">Create your first category to start organizing your expenses</string>
     <string name="screen_categories_empty_button">Add Your First Category</string>
+    <string name="screen_categories_delete_confirmation_dialog_title">Delete Category?</string>
+    <string name="screen_categories_delete_confirmation_dialog_description">This action cannot be undone. The category will be permanently deleted.</string>
+    <string name="screen_categories_with_dependencies_warning_dialog_title">Category Contains Expenses</string>
+    <string name="screen_categories_with_dependencies_warning_dialog_description">The category \"%1$s\" contains transactions and cannot be deleted. Please delete all transactions in this category first.</string>
 
     <string name="screen_create_or_update_transaction_create_title">New Expense</string>
     <string name="screen_create_or_update_transaction_update_title">Edit Expense</string>

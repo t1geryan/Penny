@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import io.github.t1geryan.domain.models.Amount
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Currency
+import io.github.t1geryan.models.Alpha
 import io.github.t1geryan.penny.ui.contracts.backgroundColor
 import io.github.t1geryan.penny.ui.contracts.contentColor
 import io.github.t1geryan.penny.ui.contracts.format
@@ -42,6 +44,7 @@ fun CategoryItem(
     category: Category,
     spentAmount: Amount,
     modifier: Modifier = Modifier,
+    deleteEnabled: Boolean = true,
     onClicked: () -> Unit = {},
     onDeleteClicked: () -> Unit = {},
 ) {
@@ -53,13 +56,14 @@ fun CategoryItem(
         spentAmount = spentAmount,
         categoryLimit = category.limit,
         onClicked = onClicked,
+        deleteEnabled = deleteEnabled,
         onDeleteClicked = onDeleteClicked,
         modifier = modifier,
     )
 }
 
 @Composable
-fun CategoryItem(
+private fun CategoryItem(
     spentAmount: Amount,
     categoryLimit: Amount?,
     categoryName: String,
@@ -67,6 +71,7 @@ fun CategoryItem(
     categoryColor: Color,
     categoryBackgroundColor: Color,
     modifier: Modifier = Modifier,
+    deleteEnabled: Boolean,
     onClicked: () -> Unit,
     onDeleteClicked: () -> Unit,
 ) {
@@ -98,7 +103,11 @@ fun CategoryItem(
             Spacer(MaterialTheme.spacing.medium)
             Text(categoryName, style = MaterialTheme.typography.titleMedium)
             Expanded()
-            IconButton(onClick = onDeleteClicked) {
+            IconButton(
+                onClick = onDeleteClicked,
+                enabled = deleteEnabled,
+                modifier = Modifier.alpha(if (deleteEnabled) Alpha.OPAQUE.value else Alpha.SEMI_TRANSPARENT.value),
+            ) {
                 Icon(
                     MaterialTheme.icons.delete,
                     contentDescription = null,

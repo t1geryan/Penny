@@ -31,6 +31,7 @@ import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.views.category.CategoryItem
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
+import io.github.t1geryan.penny.ui.views.dialog.ConfirmationDialog
 import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
@@ -51,6 +52,8 @@ fun CategoriesComponent(
             modifier = Modifier.fillMaxSize(),
         )
     }
+
+    CategoriesDialog(state.dialogState, onSendIntent)
 }
 
 @Composable
@@ -150,9 +153,10 @@ private fun CategoriesList(
                     spentAmount = category.calculateSpentAmount(transactions),
                     onClicked = {
                         // TODO
-                        onSendIntent
                     },
+                    deleteEnabled = isLoading.not(),
                     onDeleteClicked = {
+                        onSendIntent(CategoriesIntent.DeleteCategory(category))
                     },
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -163,5 +167,44 @@ private fun CategoriesList(
         if (isLoading) {
             CircularProgressIndicator()
         }
+    }
+}
+
+@Composable
+fun CategoriesDialog(
+    dialogState: CategoriesDialogState,
+    onSendIntent: (CategoriesIntent) -> Unit,
+) {
+    when (dialogState) {
+        CategoriesDialogState.None -> {
+            // no-op
+        }
+        is CategoriesDialogState.CategoryWithDependenciesWarning -> ConfirmationDialog(
+            cancelButtonVisible = false,
+            onDismissRequest = { onSendIntent(CategoriesIntent.DismissDialog) },
+            onConfirm = { onSendIntent(CategoriesIntent.DismissDialog) },
+            title = stringResource(R.string.screen_categories_with_dependencies_warning_dialog_title),
+            description = stringResource(
+                R.string.screen_categories_with_dependencies_warning_dialog_description,
+                dialogState.category.name,
+            ),
+            confirmButtonTitle = stringResource(R.string.common_dialog_button_ok),
+            confirmButtonColors = ButtonDefaults.buttonColors(
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+        )
+
+        is CategoriesDialogState.DeleteCategoryConfirmation -> ConfirmationDialog(
+            onDismissRequest = { onSendIntent(CategoriesIntent.DismissDialog) },
+            onConfirm = { onSendIntent(CategoriesIntent.ConfirmCategoryDelete(dialogState.category)) },
+            title = stringResource(R.string.screen_categories_delete_confirmation_dialog_title),
+            description = stringResource(R.string.screen_categories_delete_confirmation_dialog_description),
+            confirmButtonTitle = stringResource(R.string.common_dialog_button_delete),
+            confirmButtonColors = ButtonDefaults.buttonColors(
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+            ),
+        )
     }
 }

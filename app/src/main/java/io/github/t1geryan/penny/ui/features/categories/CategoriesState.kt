@@ -9,6 +9,7 @@ import io.github.t1geryan.mvi.InitialStateProvider
 data class CategoriesState(
     val categories: List<Category>,
     val transactions: List<Transaction>,
+    val dialogState: CategoriesDialogState,
     val isLoading: Boolean,
 ) {
 
@@ -20,6 +21,17 @@ data class CategoriesState(
             categories = emptyList(),
             transactions = emptyList(),
             isLoading = false,
+            dialogState = CategoriesDialogState.None,
         )
     }
+}
+
+sealed interface CategoriesDialogState {
+
+    data class DeleteCategoryConfirmation(val category: Category) : CategoriesDialogState
+
+
+    data class CategoryWithDependenciesWarning(val category: Category) : CategoriesDialogState
+
+    data object None : CategoriesDialogState
 }

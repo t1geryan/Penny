@@ -34,6 +34,7 @@ fun ConfirmationDialog(
         containerColor = MaterialTheme.colorScheme.secondaryContainer,
         contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
     ),
+    cancelButtonVisible: Boolean = true,
     cancelButtonEnabled: Boolean = true,
     properties: DialogProperties = DialogProperties(),
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
@@ -56,12 +57,14 @@ fun ConfirmationDialog(
             }
         },
         dismissButton = {
-            Button(
-                onClick = onDismissRequest,
-                colors = cancelButtonColors,
-                enabled = cancelButtonEnabled,
-            ) {
-                Text(cancelButtonTitle)
+            if (cancelButtonVisible) {
+                Button(
+                    onClick = onDismissRequest,
+                    colors = cancelButtonColors,
+                    enabled = cancelButtonEnabled,
+                ) {
+                    Text(cancelButtonTitle)
+                }
             }
         },
         modifier = modifier,
