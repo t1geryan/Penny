@@ -15,4 +15,13 @@ data class Category(
     val emoji: String,
     val color: Long,
     val limit: Amount?,
+    val currency: Currency,
 )
+
+fun Category.calculateSpentAmount(transactions: List<Transaction>): Amount {
+    val categoryTransactions = transactions.filter { it.category.id == this.id }
+    val categorySpent = categoryTransactions.fold(0) { sum, transaction ->
+        sum + transaction.amount.value
+    }
+    return Amount(categorySpent, currency)
+}

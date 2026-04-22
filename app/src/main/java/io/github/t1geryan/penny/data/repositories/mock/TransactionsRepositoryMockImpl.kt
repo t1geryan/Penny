@@ -116,7 +116,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
 
         private fun initialCategories(): List<Category> {
 
-            val currency = Currency.RUSSIAN_RUBLE
+            val currency = Currency.US_DOLLAR
 
             return listOf(
                 Category(
@@ -125,6 +125,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
                     emoji = "🍔",
                     color = 0xFFE57373,
                     limit = Amount(500_000, currency),
+                    currency = currency,
                 ),
                 Category(
                     id = 2,
@@ -132,6 +133,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
                     emoji = "🚌",
                     color = 0xFF64B5F6,
                     limit = null,
+                    currency = currency,
                 ),
                 Category(
                     id = 3,
@@ -139,6 +141,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
                     emoji = "🎮",
                     color = 0xFFBA68C8,
                     limit = null,
+                    currency = currency,
                 ),
                 Category(
                     id = 4,
@@ -146,6 +149,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
                     emoji = "🏥",
                     color = 0xFFBAC4d4,
                     limit = null,
+                    currency = currency,
                 ),
                 Category(
                     id = 5,
@@ -153,6 +157,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
                     emoji = "💡",
                     color = 0xFFC4BA6A,
                     limit = null,
+                    currency = currency,
                 ),
                 Category(
                     id = 6,
@@ -160,6 +165,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
                     emoji = "🛍️",
                     color = 0xFFCFA9CB,
                     limit = null,
+                    currency = currency,
                 ),
             )
         }
