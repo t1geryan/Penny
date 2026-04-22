@@ -1,7 +1,6 @@
 package io.github.t1geryan.penny.ui.features.createtransaction
 
 import io.github.t1geryan.domain.models.Category
-import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.mvi.Intent
 import io.github.t1geryan.penny.ui.contracts.QuickAmount
 import kotlinx.datetime.LocalDate
@@ -24,10 +23,6 @@ sealed interface CreateOrUpdateTransactionIntent : Intent {
     data class PickTime(val date: LocalDate) : CreateOrUpdateTransactionIntent
 
     data class SetDate(val date: LocalDateTime) : CreateOrUpdateTransactionIntent
-
-    data object PickCurrency : CreateOrUpdateTransactionIntent
-
-    data class SetCurrency(val currency: Currency) : CreateOrUpdateTransactionIntent
 
     data object DismissDialog : CreateOrUpdateTransactionIntent
 

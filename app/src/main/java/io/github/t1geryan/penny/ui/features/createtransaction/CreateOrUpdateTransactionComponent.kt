@@ -1,6 +1,5 @@
 package io.github.t1geryan.penny.ui.features.createtransaction
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -21,14 +20,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -39,6 +36,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -46,18 +44,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import io.github.t1geryan.domain.models.Currency
+import io.github.t1geryan.models.Alpha
 import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
 import io.github.t1geryan.penny.ui.contracts.InputFilters
 import io.github.t1geryan.penny.ui.contracts.QuickAmount
 import io.github.t1geryan.penny.ui.contracts.format
-import io.github.t1geryan.penny.ui.contracts.humanReadableName
 import io.github.t1geryan.penny.ui.contracts.quickAmounts
 import io.github.t1geryan.penny.ui.views.category.CategoryIcon
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
 import io.github.t1geryan.penny.ui.views.core.DefaultBackButton
-import io.github.t1geryan.penny.ui.views.icon.TextIcon
-import io.github.t1geryan.penny.ui.views.picker.BottomSheetSingleItemPicker
 import io.github.t1geryan.penny.ui.views.picker.CategoriesPicker
 import io.github.t1geryan.penny.ui.views.picker.PennyDatePicker
 import io.github.t1geryan.penny.ui.views.picker.PennyTimePicker
@@ -165,6 +161,29 @@ private fun AmountCard(
         ),
         modifier = modifier,
     ) {
+        FieldTitle(
+            title = stringResource(R.string.screen_create_or_update_transaction_fill_category_title),
+            icon = MaterialTheme.icons.label,
+            modifier = Modifier.padding(MaterialTheme.spacing.medium),
+        )
+        PickerField(
+            onClick = { onSendIntent(CreateOrUpdateTransactionIntent.PickCategory) },
+            enabled = state.isEditing.not(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MaterialTheme.spacing.medium)
+                .heightIn(min = 48.dp),
+        ) {
+            state.selectedCategory?.let { category ->
+                CategoryIcon(category)
+                Spacer(MaterialTheme.spacing.normal)
+            }
+            Text(
+                state.selectedCategory?.name
+                    ?: stringResource(R.string.screen_create_or_update_transaction_fill_category_hint),
+            )
+        }
+        Spacer(MaterialTheme.spacing.large)
         Text(
             stringResource(R.string.screen_create_or_update_transaction_fill_amount_title),
             style = MaterialTheme.typography.titleSmall,
@@ -183,35 +202,21 @@ private fun AmountCard(
             placeholder = {
                 Text(stringResource(R.string.screen_create_or_update_transaction_fill_amount_hint))
             },
+            enabled = state.selectedCurrency != null,
             prefix = {
-                IconButton(
-                    onClick = { onSendIntent(CreateOrUpdateTransactionIntent.PickCurrency) },
-                    shape = RoundedCornerShape(MaterialTheme.cornerRadius.large),
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            state.selectedCurrency.symbol,
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                color = if (state.isAmountValid) {
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                } else {
-                                    MaterialTheme.colorScheme.onErrorContainer
-                                },
-                            ),
-                        )
-                        Icon(
-                            imageVector = MaterialTheme.icons.dropdown,
-                            contentDescription = null,
-                            tint = if (state.isAmountValid) {
-                                MaterialTheme.colorScheme.onSurfaceVariant
-                            } else {
-                                MaterialTheme.colorScheme.onErrorContainer
-                            },
-                        )
-                    }
-                }
+                Text(
+                    state.selectedCurrency?.symbol.orEmpty(),
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        color = if (state.isAmountValid) {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        } else {
+                            MaterialTheme.colorScheme.onErrorContainer
+                        },
+                    ),
+                    modifier = Modifier.alpha(
+                        if (state.selectedCurrency == null) Alpha.TRANSPARENT.value else Alpha.OPAQUE.value,
+                    ),
+                )
             },
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -229,10 +234,10 @@ private fun AmountCard(
                 .fillMaxWidth()
                 .padding(horizontal = MaterialTheme.spacing.medium),
         )
-        if (state.isEditing.not()) {
+        state.selectedCurrency?.takeIf { state.isEditing.not() }?.let { currency ->
             Spacer(MaterialTheme.spacing.medium)
             QuickAmounts(
-                selectedCurrency = state.selectedCurrency,
+                selectedCurrency = currency,
                 onQuickAmountSelected = { onSendIntent(CreateOrUpdateTransactionIntent.SetQuickAmount(it)) },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -284,28 +289,6 @@ private fun MainCard(
                 .fillMaxWidth()
                 .padding(horizontal = MaterialTheme.spacing.medium),
         )
-        Spacer(MaterialTheme.spacing.large)
-        FieldTitle(
-            title = stringResource(R.string.screen_create_or_update_transaction_fill_category_title),
-            icon = MaterialTheme.icons.label,
-            modifier = Modifier.padding(MaterialTheme.spacing.medium),
-        )
-        PickerField(
-            onClick = { onSendIntent(CreateOrUpdateTransactionIntent.PickCategory) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = MaterialTheme.spacing.medium)
-                .heightIn(min = 48.dp),
-        ) {
-            state.selectedCategory?.let { category ->
-                CategoryIcon(category)
-                Spacer(MaterialTheme.spacing.normal)
-            }
-            Text(
-                state.selectedCategory?.name
-                    ?: stringResource(R.string.screen_create_or_update_transaction_fill_category_hint),
-            )
-        }
         Spacer(MaterialTheme.spacing.large)
         FieldTitle(
             title = stringResource(R.string.screen_create_or_update_transaction_fill_date_title),
@@ -378,6 +361,7 @@ private fun FieldTitle(
 private fun PickerField(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     content: @Composable RowScope.() -> Unit,
 ) {
     FilledTonalButton(
@@ -387,6 +371,7 @@ private fun PickerField(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
             contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         ),
+        enabled = enabled,
         shape = RoundedCornerShape(MaterialTheme.cornerRadius.large),
     ) {
         content()
@@ -467,54 +452,6 @@ fun CreateOrUpdateTransactionDialog(
                 )
             },
         )
-
-        is CreateOrUpdateTransactionDialogState.CurrencyPicker -> BottomSheetSingleItemPicker(
-            onDismissRequest = { onSendIntent(CreateOrUpdateTransactionIntent.DismissDialog) },
-            items = dialogState.currencies,
-            selectedItem = dialogState.selectedCurrency,
-            key = { it.code },
-            title = stringResource(R.string.screen_create_or_update_transaction_fill_currency_title),
-        ) { item, isSelected ->
-            Card(
-                onClick = {
-                    onSendIntent(CreateOrUpdateTransactionIntent.SetCurrency(item))
-                    onSendIntent(CreateOrUpdateTransactionIntent.DismissDialog)
-                },
-                colors = CardDefaults.cardColors(
-                    containerColor = if (isSelected) {
-                        MaterialTheme.colorScheme.primaryContainer
-                    } else {
-                        MaterialTheme.colorScheme.surfaceContainer
-                    },
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                ),
-                border = BorderStroke(
-                    width = 2.dp,
-                    color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent,
-                ),
-                shape = RoundedCornerShape(MaterialTheme.cornerRadius.large),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(MaterialTheme.spacing.normal),
-            ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(MaterialTheme.spacing.medium),
-                ) {
-                    TextIcon(
-                        text = item.symbol,
-                        backgroundColor = MaterialTheme.colorScheme.surfaceVariant,
-                    )
-                    Spacer(MaterialTheme.spacing.normal)
-                    Column {
-                        Text(item.humanReadableName, style = MaterialTheme.typography.titleMedium)
-                        Spacer(MaterialTheme.spacing.tiny)
-                        Text(item.code, style = MaterialTheme.typography.bodyMedium)
-                    }
-                }
-            }
-        }
 
         CreateOrUpdateTransactionDialogState.None -> {}
     }

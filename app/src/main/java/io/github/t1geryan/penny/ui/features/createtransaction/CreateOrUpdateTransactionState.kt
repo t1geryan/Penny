@@ -15,13 +15,15 @@ data class CreateOrUpdateTransactionState(
     val isNameValid: Boolean,
     val enteredAmount: String,
     val isAmountValid: Boolean,
-    val selectedCurrency: Currency,
     val selectedCategory: Category?,
     val selectedDate: LocalDateTime?,
     val isEditing: Boolean,
     val isLoading: Boolean,
     val dialogState: CreateOrUpdateTransactionDialogState,
 ) {
+
+    val selectedCurrency: Currency?
+        get() = selectedCategory?.currency
 
     @OptIn(ExperimentalContracts::class)
     val isAllowedToSave: Boolean
@@ -35,7 +37,6 @@ data class CreateOrUpdateTransactionState(
             isNameValid = true,
             enteredAmount = "",
             isAmountValid = true,
-            selectedCurrency = Currency.US_DOLLAR,
             selectedCategory = null,
             selectedDate = null,
             isEditing = false,
@@ -60,10 +61,5 @@ sealed interface CreateOrUpdateTransactionDialogState {
     data class TimePickerDialog(
         val initialSelected: LocalTime?,
         val date: LocalDate,
-    ) : CreateOrUpdateTransactionDialogState
-
-    data class CurrencyPicker(
-        val selectedCurrency: Currency,
-        val currencies: List<Currency>,
     ) : CreateOrUpdateTransactionDialogState
 }
