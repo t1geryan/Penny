@@ -28,6 +28,7 @@
 
     <string name="common_cd_back_button">Navigate Back</string>
     <string name="common_cd_add_transaction">Add Expense</string>
+    <string name="common_cd_add_category">Add Category</string>
     <string name="common_cd_close">Close</string>
 
     <string name="currency_us_dollar">US Dollar</string>
@@ -53,6 +54,11 @@
     <string name="screen_transactions_empty_in_period_title">No expenses this period</string>
     <string name="screen_transactions_empty_in_period_description">You haven\'t added any transactions for this period yet. Start tracking your spending!</string>
     <string name="screen_transactions_empty_in_period_button">Add Expense</string>
+
+    <string name="screen_categories_title">Categories</string>
+    <string name="screen_categories_empty_title">No Categories Yet</string>
+    <string name="screen_categories_empty_description">Create your first category to start organizing your expenses</string>
+    <string name="screen_categories_empty_button">Add Your First Category</string>
 
     <string name="screen_create_or_update_transaction_create_title">New Expense</string>
     <string name="screen_create_or_update_transaction_update_title">Edit Expense</string>
