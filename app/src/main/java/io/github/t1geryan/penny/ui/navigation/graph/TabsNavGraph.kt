@@ -20,6 +20,7 @@ import io.github.t1geryan.penny.ui.features.categories.CategoriesComponent
 import io.github.t1geryan.penny.ui.features.categories.CategoriesViewModel
 import io.github.t1geryan.penny.ui.features.transactions.TransactionsComponent
 import io.github.t1geryan.penny.ui.features.transactions.TransactionsViewModel
+import io.github.t1geryan.penny.ui.navigation.actions.navigateFromCategoriesToCreateOrEditCategory
 import io.github.t1geryan.penny.ui.navigation.actions.navigateFromTransactionsToCreateOrUpdateTransaction
 
 @Composable
@@ -41,7 +42,7 @@ fun TabsNavGraph(
     ) {
         composeTransactions(rootNavController)
         composeStatistics()
-        composeCategories()
+        composeCategories(rootNavController)
         composeNotifications()
     }
 }
@@ -67,13 +68,17 @@ private fun NavGraphBuilder.composeStatistics() {
     }
 }
 
-private fun NavGraphBuilder.composeCategories() {
+private fun NavGraphBuilder.composeCategories(rootNavController: NavController) {
     composable<TabsNavEntry.Categories> {
         val viewModel = hiltViewModel<CategoriesViewModel>()
         val state by viewModel.state.collectAsStateWithLifecycle()
         CategoriesComponent(
             state = state,
             onSendIntent = viewModel::receiveIntent,
+            eventsFlow = viewModel.events,
+            onNavigateToCreateOrEditCategory = { categoryId ->
+                rootNavController.navigateFromCategoriesToCreateOrEditCategory(categoryId)
+            },
             modifier = Modifier.fillMaxSize(),
         )
     }

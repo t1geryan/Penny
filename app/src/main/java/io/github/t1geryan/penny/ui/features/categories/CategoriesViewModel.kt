@@ -6,7 +6,7 @@ import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.usecases.DeleteCategoryByIdUseCase
 import io.github.t1geryan.domain.usecases.ObserveCategoriesUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionsUseCase
-import io.github.t1geryan.penny.ui.base.BaseViewModel
+import io.github.t1geryan.penny.ui.base.BaseEventViewModel
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ class CategoriesViewModel @Inject constructor(
     private val observeCategoriesUseCase: ObserveCategoriesUseCase,
     private val observeTransactionsUseCase: ObserveTransactionsUseCase,
     private val deleteCategoryByIdUseCase: DeleteCategoryByIdUseCase,
-) : BaseViewModel<CategoriesIntent, CategoriesState>(CategoriesState.initial()) {
+) : BaseEventViewModel<CategoriesIntent, CategoriesState, CategoriesEvent>(CategoriesState.initial()) {
 
     init {
         viewModelScope.launch {
@@ -41,6 +41,9 @@ class CategoriesViewModel @Inject constructor(
         is CategoriesIntent.DeleteCategory -> handleDeleteCategoryRequest(intent.category)
         is CategoriesIntent.ConfirmCategoryDelete -> deleteCategory(intent.category)
         CategoriesIntent.DismissDialog -> setDialog(CategoriesDialogState.None)
+        is CategoriesIntent.NavigateToCreteOrEditCategory -> sendEvent(
+            CategoriesEvent.NavigateToCreateOrEditCategory(intent.categoryId),
+        )
     }
 
     private fun handleDeleteCategoryRequest(category: Category) {

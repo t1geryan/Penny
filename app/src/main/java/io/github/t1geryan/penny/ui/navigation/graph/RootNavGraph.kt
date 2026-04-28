@@ -1,12 +1,9 @@
 package io.github.t1geryan.penny.ui.navigation.graph
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -17,6 +14,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import io.github.t1geryan.navigation.RootNavEntry
+import io.github.t1geryan.penny.ui.features.category.CreateOrEditCategoryComponent
+import io.github.t1geryan.penny.ui.features.category.CreateOrEditCategoryViewModel
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionComponent
 import io.github.t1geryan.penny.ui.features.createtransaction.CreateOrUpdateTransactionViewModel
 import io.github.t1geryan.penny.ui.features.tabs.TabsComponent
@@ -31,18 +30,25 @@ fun RootNavGraph(
         startDestination = RootNavEntry.INITIAL,
         modifier = modifier,
     ) {
-        composeCreateOrUpdateCategory()
+        composeCreateOrUpdateCategory(rootNavController)
         composeCreateOrUpdateTransaction(rootNavController)
         composeTabs(rootNavController)
     }
 }
 
-private fun NavGraphBuilder.composeCreateOrUpdateCategory() {
+private fun NavGraphBuilder.composeCreateOrUpdateCategory(navController: NavController) {
     composable<RootNavEntry.CreateOrUpdateCategory> {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Cyan),
+        val route = it.toRoute<RootNavEntry.CreateOrUpdateCategory>()
+        val viewModel = hiltViewModel<CreateOrEditCategoryViewModel, CreateOrEditCategoryViewModel.Factory> { factory ->
+            factory.create(route.id)
+        }
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        CreateOrEditCategoryComponent(
+            state = state,
+            onSendIntent = viewModel::receiveIntent,
+            eventsFlow = viewModel.events,
+            onNavigateUp = navController::navigateUp,
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }

@@ -1,5 +1,6 @@
 package io.github.t1geryan.penny.ui.features.categories
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,27 +20,37 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import io.github.t1geryan.domain.models.Category
+import io.github.t1geryan.domain.models.CategoryId
 import io.github.t1geryan.domain.models.Transaction
 import io.github.t1geryan.domain.models.calculateSpentAmount
 import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.R
+import io.github.t1geryan.penny.ui.utils.LocalFab
 import io.github.t1geryan.penny.ui.views.category.CategoryItem
 import io.github.t1geryan.penny.ui.views.core.ComponentWithTopBar
 import io.github.t1geryan.penny.ui.views.dialog.ConfirmationDialog
 import io.github.t1geryan.penny.ui.views.spacing.Spacer
 import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 
+@SuppressLint("LocalContextGetResourceValueCall")
 @Composable
 fun CategoriesComponent(
     state: CategoriesState,
     onSendIntent: (CategoriesIntent) -> Unit,
+    eventsFlow: Flow<CategoriesEvent>,
+    onNavigateToCreateOrEditCategory: (CategoryId?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ComponentWithTopBar(
@@ -54,6 +65,29 @@ fun CategoriesComponent(
     }
 
     CategoriesDialog(state.dialogState, onSendIntent)
+
+    LaunchedEffect(Unit) {
+        eventsFlow.collectLatest { event ->
+            when (event) {
+                is CategoriesEvent.NavigateToCreateOrEditCategory -> onNavigateToCreateOrEditCategory(event.categoryId)
+            }
+        }
+    }
+
+    val fabState = LocalFab.current
+    val context = LocalContext.current
+    val fabIcon = MaterialTheme.icons.add
+    LifecycleResumeEffect(Unit) {
+        fabState.setFab(
+            icon = fabIcon,
+            contentDescription = context.getString(R.string.common_cd_add_category),
+            onClick = { onSendIntent(CategoriesIntent.NavigateToCreteOrEditCategory()) },
+        )
+
+        onPauseOrDispose {
+            fabState.clearFab()
+        }
+    }
 }
 
 @Composable
@@ -64,7 +98,9 @@ private fun Content(
 ) {
     if (state.isEmpty) {
         EmptyContent(
-            onAddCategoryClicked = { /* TODO */ },
+            onAddCategoryClicked = {
+                onSendIntent(CategoriesIntent.NavigateToCreteOrEditCategory())
+            },
             modifier = modifier,
         )
     } else {
@@ -152,7 +188,7 @@ private fun CategoriesList(
                     category = category,
                     spentAmount = category.calculateSpentAmount(transactions),
                     onClicked = {
-                        // TODO
+                        onSendIntent(CategoriesIntent.NavigateToCreteOrEditCategory(category.id))
                     },
                     deleteEnabled = isLoading.not(),
                     onDeleteClicked = {
