@@ -78,13 +78,13 @@
     <string name="screen_create_or_update_transaction_save_button_title_create">Save Expense</string>
     <string name="screen_create_or_update_transaction_save_button_title_edit">Update Expense</string>
 
-    <string name="screen_create_or_edit_transaction_create_title">New Category</string>
-    <string name="screen_create_or_edit_transaction_edit_title">Edit Category</string>
-    <string name="screen_create_or_edit_transaction_fill_name_title">Name</string>
-    <string name="screen_create_or_edit_transaction_fill_name_hint">Input Category Name</string>
-    <string name="screen_create_or_edit_transaction_fill_icon_title">Icon</string>
-    <string name="screen_create_or_edit_transaction_fill_color">Color</string>
-    <string name="screen_create_or_edit_transaction_fill_currency">Currency</string>
-    <string name="screen_create_or_edit_transaction_save_button_title_create">Save Category</string>
-    <string name="screen_create_or_edit_transaction_save_button_title_edit">Update Category</string>
+    <string name="screen_create_or_edit_category_create_title">New Category</string>
+    <string name="screen_create_or_edit_category_edit_title">Edit Category</string>
+    <string name="screen_create_or_edit_category_fill_name_title">Name</string>
+    <string name="screen_create_or_edit_category_fill_name_hint">Input Category Name</string>
+    <string name="screen_create_or_edit_category_fill_icon_title">Icon</string>
+    <string name="screen_create_or_edit_category_fill_color">Color</string>
+    <string name="screen_create_or_edit_category_fill_currency">Currency</string>
+    <string name="screen_create_or_edit_category_save_button_title_create">Save Category</string>
+    <string name="screen_create_or_edit_category_save_button_title_edit">Update Category</string>
 </resources>
