@@ -7,7 +7,6 @@ import io.github.t1geryan.mvi.InitialStateProvider
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import kotlin.contracts.ExperimentalContracts
 
 @Immutable
 data class CreateOrUpdateTransactionState(
@@ -25,7 +24,6 @@ data class CreateOrUpdateTransactionState(
     val selectedCurrency: Currency?
         get() = selectedCategory?.currency
 
-    @OptIn(ExperimentalContracts::class)
     val isAllowedToSave: Boolean
         get() = dialogState == CreateOrUpdateTransactionDialogState.None &&
                 isLoading.not() &&
