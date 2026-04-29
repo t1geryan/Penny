@@ -5,12 +5,15 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.t1geryan.domain.models.Amount
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.CategoryId
 import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.domain.usecases.CreateOrUpdateCategoryUseCase
 import io.github.t1geryan.domain.usecases.ObserveCategoryByIdUseCase
+import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
 import io.github.t1geryan.penny.ui.base.BaseEventViewModel
+import io.github.t1geryan.penny.ui.contracts.formatRaw
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -20,6 +23,7 @@ class CreateOrEditCategoryViewModel @AssistedInject constructor(
     @Assisted private val categoryId: CategoryId?,
     observeCategoryByIdUseCase: ObserveCategoryByIdUseCase,
     private val createOrUpdateCategoryUseCase: CreateOrUpdateCategoryUseCase,
+    private val validateAmountUseCase: ValidateAmountUseCase,
 ) : BaseEventViewModel<CreateOrEditCategoryIntent, CreateOrEditCategoryState, CreateOrEditCategoryEvent>(
     CreateOrEditCategoryState.initial(),
 ) {
@@ -39,6 +43,7 @@ class CreateOrEditCategoryViewModel @AssistedInject constructor(
         CreateOrEditCategoryIntent.NavigateUp -> sendEvent(CreateOrEditCategoryEvent.NavigateUp)
         CreateOrEditCategoryIntent.SaveCategory -> saveCategory()
         is CreateOrEditCategoryIntent.SetName -> setName(intent.name)
+        is CreateOrEditCategoryIntent.SetLimit -> validateAndSetLimit(intent.limit)
         is CreateOrEditCategoryIntent.SetColor -> setColor(intent.color)
         is CreateOrEditCategoryIntent.SetEmoji -> setEmoji(intent.emoji)
         is CreateOrEditCategoryIntent.SetCurrency -> setCurrency(intent.currency)
@@ -53,6 +58,7 @@ class CreateOrEditCategoryViewModel @AssistedInject constructor(
                 selectedColor = category.color,
                 selectedEmoji = category.emoji,
                 selectedCurrency = category.currency,
+                enteredLimit = category.limit?.formatRaw().orEmpty(),
             )
         }
     }
@@ -102,12 +108,40 @@ class CreateOrEditCategoryViewModel @AssistedInject constructor(
                     name = state.enteredName,
                     emoji = state.selectedEmoji,
                     color = state.selectedColor,
-                    limit = null,
+                    limit = state.enteredLimit.toFloatOrNull()?.let { limit ->
+                        Amount(
+                            limit,
+                            state.selectedCurrency,
+                        )
+                    },
                     currency = state.selectedCurrency,
                 ),
             )
             setLoading(false)
             sendEvent(CreateOrEditCategoryEvent.NavigateUp)
+        }
+    }
+
+    private fun validateAndSetLimit(limit: String) {
+        val currency = _state.value.selectedCurrency
+
+        _state.update { it.copy(enteredLimit = limit) }
+        if (limit.isBlank()) {
+            _state.update { it.copy(isLimitValid = false) }
+            return
+        }
+        val parsed = limit.toFloatOrNull()
+        if (parsed != null) {
+            val amount = Amount(parsed, currency)
+            _state.update {
+                it.copy(
+                    isLimitValid = validateAmountUseCase(amount),
+                )
+            }
+        } else {
+            _state.update {
+                it.copy(isLimitValid = false)
+            }
         }
     }
 

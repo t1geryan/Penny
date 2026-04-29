@@ -8,6 +8,8 @@ import io.github.t1geryan.mvi.InitialStateProvider
 data class CreateOrEditCategoryState(
     val enteredName: String,
     val isNameValid: Boolean,
+    val enteredLimit: String,
+    val isLimitValid: Boolean,
     val selectedColor: Long?,
     val selectedEmoji: String?,
     val selectedCurrency: Currency,
@@ -25,6 +27,8 @@ data class CreateOrEditCategoryState(
         override fun initial() = CreateOrEditCategoryState(
             enteredName = "",
             isNameValid = true,
+            enteredLimit = "",
+            isLimitValid = true,
             selectedColor = null,
             selectedEmoji = null,
             selectedCurrency = Currency.US_DOLLAR,

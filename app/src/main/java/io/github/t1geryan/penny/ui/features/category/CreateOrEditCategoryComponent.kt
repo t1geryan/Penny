@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -32,6 +33,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -43,9 +46,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.penny.R
+import io.github.t1geryan.penny.ui.contracts.InputFilters
 import io.github.t1geryan.penny.ui.contracts.humanReadableName
 import io.github.t1geryan.penny.ui.contracts.predefinedColors
 import io.github.t1geryan.penny.ui.contracts.predefinedEmojis
@@ -223,6 +228,7 @@ private fun CurrencyCard(
         )
         PickerField(
             onClick = { onSendIntent(CreateOrEditCategoryIntent.PickCurrency) },
+            enabled = state.isEditing.not(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = MaterialTheme.spacing.medium)
@@ -232,6 +238,53 @@ private fun CurrencyCard(
             Spacer(MaterialTheme.spacing.normal)
             Text(state.selectedCurrency.humanReadableName)
         }
+        Spacer(MaterialTheme.spacing.medium)
+        Text(
+            stringResource(R.string.screen_create_or_edit_category_fill_limit_title),
+            style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier.padding(MaterialTheme.spacing.medium),
+        )
+        OutlinedTextField(
+            value = state.enteredLimit,
+            onValueChange = {
+                val filtered = InputFilters.cost.filter(it)
+                onSendIntent(CreateOrEditCategoryIntent.SetLimit(filtered))
+            },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Decimal,
+            ),
+            placeholder = {
+                Text(stringResource(R.string.screen_create_or_edit_category_fill_limit_hint))
+            },
+            prefix = {
+                Text(
+                    state.selectedCurrency.symbol,
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        color = if (state.isLimitValid) {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        } else {
+                            MaterialTheme.colorScheme.onErrorContainer
+                        },
+                    ),
+                )
+            },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                unfocusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                errorBorderColor = MaterialTheme.colorScheme.onErrorContainer,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                errorContainerColor = MaterialTheme.colorScheme.errorContainer,
+                focusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                errorTextColor = MaterialTheme.colorScheme.onErrorContainer,
+            ),
+            isError = state.isLimitValid.not(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = MaterialTheme.spacing.medium),
+        )
         Spacer(MaterialTheme.spacing.medium)
     }
 }
