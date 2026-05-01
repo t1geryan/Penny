@@ -21,6 +21,7 @@ hiltComposeNavigation = "1.3.0"
 javaxInject = "1"
 ksp = "2.3.6"
 detekt = "1.23.8"
+room = "2.8.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -51,6 +52,10 @@ google-hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", ver
 google-hilt-compose-navigation = {module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltComposeNavigation"}
 
 javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
+
+room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+room-coroutines = { module = "androidx.room:room-ktx", version.ref = "room" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

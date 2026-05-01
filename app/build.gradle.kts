@@ -75,6 +75,11 @@ dependencies {
     implementation(libs.google.hilt.compose.navigation)
     ksp(libs.google.hilt.compiler)
 
+    // Room DB
+    implementation(libs.room.runtime)
+    ksp(libs.room.compiler)
+    implementation(libs.room.coroutines)
+
     // Preview Tooling
     implementation(libs.androidx.compose.ui.tooling.preview)
 

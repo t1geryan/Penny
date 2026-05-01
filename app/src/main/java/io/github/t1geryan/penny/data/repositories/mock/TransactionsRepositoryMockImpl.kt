@@ -174,9 +174,9 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
 
             val currency = Currency.US_DOLLAR
 
-            val food = categories.first { it.id == 1 }
-            val transport = categories.first { it.id == 2 }
-            val entertainment = categories.first { it.id == 3 }
+            val food = categories.first { it.id == 1L }
+            val transport = categories.first { it.id == 2L }
+            val entertainment = categories.first { it.id == 3L }
 
             return listOf(
                 Transaction(

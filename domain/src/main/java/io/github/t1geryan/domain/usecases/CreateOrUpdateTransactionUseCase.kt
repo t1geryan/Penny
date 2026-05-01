@@ -16,7 +16,7 @@ class CreateOrUpdateTransactionUseCaseImpl @Inject constructor(
 ) : CreateOrUpdateTransactionUseCase {
 
     override suspend fun invoke(transaction: Transaction): Result<TransactionId> = runSuspendCatching {
-        if (transaction.id == 0) {
+        if (transaction.id == 0L) {
             transactionsRepository.createTransaction(transaction)
         } else {
             transactionsRepository.updateTransaction(transaction)

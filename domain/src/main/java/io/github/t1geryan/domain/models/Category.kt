@@ -2,7 +2,7 @@ package io.github.t1geryan.domain.models
 
 import androidx.compose.runtime.Immutable
 
-typealias CategoryId = Int
+typealias CategoryId = Long
 
 /**
  * @property name - human friendly name of Category
@@ -10,7 +10,7 @@ typealias CategoryId = Int
  */
 @Immutable
 data class Category(
-    val id: CategoryId = 0,
+    val id: CategoryId = 0L,
     val name: String,
     val emoji: String,
     val color: Long,

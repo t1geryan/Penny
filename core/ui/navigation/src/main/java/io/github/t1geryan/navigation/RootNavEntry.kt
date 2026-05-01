@@ -9,10 +9,10 @@ sealed interface RootNavEntry {
     data object Tabs
 
     @Serializable
-    data class CreateOrUpdateTransaction(val id: Int?)
+    data class CreateOrUpdateTransaction(val id: Long?)
 
     @Serializable
-    data class CreateOrUpdateCategory(val id: Int?)
+    data class CreateOrUpdateCategory(val id: Long?)
 
     companion object {
         val INITIAL = Tabs

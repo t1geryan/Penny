@@ -13,6 +13,8 @@ enum class Currency(
     ;
 
     companion object {
+        fun getByCode(code: String) = entries.first { it.code == code }
+
         val USER_LIST = listOf(
             US_DOLLAR,
             RUSSIAN_RUBLE,

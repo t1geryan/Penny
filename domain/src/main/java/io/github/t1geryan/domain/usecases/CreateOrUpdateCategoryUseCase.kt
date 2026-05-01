@@ -15,7 +15,7 @@ class CreateOrUpdateCategoryUseCaseImpl @Inject constructor(
     private val transactionsRepository: TransactionsRepository,
 ) : CreateOrUpdateCategoryUseCase {
     override suspend fun invoke(category: Category): Result<CategoryId> = runSuspendCatching {
-        if (category.id == 0) {
+        if (category.id == 0L) {
             transactionsRepository.createCategory(category)
         } else {
             transactionsRepository.updateCategory(category)
