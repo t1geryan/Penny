@@ -65,5 +65,7 @@ jetbrains-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "jetbrai
 jetbrains-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinxSerialization" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
+room = { id = "androidx.room", version.ref = "room" }
+
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 google-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }

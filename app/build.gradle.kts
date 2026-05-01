@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.google.hilt)
+    alias(libs.plugins.room)
 }
 
 android {
@@ -92,6 +93,10 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
 }
 
 tasks.preBuild {

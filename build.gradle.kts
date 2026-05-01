@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.google.hilt) apply false
     alias(libs.plugins.detekt)
+    alias(libs.plugins.room) apply false
 }
 
 subprojects {
