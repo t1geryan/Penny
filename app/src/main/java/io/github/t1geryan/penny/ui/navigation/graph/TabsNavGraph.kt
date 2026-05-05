@@ -18,6 +18,8 @@ import androidx.navigation.compose.rememberNavController
 import io.github.t1geryan.navigation.TabsNavEntry
 import io.github.t1geryan.penny.ui.features.categories.CategoriesComponent
 import io.github.t1geryan.penny.ui.features.categories.CategoriesViewModel
+import io.github.t1geryan.penny.ui.features.statistics.StatisticsComponent
+import io.github.t1geryan.penny.ui.features.statistics.StatisticsViewModel
 import io.github.t1geryan.penny.ui.features.transactions.TransactionsComponent
 import io.github.t1geryan.penny.ui.features.transactions.TransactionsViewModel
 import io.github.t1geryan.penny.ui.navigation.actions.navigateFromCategoriesToCreateOrEditCategory
@@ -64,7 +66,13 @@ private fun NavGraphBuilder.composeTransactions(rootNavController: NavController
 
 private fun NavGraphBuilder.composeStatistics() {
     composable<TabsNavEntry.Statistics> {
-        Box(modifier = Modifier.fillMaxSize())
+        val viewModel = hiltViewModel<StatisticsViewModel>()
+        val state by viewModel.state.collectAsStateWithLifecycle()
+        StatisticsComponent(
+            state = state,
+            onSendIntent = viewModel::receiveIntent,
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 

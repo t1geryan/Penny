@@ -19,28 +19,34 @@ data class Amount(
     val valueInCurrency: Float
         get() = value * currency.subUnitMultiplier
 
+    operator fun plus(other: Amount): Amount {
+        requireCurrenciesMustMatch(other.currency)
+        return Amount(value + other.value, currency)
+    }
 
     /**
      * Calculates the remaining amount after subtracting spent from limit.
      * @param limit The limit amount.
-     * @param spent The spent amount.
      * @return The remaining amount.
      * @throws IllegalArgumentException if currencies do not match.
      */
     fun calculateRemaining(limit: Amount): Amount {
-        require(limit.currency == currency) { "Currencies must match" }
+        requireCurrenciesMustMatch(limit.currency)
         return Amount(limit.value - value, limit.currency)
     }
 
     /**
      * Calculates the ratio of spent to limit.
-     * @param spent The spent amount.
      * @param limit The limit amount.
      * @return The ratio as a Float.
      * @throws IllegalArgumentException if currencies do not match.
      */
     fun calculateSpentToLimitRatio(limit: Amount): Float {
-        require(currency == limit.currency) { "Currencies must match" }
+        requireCurrenciesMustMatch(limit.currency)
         return value.toFloat() / limit.value.toFloat()
+    }
+
+    private fun requireCurrenciesMustMatch(other: Currency) {
+        require(currency == other) { "Currencies must match" }
     }
 }

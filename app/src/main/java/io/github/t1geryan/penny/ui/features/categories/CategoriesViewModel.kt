@@ -31,9 +31,6 @@ class CategoriesViewModel @Inject constructor(
                     )
                 }
             }
-            observeTransactionsUseCase().collect { transactions ->
-                _state.update { it.copy(transactions = transactions) }
-            }
         }
     }
 

@@ -84,6 +84,9 @@ dependencies {
     // Preview Tooling
     implementation(libs.androidx.compose.ui.tooling.preview)
 
+    // KoalaPlot Charts
+    implementation(libs.compose.charts)
+
     // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
