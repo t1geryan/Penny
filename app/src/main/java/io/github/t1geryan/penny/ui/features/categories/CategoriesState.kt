@@ -4,6 +4,11 @@ import androidx.compose.runtime.Immutable
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Transaction
 import io.github.t1geryan.mvi.InitialStateProvider
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateRange
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 @Immutable
 data class CategoriesState(
@@ -12,6 +17,16 @@ data class CategoriesState(
     val dialogState: CategoriesDialogState,
     val isLoading: Boolean,
 ) {
+
+    val thisMonthTransactions: List<Transaction>
+        get() {
+            val today = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()).date
+            val monthStart = LocalDate(today.year, today.month, 1)
+            val lastMonthRange = LocalDateRange(monthStart, today)
+            return transactions.filter { transaction ->
+                lastMonthRange.contains(transaction.date.date)
+            }
+        }
 
     val isEmpty: Boolean
         get() = categories.isEmpty()

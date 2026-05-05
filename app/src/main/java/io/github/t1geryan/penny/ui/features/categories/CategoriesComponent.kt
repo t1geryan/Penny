@@ -106,7 +106,7 @@ private fun Content(
     } else {
         CategoriesList(
             categories = state.categories,
-            transactions = state.transactions,
+            lastMonthTransactions = state.thisMonthTransactions,
             onSendIntent = onSendIntent,
             modifier = modifier,
             isLoading = state.isLoading,
@@ -159,7 +159,7 @@ private fun EmptyContent(
 private fun CategoriesList(
     isLoading: Boolean,
     categories: List<Category>,
-    transactions: List<Transaction>,
+    lastMonthTransactions: List<Transaction>,
     onSendIntent: (CategoriesIntent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -186,7 +186,7 @@ private fun CategoriesList(
             ) { category ->
                 CategoryItem(
                     category = category,
-                    spentAmount = category.calculateSpentAmount(transactions),
+                    spentAmount = category.calculateSpentAmount(lastMonthTransactions),
                     onClicked = {
                         onSendIntent(CategoriesIntent.NavigateToCreteOrEditCategory(category.id))
                     },
