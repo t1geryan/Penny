@@ -89,4 +89,12 @@
     <string name="screen_create_or_edit_category_fill_limit_hint">Input Limit (optional)</string>
     <string name="screen_create_or_edit_category_save_button_title_create">Save Category</string>
     <string name="screen_create_or_edit_category_save_button_title_edit">Update Category</string>
+
+    <string name="screen_statistics_title">Statistics</string>
+    <string name="screen_statistics_empty_state_no_categories_title">No categories</string>
+    <string name="screen_statistics_empty_state_no_categories_description">Add categories to see statistics</string>
+    <string name="screen_statistics_empty_state_no_transactions_title">No transactions</string>
+    <string name="screen_statistics_empty_state_no_transactions_description">Add expenses to see statistics</string>
+    <string name="screen_statistics_empty_state_no_transactions_in_range_title">No transactions in selected range</string>
+    <string name="screen_statistics_empty_state_no_transactions_in_range_description">Try selecting a different date range</string>
 </resources>
