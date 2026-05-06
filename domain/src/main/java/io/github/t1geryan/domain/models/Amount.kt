@@ -32,7 +32,7 @@ data class Amount(
      */
     fun calculateRemaining(limit: Amount): Amount {
         requireCurrenciesMustMatch(limit.currency)
-        return Amount(limit.value - value, limit.currency)
+        return Amount((limit.value - value).coerceAtLeast(0), limit.currency)
     }
 
     /**

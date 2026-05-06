@@ -196,5 +196,13 @@ private class CategoryAndSpentAmountProvider : PreviewParameterProvider<Pair<Cat
             limit = null,
             currency = Currency.US_DOLLAR,
         ) to Amount(33.3f, Currency.US_DOLLAR),
+        Category(
+            id = 3,
+            name = name,
+            emoji = emoji,
+            color = 0xFFDB1818,
+            limit = Amount(100f, Currency.US_DOLLAR),
+            currency = Currency.US_DOLLAR,
+        ) to Amount(150f, Currency.US_DOLLAR),
     )
 }
