@@ -3,9 +3,12 @@ package io.github.t1geryan.penny.data.notifications
 import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import io.github.t1geryan.penny.MainActivity
 import io.github.t1geryan.penny.R
 import javax.inject.Inject
 import kotlin.time.Clock
@@ -42,8 +45,23 @@ class PennyNotificationsManagerImpl @Inject constructor(
             .setContentTitle(notification.title)
             .setContentText(notification.description)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(createAppIntent())
+            .setAutoCancel(true)
 
         notificationManager.notify(generateId(), builder.build())
+    }
+
+    private fun createAppIntent(): PendingIntent {
+        val appExplicitIntent = Intent(context, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            context,
+            0,
+            appExplicitIntent,
+            PendingIntent.FLAG_IMMUTABLE, // Use FLAG_IMMUTABLE for security on Android 12+
+        )
+        return pendingIntent
     }
 
     private fun generateId() = Clock.System.now().epochSeconds.toInt()
