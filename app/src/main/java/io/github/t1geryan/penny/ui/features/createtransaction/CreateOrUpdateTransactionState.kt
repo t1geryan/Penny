@@ -27,7 +27,9 @@ data class CreateOrUpdateTransactionState(
     val isAllowedToSave: Boolean
         get() = dialogState == CreateOrUpdateTransactionDialogState.None &&
                 isLoading.not() &&
-                isNameValid && isAmountValid && selectedCategory != null && selectedDate != null
+                enteredName.isNotEmpty() && isNameValid &&
+                enteredAmount.isNotEmpty() && isAmountValid &&
+                selectedCategory != null && selectedDate != null
 
     companion object : InitialStateProvider<CreateOrUpdateTransactionState> {
         override fun initial(): CreateOrUpdateTransactionState = CreateOrUpdateTransactionState(
