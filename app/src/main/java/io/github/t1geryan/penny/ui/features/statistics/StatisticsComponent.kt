@@ -174,7 +174,7 @@ fun Chart(
                 contentBuilder = { popup ->
                     val id = data[popup.dataIndex].values[popup.valueIndex].id
                     val category = state.categories.first { it.id.toInt() == id }
-                    Amount(popup.value.toFloat(), category.currency).format()
+                    "${category.name}\n${Amount(popup.value.toFloat(), category.currency).format()}"
                 },
                 textStyle = MaterialTheme.typography.labelSmall.copy(
                     color = MaterialTheme.colorScheme.onSurface,
