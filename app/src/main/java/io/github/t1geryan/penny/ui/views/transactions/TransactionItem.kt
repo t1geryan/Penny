@@ -23,6 +23,7 @@ import io.github.t1geryan.domain.models.Amount
 import io.github.t1geryan.domain.models.Category
 import io.github.t1geryan.domain.models.Currency
 import io.github.t1geryan.domain.models.Transaction
+import io.github.t1geryan.models.Percent
 import io.github.t1geryan.penny.ui.contracts.format
 import io.github.t1geryan.penny.ui.contracts.formatDate
 import io.github.t1geryan.penny.ui.views.category.CategoryTag
@@ -82,8 +83,11 @@ fun TransactionItem(
             ),
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
-            Text(name, style = MaterialTheme.typography.titleMedium)
-            Expanded()
+            Text(
+                name,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(Percent.WHOLE.fraction),
+            )
             Text(
                 formattedAmount,
                 color = MaterialTheme.colorScheme.primary,
