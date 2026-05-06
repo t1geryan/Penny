@@ -13,10 +13,12 @@ typealias TransactionId = Long
 @Immutable
 data class Transaction(
     val id: TransactionId = 0L,
+    val uuid: String?,
     val name: String,
     val amount: Amount,
     val category: Category,
     val date: LocalDateTime,
+    val updatedAt: LocalDateTime,
 )
 
 

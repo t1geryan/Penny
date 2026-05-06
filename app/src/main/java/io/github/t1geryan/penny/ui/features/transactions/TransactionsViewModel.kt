@@ -1,5 +1,6 @@
 package io.github.t1geryan.penny.ui.features.transactions
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.t1geryan.domain.models.Category
@@ -7,6 +8,7 @@ import io.github.t1geryan.domain.models.TransactionId
 import io.github.t1geryan.domain.usecases.DeleteTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ObserveCategoriesUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionsUseCase
+import io.github.t1geryan.domain.usecases.SyncUseCase
 import io.github.t1geryan.penny.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
@@ -19,6 +21,7 @@ class TransactionsViewModel @Inject constructor(
     private val observeTransactionsUseCase: ObserveTransactionsUseCase,
     private val observeCategoriesUseCase: ObserveCategoriesUseCase,
     private val deleteTransactionByIdUseCase: DeleteTransactionByIdUseCase,
+    private val syncUseCase: SyncUseCase,
 ) : BaseViewModel<TransactionsIntent, TransactionsState>(TransactionsState.initial()) {
 
     init {
@@ -26,6 +29,15 @@ class TransactionsViewModel @Inject constructor(
             observeTransactionsUseCase().collect { transactions ->
                 _state.update { it.copy(transactions = transactions) }
             }
+        }
+        viewModelScope.launch {
+            setLoading(true)
+            syncUseCase()
+                .onFailure { cause ->
+                    Log.w("TransactionsViewModel", "Sync is failed", cause)
+                }.also {
+                    setLoading(false)
+                }
         }
     }
 

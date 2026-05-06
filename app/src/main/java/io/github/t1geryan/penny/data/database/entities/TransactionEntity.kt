@@ -23,21 +23,26 @@ import kotlinx.datetime.LocalDateTime
     ],
     indices = [
         Index(value = [Columns.CATEGORY_ID]),
+        Index(value = [Columns.UUID], unique = true),
     ],
 )
 data class TransactionEntity(
     @PrimaryKey(autoGenerate = true) @ColumnInfo(name = Columns.ID, defaultValue = "0") val id: Long,
+    @ColumnInfo(name = Columns.UUID) val uuid: String?,
     @ColumnInfo(name = Columns.NAME) val name: String,
     @ColumnInfo(name = Columns.AMOUNT) val amount: Amount,
     @ColumnInfo(name = Columns.CATEGORY_ID) val categoryId: Long,
     @ColumnInfo(name = Columns.DATE) val dateTime: LocalDateTime,
+    @ColumnInfo(name = Columns.UPDATED_AT) val updatedAt: LocalDateTime,
 ) {
 
     object Columns {
         const val ID = "id"
+        const val UUID = "uuid"
         const val NAME = "name"
         const val AMOUNT = "amount"
         const val CATEGORY_ID = "category_id"
         const val DATE = "date"
+        const val UPDATED_AT = "updated_at"
     }
 }

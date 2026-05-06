@@ -32,6 +32,9 @@ import io.github.t1geryan.theme.cornerRadius
 import io.github.t1geryan.theme.icons
 import io.github.t1geryan.theme.spacing
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 @Composable
 fun TransactionItem(
@@ -112,6 +115,7 @@ fun TransactionItem_Preview() {
     TransactionItem(
         transaction = Transaction(
             id = 1,
+            uuid = null,
             name = "Burger",
             amount = Amount(4599, Currency.US_DOLLAR),
             category = Category(
@@ -123,6 +127,7 @@ fun TransactionItem_Preview() {
                 currency = Currency.US_DOLLAR,
             ),
             date = LocalDateTime(2026, 3, 1, 13, 20),
+            updatedAt = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault()),
         ),
     )
 }

@@ -14,6 +14,10 @@ interface TransactionsRepository {
 
     fun observeCategories(): Flow<List<Category>>
 
+    fun observeCategoryByName(name: String): Flow<Category?>
+
+    suspend fun syncTransactions()
+
     suspend fun createTransaction(transaction: Transaction): TransactionId
 
     suspend fun updateTransaction(transaction: Transaction)

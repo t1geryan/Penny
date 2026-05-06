@@ -22,6 +22,9 @@ interface CategoriesDao {
     @Query("SELECT * FROM ${PennyDatabase.Tables.CATEGORIES}")
     fun getAll(): Flow<List<CategoryEntity>>
 
+    @Query("SELECT * FROM ${PennyDatabase.Tables.CATEGORIES} WHERE LOWER(name) = LOWER(:name) LIMIT 1")
+    fun getByName(name: String): Flow<CategoryEntity?>
+
     @Query("DELETE FROM ${PennyDatabase.Tables.CATEGORIES} WHERE id = :id")
     suspend fun deleteById(id: Long)
 

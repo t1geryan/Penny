@@ -20,6 +20,8 @@ import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionByIdUseCaseImpl
 import io.github.t1geryan.domain.usecases.ObserveTransactionsUseCase
 import io.github.t1geryan.domain.usecases.ObserveTransactionsUseCaseImpl
+import io.github.t1geryan.domain.usecases.SyncUseCase
+import io.github.t1geryan.domain.usecases.SyncUseCaseImpl
 import io.github.t1geryan.domain.usecases.ValidateAmountUseCase
 import io.github.t1geryan.domain.usecases.ValidateAmountUseCaseImpl
 
@@ -53,4 +55,7 @@ abstract class UseCasesModule {
 
     @Binds
     abstract fun bindValidateAmountUseCase(impl: ValidateAmountUseCaseImpl): ValidateAmountUseCase
+
+    @Binds
+    abstract fun bindSyncUseCase(impl: SyncUseCaseImpl): SyncUseCase
 }

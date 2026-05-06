@@ -12,7 +12,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toLocalDateTime
 import javax.inject.Inject
+import kotlin.time.Clock
 import kotlin.time.Duration
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -34,6 +36,14 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
     }
 
     override fun observeCategories(): Flow<List<Category>> = categoriesFlow
+
+    override fun observeCategoryByName(name: String): Flow<Category?> = categoriesFlow.map { categories ->
+        categories.firstOrNull { name.equals(it.name, ignoreCase = true) }
+    }
+
+    override suspend fun syncTransactions() {
+        // no-op
+    }
 
     override suspend fun createTransaction(transaction: Transaction): TransactionId {
         delay(DEFAULT_DELAY)
@@ -171,6 +181,7 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
         }
 
         private fun initialTransactions(categories: List<Category>): List<Transaction> {
+            val now = Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault())
 
             val currency = Currency.US_DOLLAR
 
@@ -181,32 +192,40 @@ class TransactionsRepositoryMockImpl @Inject constructor() : TransactionsReposit
             return listOf(
                 Transaction(
                     id = 1,
+                    uuid = null,
                     name = "Burger",
                     amount = Amount(15f, currency),
                     category = food,
                     date = LocalDateTime(2026, 3, 1, 13, 20),
+                    updatedAt = now,
                 ),
                 Transaction(
                     id = 2,
+                    uuid = null,
                     name = "Coffee",
                     amount = Amount(5f, currency),
                     category = food,
                     date = LocalDateTime(2026, 3, 2, 9, 10),
+                    updatedAt = now,
                 ),
                 Transaction(
                     id = 3,
+                    uuid = null,
                     name = "Bus ticket",
                     amount = Amount(7.99f, currency),
                     category = transport,
                     date = LocalDateTime(2026, 3, 3, 8, 30),
+                    updatedAt = now,
                 ),
                 Transaction(
                     id = 4,
+                    uuid = null,
                     name = "Steam game",
                     amount = Amount(15.25f, currency),
                     category = entertainment,
                     date = LocalDateTime(2026, 3, 4, 22, 0),
-                )
+                    updatedAt = now,
+                ),
             )
         }
     }

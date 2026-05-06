@@ -23,11 +23,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 @HiltViewModel(assistedFactory = CreateOrUpdateTransactionViewModel.Factory::class)
 class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
     @Assisted private val transactionId: TransactionId?,
-    observeTransactionByIdUseCase: ObserveTransactionByIdUseCase,
+    private val observeTransactionByIdUseCase: ObserveTransactionByIdUseCase,
     private val observeCategoriesUseCase: ObserveCategoriesUseCase,
     private val validateAmountUseCase: ValidateAmountUseCase,
     private val createOrUpdateTransactionUseCase: CreateOrUpdateTransactionUseCase,
@@ -73,9 +75,11 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
         }
         setLoading(true)
         viewModelScope.launch {
+            val transactionUuid = transactionId?.let { observeTransactionByIdUseCase(it).first()?.uuid }
             createOrUpdateTransactionUseCase(
                 Transaction(
                     id = transactionId ?: 0,
+                    uuid = transactionUuid,
                     name = state.enteredName,
                     amount = Amount(
                         value = state.enteredAmount.toFloat(),
@@ -83,6 +87,7 @@ class CreateOrUpdateTransactionViewModel @AssistedInject constructor(
                     ),
                     category = state.selectedCategory,
                     date = state.selectedDate,
+                    updatedAt = Clock.System.now().toLocalDateTime(kotlinx.datetime.TimeZone.currentSystemDefault()),
                 ),
             )
             setLoading(false)
