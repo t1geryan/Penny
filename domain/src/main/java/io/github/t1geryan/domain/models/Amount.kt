@@ -46,6 +46,11 @@ data class Amount(
         return value.toFloat() / limit.value.toFloat()
     }
 
+    fun isLimitExceed(limit: Amount): Boolean {
+        requireCurrenciesMustMatch(limit.currency)
+        return value > limit.value
+    }
+
     private fun requireCurrenciesMustMatch(other: Currency) {
         require(currency == other) { "Currencies must match" }
     }
