@@ -19,7 +19,7 @@ object InputFilters {
         }
 
         private fun isValid(current: String, next: Char, candidate: String): Boolean {
-            if (current == "0") return false
+            if (current == "0" && next.isDigit()) return false
             if (next == '.' && current.contains('.')) return false
 
             val dotIndex = candidate.indexOf('.')
